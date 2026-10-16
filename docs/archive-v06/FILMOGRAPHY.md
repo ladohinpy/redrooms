@@ -1,0 +1,216 @@
+# Каталог Красной комнаты V
+
+201 кассета из v05; срез на 8 сентября 2026. Внимание: этот файл содержит ответы. Границы отбора и унаследованные источники — в CATALOG-SCOPE.md. При подготовке v06 фильмография не обновлялась.
+
+## Акира Куросава — 30
+
+- 1943 — Гений дзюдо / Sanshiro Sugata
+- 1944 — Самые красивые / The Most Beautiful
+- 1945 — Гений дзюдо II / Sanshiro Sugata Part II
+- 1946 — Не сожалею о своей юности / No Regrets for Our Youth
+- 1947 — Великолепное воскресенье / One Wonderful Sunday
+- 1948 — Пьяный ангел / Drunken Angel
+- 1949 — Тихая дуэль / The Quiet Duel
+- 1949 — Бездомный пёс / Stray Dog
+- 1950 — Скандал / Scandal
+- 1950 — Расёмон / Rashomon
+- 1951 — Идиот / The Idiot
+- 1952 — Идущие по хвосту тигра / The Men Who Tread on the Tiger’s Tail
+- 1952 — Жить / Ikiru
+- 1954 — Семь самураев / Seven Samurai
+- 1955 — Я живу в страхе / I Live in Fear
+- 1957 — Трон в крови / Throne of Blood
+- 1957 — На дне / The Lower Depths
+- 1958 — Три негодяя в скрытой крепости / The Hidden Fortress
+- 1960 — Плохие спят спокойно / The Bad Sleep Well
+- 1961 — Телохранитель / Yojimbo
+- 1962 — Отважный Сандзюро / Sanjuro
+- 1963 — Рай и ад / High and Low
+- 1965 — Красная борода / Red Beard
+- 1970 — Под стук трамвайных колёс / Dodes’ka-den
+- 1975 — Дерсу Узала / Dersu Uzala
+- 1980 — Тень воина / Kagemusha
+- 1985 — Ран / Ran
+- 1990 — Сны / Dreams
+- 1991 — Августовская рапсодия / Rhapsody in August
+- 1993 — Ещё нет / Madadayo
+
+## Вернер Херцог — 76
+
+- 1962 — Геракл / Herakles
+- 1964 — Игра в песке / Game in the Sand
+- 1966 — Беспримерная защита крепости Дойчкройц / The Unprecedented Defence of the Fortress Deutschkreuz
+- 1968 — Знаки жизни / Signs of Life
+- 1968 — Последние слова / Last Words
+- 1969 — Меры против фанатиков / Precautions Against Fanatics
+- 1969 — Летающие врачи Восточной Африки / The Flying Doctors of East Africa
+- 1970 — И карлики начинали с малого / Even Dwarfs Started Small
+- 1971 — Страна тишины и темноты / Land of Silence and Darkness
+- 1971 — Фата-моргана / Fata Morgana
+- 1971 — Будущее инвалидов / Handicapped Future
+- 1972 — Агирре, гнев божий / Aguirre, the Wrath of God
+- 1974 — Каждый за себя, а Бог против всех / The Enigma of Kaspar Hauser
+- 1974 — Великий экстаз резчика по дереву Штайнера / The Great Ecstasy of Woodcarver Steiner
+- 1976 — Стеклянное сердце / Heart of Glass
+- 1976 — Никто не хочет со мной играть / No One Will Play with Me
+- 1976 — How Much Wood Would a Woodchuck Chuck
+- 1977 — Строшек / Stroszek
+- 1977 — Ла-Суфриер / La Soufrière
+- 1979 — Носферату — призрак ночи / Nosferatu the Vampyre
+- 1979 — Войцек / Woyzeck
+- 1981 — Проповедь Хьюи / Huie’s Sermon
+- 1981 — Божий гнев / God’s Angry Man
+- 1982 — Фицкарральдо / Fitzcarraldo
+- 1984 — Там, где мечтают зелёные муравьи / Where the Green Ants Dream
+- 1984 — Баллада о маленьком солдате / Ballad of the Little Soldier
+- 1985 — Гашербрум — сияющая гора / The Dark Glow of the Mountains
+- 1986 — Portrait Werner Herzog
+- 1987 — Кобра Верде / Cobra Verde
+- 1988 — Галлы / Les Gaulois
+- 1989 — Водаабе: Пастухи солнца / Wodaabe: Herdsmen of the Sun
+- 1990 — Эхо мрачной империи / Echoes from a Sombre Empire
+- 1991 — Крик камня / Scream of Stone
+- 1991 — Джаг-Мандир / Jag Mandir
+- 1991 — Уроки кино · части 1–4 / Film Lesson 1–4
+- 1992 — Уроки темноты / Lessons of Darkness
+- 1993 — Колокола из глубины / Bells from the Deep
+- 1994 — Преображение мира в музыку / The Transformation of the World into Music
+- 1995 — Смерть на пять голосов / Gesualdo: Death for Five Voices
+- 1997 — Маленькому Дитеру нужно летать / Little Dieter Needs to Fly
+- 1998 — Крылья надежды / Wings of Hope
+- 1999 — Мой лучший враг / My Best Fiend
+- 1999 — Christ and Demons in New Spain
+- 2000 — The Lord and the Laden
+- 2001 — Непобедимый / Invincible
+- 2001 — Паломничество / Pilgrimage
+- 2002 — На десять тысяч лет старше / Ten Thousand Years Older
+- 2003 — Колесо времени / Wheel of Time
+- 2004 — Белый алмаз / The White Diamond
+- 2005 — Человек-гризли / Grizzly Man
+- 2005 — Далёкая синяя высь / The Wild Blue Yonder
+- 2006 — Спасительный рассвет / Rescue Dawn
+- 2007 — Встречи на краю света / Encounters at the End of the World
+- 2009 — Плохой лейтенант / The Bad Lieutenant: Port of Call New Orleans
+- 2009 — Мой сын, мой сын, что ты наделал / My Son, My Son, What Have Ye Done
+- 2009 — Богема / La Bohème
+- 2010 — Пещера забытых снов / Cave of Forgotten Dreams
+- 2010 — Счастливые люди: Год в тайге / Happy People: A Year in the Taiga
+- 2011 — В бездну / Into the Abyss
+- 2011 — Ode to the Dawn of Man
+- 2012 — В камере смертников · сезон I / On Death Row I
+- 2012 — The Killers: Unstaged
+- 2013 — В камере смертников · сезон II / On Death Row II
+- 2013 — Из одной секунды в другую / From One Second to the Next
+- 2015 — Королева пустыни / Queen of the Desert
+- 2016 — Соль и пламя / Salt and Fire
+- 2016 — О, Интернет! Грёзы цифрового мира / Lo and Behold, Reveries of the Connected World
+- 2016 — В самое пекло / Into the Inferno
+- 2018 — Встреча с Горбачёвым / Meeting Gorbachev
+- 2019 — Кочевник: По следам Брюса Чатвина / Nomad: In the Footsteps of Bruce Chatwin
+- 2019 — Семейный роман / Family Romance, LLC
+- 2020 — Огненный шар: Гости из тёмных миров / Fireball: Visitors from Darker Worlds
+- 2022 — Огонь внутри: Реквием по Кате и Морису Краффт / The Fire Within: Requiem for Katia and Maurice Krafft
+- 2022 — Театр мысли / Theatre of Thought
+- 2025 — Слоны-призраки / Ghost Elephants
+- 2026 — Bucking Fastard
+
+## Кристофер Нолан — 17
+
+- 1989 — Тарантелла / Tarantella
+- 1996 — Воровство / Larceny
+- 1997 — Жук-скакун / Doodlebug
+- 1998 — Преследование / Following
+- 2000 — Помни / Memento
+- 2002 — Бессонница / Insomnia
+- 2005 — Бэтмен: Начало / Batman Begins
+- 2006 — Престиж / The Prestige
+- 2008 — Тёмный рыцарь / The Dark Knight
+- 2010 — Начало / Inception
+- 2012 — Тёмный рыцарь: Возрождение легенды / The Dark Knight Rises
+- 2014 — Интерстеллар / Interstellar
+- 2015 — Куэй / Quay
+- 2017 — Дюнкерк / Dunkirk
+- 2020 — Довод / Tenet
+- 2023 — Оппенгеймер / Oppenheimer
+- 2026 — Одиссея / The Odyssey
+
+## Дэвид Линч — 78
+
+- 1967 — Шестеро заболевают / Six Men Getting Sick (Six Times)
+- 1968 — Absurd Encounter with Fear
+- 1968 — Fictitious Anacin Commercial
+- 1968 — Sailing with Bushnell Keeler
+- 1968 — Алфавит / The Alphabet
+- 1970 — Бабушка / The Grandmother
+- 1974 — Ампутантка / The Amputee
+- 1977 — Голова-ластик / Eraserhead
+- 1980 — Человек-слон / The Elephant Man
+- 1984 — Дюна / Dune
+- 1986 — Синий бархат / Blue Velvet
+- 1988 — Ковбой и француз / The Cowboy and the Frenchman
+- 1990 — Дикие сердцем / Wild at Heart
+- 1990 — Твин Пикс · режиссёрские эпизоды / Twin Peaks: Directed Episodes
+- 1990 — Индустриальная симфония № 1 / Industrial Symphony No. 1
+- 1992 — Твин Пикс: Сквозь огонь / Twin Peaks: Fire Walk with Me
+- 1992 — В прямом эфире · пилот / On the Air: Pilot
+- 1993 — Номер в отеле · эпизоды 1 и 3 / Hotel Room: Episodes 1 and 3
+- 1995 — Предчувствие, следующее за злодеянием / Premonition Following an Evil Deed
+- 1997 — Шоссе в никуда / Lost Highway
+- 1999 — Простая история / The Straight Story
+- 2001 — Малхолланд Драйв / Mulholland Drive
+- 2001 — Eraserhead Stories
+- 2001 — Sunset #1
+- 2001 — Head with Hammer
+- 2001 — Where Are the Bananas?
+- 2001 — You’re Not Supposed to Be Here
+- 2001 — Pierre and Sonny Jim
+- 2001 — Steam Chain / Factory Mask
+- 2001 — Bees #1
+- 2001 — Dead Mouse with Ants
+- 2002 — Coyote #1
+- 2002 — Steps
+- 2002 — Laura Palmer
+- 2002 — The Pig Walks
+- 2002 — Bees #2
+- 2002 — Coyote #2
+- 2002 — Kitchen Window
+- 2002 — Тёмная комната / Darkened Room
+- 2002 — Industrial Soundscape
+- 2002 — The Disc of Sorrow Is Installed
+- 2002 — Bees #3
+- 2002 — Кролики / Rabbits
+- 2002 — Страна тупых / DumbLand
+- 2002 — Cannes Diary
+- 2002 — Out Yonder
+- 2003 — Water Circus
+- 2003 — Bees #4
+- 2003 — Dining Room Window
+- 2003 — Interior Dining Room
+- 2003 — Lamp
+- 2003 — Boat
+- 2004 — Agave
+- 2004 — Painted Lady
+- 2004 — Bug Crawls
+- 2006 — Внутренняя империя / Inland Empire
+- 2007 — Абсурд / Absurda
+- 2007 — More Things That Happened
+- 2007 — Ballerina
+- 2007 — David Lynch Cooks Quinoa
+- 2010 — Dream #7
+- 2010 — Леди Голубой Шанхай / Lady Blue Shanghai
+- 2011 — The 3 Rs
+- 2011 — Duran Duran: Unstaged
+- 2012 — Memory Film
+- 2013 — Idem Paris
+- 2014 — Твин Пикс: Вырезанные сцены / Twin Peaks: The Missing Pieces
+- 2015 — Огонь / Fire (Pożar)
+- 2017 — Что сделал Джек? / What Did Jack Do?
+- 2017 — Твин Пикс: Возвращение / Twin Peaks: The Return
+- 2018 — Ant Head
+- 2020 — The Story of a Small Bug
+- 2020 — The Adventures of Alan R.
+- 2020 — The Spider and the Bee
+- 2020 — How Was Your Day Honey?
+- 2024 — We’ll Deliver ’Em
+- 2024 — The Moon’s Glow
+- 2024 — Will There Be Anything Else?
