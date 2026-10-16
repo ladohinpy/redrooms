@@ -1,0 +1,37 @@
+name: Publish Red Room Mini App + Subscription (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: redrooms-telegram-access
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check Mini App source
+        run: node scripts/check-app.mjs
+      - name: Install Telegram CLI
+        run: npm install --no-audit --no-fund
+      - name: Publish Mini App and subscription endpoint only
+        env:
+          TGCLOUD_TOKEN: ${{ secrets.TGCLOUD_TOKEN }}
+        shell: bash
+        run: |
+          if [ -z "$TGCLOUD_TOKEN" ]; then
+            echo "::error::Missing GitHub Actions secret TGCLOUD_TOKEN"
+            exit 1
+          fi
+          # Targeted push: static + authorization endpoint + shared pure helper.
+          # No handlers or schema; no database migrations; never use --force.
+          npx --no-install tgcloud push tgcloud/lib/subscription.js tgcloud/endpoints/checkAccess.js public/

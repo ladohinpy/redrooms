@@ -1,72 +1,43 @@
-# Красная комната v06 — Telegram Mini App
+# Красная комната v06 — Telegram Mini App с проверкой подписки
 
-Стартовый репозиторий для https://github.com/ladohinpy/redrooms.
+Проект: https://github.com/ladohinpy/redrooms
 
-**Текущая цель — разместить готовую игру в Telegram Serverless без backend-логики.** Никакой проверки подписки, базы данных или обработчиков сообщений здесь пока нет. В `public/index.html` — полная статическая игра v06 из сохранённых материалов проекта (201 кассета, 4 режиссёра).
+Это **полная игра v06**: 3D-комната, 201 кассета и 4 стола режиссёров, сохранены управление, правила и локальный прогресс. Дополнено **проверкой входа на подписку на тестовый канал [@redrooms_stage](https://t.me/redrooms_stage)**. Serverless работает непосредственно на стороне Telegram; отдельного Python-сервера, хостинга, базы данных и SaleBot не нужно.
 
-## Содержимое
+## Что уже в коде
 
 | Путь | Назначение |
 | --- | --- |
-| `public/index.html` | Полная HTML/JS версия игры v06, готовая к статической публикации |
-| `tgcloud.jsonc` | Telegram Serverless: публикует папку `public/` |
-| `tgcloud/schema.js` | Пустая схема, таблиц нет |
-| `tgcloud/handlers/`, `endpoints/`, `lib/` | Пустые папки для будущих задач; ничего сейчас не исполняют |
-| `.github/workflows/check.yml` | Проверяет HTML, JS и состав каталога в PR |
-| `.github/workflows/publish.yml` | Ручная публикация статических файлов в Telegram |
-| `AGENTS.md` | Ограничения и правила для AI-кодеров |
-| `docs/archive-v06/` | Сохранённая документация предыдущей игры, не инструкции к новому backend |
+| `public/index.html` | Полная игра, экран подписки, вход только после подтверждения Serverless |
+| `public/access-gate.js` | Вызов `Telegram.WebApp.Serverless.call('checkAccess')`; ошибки доступа не превращаются в пропуск |
+| `tgcloud/endpoints/checkAccess.js` | Бот проверяет `ctx.initData.user.id` через Bot API `getChatMember` |
+| `tgcloud/lib/subscription.js` | Разбор результатов Bot API (`member`/`left` и т.д.) |
+| `tgcloud.jsonc` | Публикация папки `public` как Telegram Mini App |
+| `tgcloud/schema.js` | Пустая схема; миграций и таблиц нет |
+| `.github/workflows/check.yml` | Проверка каждого PR |
+| `.github/workflows/publish.yml` | Ручная **адресная** публикация HTML + конкретных serverless-модулей |
+| `AGENTS.md` | Правила и ограничения для AI-агента |
+| `docs/LAUNCH-TELEGRAM.md` | **Отдельная пошаговая инструкция** настройки BotFather и ухода от Zindone |
 
-## 1. Загрузить в GitHub без терминала
+**Начинайте с инструкции:** [docs/LAUNCH-TELEGRAM.md](docs/LAUNCH-TELEGRAM.md).
 
-1. Распаковать архив на компьютере (устанавливать программы разработки не надо).
-2. Открыть https://github.com/ladohinpy/redrooms.
-3. В пустом репозитории выбрать **uploading an existing file** или **Add file → Upload files**.
-4. Перенести **содержимое** распакованной папки (а не ZIP как один файл) в корень репозитория и нажать **Commit changes**.
-5. Проверить, что видны `public/`, `tgcloud/`, `.github/`, `AGENTS.md`, `tgcloud.jsonc`, `package.json`.
+## Главное: адрес игры
 
-Если браузер не даёт загрузить каталоги / скрытую `.github`, используйте **Code → Codespaces → Create codespace** (это редактор в облаке). Не нужно работать в локальном терминале.
+В BotFather **не выбирают файл** `index.html`. После выполнения GitHub Action Telegram выдаст URL вида `https://app<app_id>.tgcloud.ai/`. Именно его указывают как URL **Main Mini App** у нужного бота вместо старого `zindone.ru`. Ссылка на канал `@redrooms_stage` — только для проверки подписки, **не URL игры**.
 
-## 2. Подключить уже включённый Telegram Serverless
+## Чего нет
 
-1. В `@BotFather`: выбрать нужного бота → **Serverless → CLI Access → Access token**.
-2. В GitHub: **Settings → Secrets and variables → Actions → New repository secret**.
-3. Название: `TGCLOUD_TOKEN`; значение: CLI access token (`app<id>:<secret>`). Сохранить. Никогда не помещать токен в исходники, Issues, PR и переписку.
-4. В GitHub вкладка **Actions** → workflow **Publish Mini App (manual)** → **Run workflow** на ветке `main`.
-5. Дождаться успешного выполнения и открыть адрес `https://app<app_id>.tgcloud.ai/`, который напечатает `tgcloud push` в логах. Если пользовательские действия не видны — проверьте, что workflow разрешён GitHub Actions и секрет создан.
-6. В BotFather в настройках **Main Mini App** назначить этот HTTPS-адрес (точное место зависит от интерфейса BotFather).
-7. Открыть Mini App через бота Telegram и проверить игру на телефоне.
+Нет handler `/start`, БД, таблиц, рейтингов, серверных игровых сессий, AI в игре или периодического контроля подписки. Реальное содержимое `public/index.html` открыто для скачивания; это контроль входа через интерфейс, а не DRM/античит. Проверка происходит при открытии, а также повторно при возвращении из канала до старта партии.
 
-**Важно:** workflow выполняет `tgcloud push public/`, а не полный `tgcloud push`: он не удаляет существующие handlers/endpoints и не меняет базу данных. До первого запуска убедитесь, что указанный BotFather токен относится к нужному тестовому/боевому боту.
-
-## 3. Работа через Pull Request
-
-- Каждую новую задачу AI делает в отдельной ветке и открывает PR.
-- Workflow **Check Mini App** проверяет синтаксис JS, JSON и наличие каталога 201/4.
-- После одобрения и merge в `main` владелец вручную запускает **Publish Mini App (manual)**.
-- Нет автопубликации от push в `main`. Публикацию можно отключить в GitHub Actions.
-
-## 4. Проверка без Telegram
-
-Из терминала в Codespaces (по желанию):
+## Команды для разработчиков (в облачном GitHub Codespaces, если нужно)
 
 ```bash
-node scripts/check-app.mjs
+npm install
+npm run check
+# НЕ выполнять без намерения опубликовать:
+# npx tgcloud push tgcloud/lib/subscription.js tgcloud/endpoints/checkAccess.js public/
 ```
 
-Можно открыть `public/index.html` локально обычным браузером; однако это не проверяет Telegram fullscreen/встраивание и поведение на реальных телефонах.
+Публикация уже описана в `.github/workflows/publish.yml` и вызывается вручную из GitHub Actions. В `Settings → Secrets and variables → Actions` должен быть секрет **`TGCLOUD_TOKEN`**, полученный из `@BotFather → Serverless → CLI Access → Access token`. Токен бота нигде в коде не хранится.
 
-## Не реализовано в этой поставке
-
-- Защита входа подпиской (`getChatMember`), серверные игровые сессии и рейтинг.
-- Handler `/start`, который отправляет сообщение с кнопкой Mini App. Для входа используем **Main Mini App**, назначаемый в BotFather.
-- Управление каналами и отдельное администрирование.
-- Telegram API-эндпоинты, база данных, OAuth и AI внутри игры.
-
-После первого успешного запуска следующий отдельный этап — проверка подписки. Архивный набросок лежит в `docs/archive-v06/BOT-MECHANISM.md` и требует адаптации под Telegram Serverless.
-
-## Ссылки
-
-- Telegram Serverless: https://core.telegram.org/bots/serverless
-- GitHub Actions Secrets: https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions
-- Настройки Telegram Mini Apps: https://core.telegram.org/bots/webapps
+Документация старой сборки находится в `docs/archive-v06/` и может описывать предыдущую архитектуру с сервером рядом с `zindone.ru`. Она историческая; текущая архитектура описана в этой инструкции и `AGENTS.md`.

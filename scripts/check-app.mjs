@@ -36,4 +36,16 @@ for (const [i, m] of scripts.entries()) {
 }
 if (!datasetFound) fail('не найден default-dataset');
 if (!mainCodeFound) fail('не найден основной игровой JavaScript');
-if (!process.exitCode) console.log('OK: HTML, JSON и JavaScript. Проверка подписки не подключена.');
+if (!html.includes('id="subscriptionGate"') || !html.includes('window.RedRoomAccess.verify()')) {
+  fail('отсутствует блок проверки подписки перед входом');
+}
+if (!html.includes('id="startButton" class="primary" type="button" disabled')) {
+  fail('кнопка входа должна оставаться заблокированной до ответа сервера');
+}
+if (!html.includes("links: { channel: 'https://t.me/redrooms_stage'")) {
+  fail('не указан тестовый канал в игровых настройках');
+}
+const adapter = readFileSync(new URL('../public/access-gate.js', import.meta.url), 'utf8');
+try { new Script(adapter, { filename: 'access-gate.js' }); }
+catch (error) { fail(`ошибка access-gate.js: ${error.message}`); }
+if (!process.exitCode) console.log('OK: HTML, встроенные JS, каталог, клиентская проверка подписки.');
