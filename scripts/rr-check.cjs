@@ -2,6 +2,15 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),{spawnSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
+// Fail before tests/deployment if a forbidden header was restored by hand.
+// --tests-only retains its original meaning: no prepared project is required.
+if(!process.argv.includes('--tests-only')){
+  try{
+    const {parseJSONC,validateStaticHeaders}=require('./rr-prepare.cjs');
+    validateStaticHeaders(parseJSONC(fs.readFileSync(path.join(root,'tgcloud.jsonc'),'utf8')));
+    console.log('STATIC HEADER PREFLIGHT OK (known X-Content-Type-Options restriction).');
+  }catch(error){console.error('STATIC CONFIG FAILED: '+error.message);process.exit(1);}
+}
 const testDir=path.join(root,'tests/rr');
 const tests=fs.readdirSync(testDir).filter(n=>n.endsWith('.test.mjs')).map(n=>path.join(testDir,n));
 const run=spawnSync(process.execPath,['--test',...tests],{cwd:root,stdio:'inherit'});

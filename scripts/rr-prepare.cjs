@@ -92,6 +92,30 @@ function ensureStandaloneSchema(source) {
   return (base.trimEnd() ? base.trimEnd() + '\n\n' : '') + RR_SCHEMA_BLOCK + '\n';
 }
 
+// RR-STATIC-HEADERS-FIX-1: this header was rejected by Telegram at
+// /static/prepare (2026-10-21). Check the known incompatibility locally;
+// do NOT claim this is a complete replica of Telegram's server validator.
+function validateStaticHeaders(cloud) {
+  const headers = cloud?.static?.headers;
+  if (headers === undefined) return;
+  if (!Array.isArray(headers)) stop('tgcloud.jsonc: static.headers должен быть массивом правил.');
+  for (const [i, rule] of headers.entries()) {
+    if (!rule || typeof rule !== 'object' || Array.isArray(rule) ||
+        typeof rule.path !== 'string' || !rule.set ||
+        typeof rule.set !== 'object' || Array.isArray(rule.set)) {
+      stop(`tgcloud.jsonc: некорректное правило static.headers[${i}].`);
+    }
+    for (const name of Object.keys(rule.set)) {
+      if (name.trim().toLowerCase() === 'x-content-type-options') {
+        stop(`tgcloud.jsonc: static.headers[${i}] (${rule.path}): ` +
+          'Telegram отклоняет пользовательский X-Content-Type-Options. ' +
+          'Удалите это поле из set, не заменяйте его на null. ' +
+          'Проверка выполнена локально; запрос публикации не отправлялся.');
+      }
+    }
+  }
+}
+
 async function prepare(){
   const domain=await import(pathToFileURL(path.join(root,'src/rr/domain.mjs')).href);
   const production=process.argv.includes('--production');
@@ -165,7 +189,10 @@ async function prepare(){
   const cloud=parseJSONC(read('tgcloud.jsonc'));
   cloud.static={...(cloud.static||{}),source:'public',spa:false};
   const oldHeaders=Array.isArray(cloud.static.headers)?cloud.static.headers:[];
-  cloud.static.headers=[...oldHeaders.filter(h=>h.path!=='/*'),{path:'/*',set:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer'}}];
+  // Regenerate the existing managed catch-all rule WITHOUT the rejected header.
+  // Editing only tgcloud.jsonc is insufficient: this builder runs before each deploy.
+  cloud.static.headers=[...oldHeaders.filter(h=>h.path!=='/*'),{path:'/*',set:{'Cache-Control':'no-store','Referrer-Policy':'no-referrer'}}];
+  validateStaticHeaders(cloud); // Check retained path-specific rules before any files are written.
   delete cloud.static.immutable; // Keep launch/control files fresh; hashed builds remain immutable by convention.
   write('tgcloud.jsonc',JSON.stringify(cloud,null,2)+'\n');
   if(exists('package.json')){
@@ -185,4 +212,4 @@ async function prepare(){
   console.log(`Prepared ${games.length} game build(s); initial catalog ${seed.directors.reduce((n,d)=>n+d.films.length,0)} films / ${seed.directors.length} directors. Admins: ${admins.length}. No deployment performed.`);
 }
 if(require.main===module)prepare().catch(e=>{console.error('RR PREPARE FAILED:',e.message);process.exitCode=1;});
-module.exports={parseJSONC,jsonScript,instrument,ensureStandaloneSchema};
+module.exports={parseJSONC,jsonScript,instrument,ensureStandaloneSchema,validateStaticHeaders};

@@ -1,5 +1,12 @@
 # Красная комната — админка, каталоги и релизы
 
+> **Исправление static headers — 21.10.2026.** Если публикация доходит до
+> `tgcloud push public/` и получает `Header can not be set: X-Content-Type-Options`,
+> используйте исправленный `scripts/rr-prepare.cjs`: он больше не добавляет
+> отклоняемый заголовок. Изменять только `tgcloud.jsonc` недостаточно.
+> См. [инструкцию](docs/FIX-STATIC-HEADERS.md). Базу и ключ заново настраивать не нужно.
+
+
 Ветка обновления: `feature/admin-releases` · версия функции: `admin-releases-v1`.
 Проект: https://github.com/ladohinpy/redrooms
 
