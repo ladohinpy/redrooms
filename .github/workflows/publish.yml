@@ -1,37 +1,39 @@
-name: Publish Red Room Mini App + Subscription (manual)
-
+name: Publish Red Room — Admin & Releases
 on:
   workflow_dispatch:
-
+    inputs:
+      confirm:
+        description: 'Введите PUBLISH для обновления существующего приложения'
+        required: true
+        type: string
+      admin_ids:
+        description: 'Два Telegram ID через запятую; пусто = Repository variable RR_ADMIN_IDS'
+        required: false
+        type: string
 permissions:
   contents: read
-
 concurrency:
-  group: redrooms-telegram-access
+  group: redrooms-production-publish
   cancel-in-progress: false
-
 jobs:
   publish:
-    if: github.ref == 'refs/heads/main'
+    if: inputs.confirm == 'PUBLISH'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TGCLOUD_TOKEN: ${{ secrets.TGCLOUD_TOKEN }}
+      RR_ADMIN_IDS: ${{ inputs.admin_ids || vars.RR_ADMIN_IDS }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Check Mini App source
-        run: node scripts/check-app.mjs
-      - name: Install Telegram CLI
-        run: npm install --no-audit --no-fund
-      - name: Publish Mini App and subscription endpoint only
-        env:
-          TGCLOUD_TOKEN: ${{ secrets.TGCLOUD_TOKEN }}
+      - name: Validate required configuration
         shell: bash
         run: |
-          if [ -z "$TGCLOUD_TOKEN" ]; then
-            echo "::error::Missing GitHub Actions secret TGCLOUD_TOKEN"
-            exit 1
-          fi
-          # Targeted push: static + authorization endpoint + shared pure helper.
-          # No handlers or schema; no database migrations; never use --force.
-          npx --no-install tgcloud push tgcloud/lib/subscription.js tgcloud/endpoints/checkAccess.js public/
+          test -n "$TGCLOUD_TOKEN" || { echo 'Нет существующего secret TGCLOUD_TOKEN'; exit 1; }
+          test -n "$RR_ADMIN_IDS" || { echo 'Нет двух Telegram ID в RR_ADMIN_IDS'; exit 1; }
+      - name: Install pinned CLI
+        run: npm install --no-save --package-lock=false @tgcloud/cli@0.2.0
+      - name: Build, test, publish backend, migrate safely, smoke-test, publish frontend
+        run: node scripts/rr-deploy.cjs --confirm
