@@ -12,7 +12,7 @@ test('subscriber false fails closed with trusted join URL',async()=>{const s=set
 test('subscription network error does not become access',async()=>{const s=setup(async()=>{throw new Error('network');});await assert.rejects(()=>s.launch({},ctx(101)),/network/);});
 test('verified start_param selects requested release',async()=>assert.equal((await setup().launch({},ctx(303,'release_classic-1'))).release.id,'classic-1'));
 test('input start_param cannot bypass selector source',async()=>assert.equal((await setup().launch({start_param:'release_fake'},ctx(303))).release.id,'classic-1'));
-test('admin deep-link is not an admin grant',async()=>{const r=await setup().launch({},ctx(303,'admin'));assert.deepEqual(r,{admin:true,userId:303,isAdmin:false});});
+test('admin deep-link is not an admin grant',async()=>{const r=await setup().launch({},ctx(303,'admin'));assert.equal(r.admin,undefined);assert.equal(r.isAdmin,false);assert.equal(r.release.id,'classic-1');});
 test('two admins saving same revision: exactly one atomic success',async()=>{const s=setup();const a=await s.read({},ctx(101));const cmd={expectedRevision:a.revision,action:'setDefault',input:{id:'classic-1'}};
  const result=await Promise.allSettled([s.command(cmd,ctx(101)),s.command(cmd,ctx(202))]);assert.equal(result.filter(x=>x.status==='fulfilled').length,1);assert.equal(result.find(x=>x.status==='rejected').reason.code,'CONFLICT');const row=await s.read({},ctx(101));assert.equal(row.revision,2);assert.equal(row.state.audit.length,2);});
 test('missing revision rejected, no mutation',async()=>{const s=setup();await reject(()=>s.command({action:'setDefault',input:{id:'classic-1'}},ctx(101)),'CONFLICT');assert.equal((await s.read({},ctx(101))).revision,1);});

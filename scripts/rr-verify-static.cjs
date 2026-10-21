@@ -5,7 +5,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 async function verify(root,base,fetcher=fetch){
  const origin=new URL(base);if(origin.protocol!=='https:' || origin.username||origin.password||origin.search||origin.hash)throw Error('Нужен чистый HTTPS-адрес приложения, без ключей и параметров.');
  const m=JSON.parse(fs.readFileSync(path.join(root,'config/rr-built-games.json'),'utf8'));
- const g=m.games.find(g=>g.id==='v07-tables');if(!g)throw Error('Не найдена сборка v07-tables.');
+ const g=m.games.find(g=>g.id==='v08-player-ui') || m.games.find(g=>g.id==='v07-tables');if(!g)throw Error('Не найдена сборка v07-tables.');
  const paths=['/index.html','/admin.html','/rr/admin.mjs','/rr/client.mjs',g.entry,...g.runtimeAssets.map(a=>'/'+a.path)];
  const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
  for(const rel of new Set(paths)){

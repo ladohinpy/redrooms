@@ -38,7 +38,7 @@ def setup_admin(page,uid=101,mobile=False):
  page.evaluate('url=>import(url)',module('admin.mjs',True))
 def setup_game(page,uid=101,mobile=False,release='classic-1'):
  page.expose_function('rrTestCall',rpc)
- manifest=json.loads((R/'config/rr-built-games.json').read_text());game=next(g for g in manifest['games'] if g['id']=='v07-tables')
+ manifest=json.loads((R/'config/rr-built-games.json').read_text());game=next((g for g in manifest['games'] if g['id']=='v08-player-ui'),None) or next(g for g in manifest['games'] if g['id']=='v07-tables')
  html=(R/('public'+game['entry'])).read_text()
  boot=re.search(r'import\(("/rr/runtime/[^"]+/engine-boot.mjs")\)',html)
  assert boot
@@ -90,7 +90,7 @@ def run_suite():
    v.screenshot(path=str(OUT/'admin-desktop.png'),full_page=True)
    r=rpc({'name':'rrGetLaunch','uid':303,'input':{},'start':'set_browser-set'});assert r['result']['release']['id']=='browser-set';check('Signed-context set_ selector resolves the public set')
    bad=rpc({'name':'rrGetLaunch','uid':404,'input':{'release':'browser-set'}});check('Non-subscriber denied by real service',bad['error']['parameters']['code']=='SUBSCRIPTION_REQUIRED')
-   stranger=page();setup_admin(stranger,303);expect(stranger.get_by_role('heading',name='Нет доступа к управлению')).to_be_visible();check('Ordinary account cannot open administration')
+   stranger=page();setup_admin(stranger,303);stranger.wait_for_function('window.__rrNav.length===1');assert 'rr_default=1' in stranger.evaluate('window.__rrNav[0]');assert 'Telegram ID' not in stranger.locator('body').inner_text();check('Ordinary account returns to public game without administrative chrome')
    v.get_by_role('button',name='Сделать основным',exact=True).click();expect(v.locator('#default-name')).to_have_text('Оскар — четыре категории');check('Make default switches future ordinary launches')
    state=rpc({'name':'rrAdminRead','uid':101,'input':{}})['result'];check('Original catalog and classic release preserved',state['state']['catalog_versions'][0]['id']=='original-201-v1' and any(x['id']=='classic-1' for x in state['state']['game_releases']))
    v.get_by_role('button',name='Создать копию',exact=True).click();expect(v.locator('#set-id')).not_to_have_value('browser-set');check('Editing published set starts a distinct copy')

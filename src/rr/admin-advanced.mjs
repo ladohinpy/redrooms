@@ -1,7 +1,8 @@
-import { el, call, notify, navigate, saveFile, copy, telegram } from './client.mjs';
+import { el, call, notify, navigate, saveFile, copy, telegram, adminChrome, launchFailure, navigationWait, configureViewport } from './client.mjs';
 import { clone, normalizeCatalog, catalogWarnings, playableCatalog, totals, LIMITS } from './domain.mjs';
 import { importCatalog, exportCSV } from './import.mjs';
 
+window.RR_MODULE_STARTED=true;
 const root = document.getElementById('app');
 let model, identity, tab = 'overview', selectedId, working, workingName, dirty = false, busy = false;
 let search = '', statusFilter = '', directorFilter = '', page = 0;
@@ -206,11 +207,11 @@ function audit() {
 }
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 async function start() {
+  adminChrome();
   try {
-    await telegram(); identity=await call('rrAdminStatus');
-    document.getElementById('identity').textContent=`Telegram ID ${identity.userId}`;
-    if(!identity.isAdmin){root.replaceChildren(el('section',{class:'panel'},el('h2',{text:'Нет доступа к управлению'}),el('p',{text:`Ваш проверенный Telegram ID: ${identity.userId}. Доступ предоставляется только двум ID в серверной конфигурации.`}),button('Вернуться к игре',()=>navigate('/',{rr_default:1}))));return;}
-    model=await call('rrAdminRead');render();
-  }catch(e){root.replaceChildren(el('section',{class:'panel'},el('h2',{text:'Управление пока недоступно'}),el('p',{class:'error-text',text:e.message}),button('Попробовать снова',()=>location.reload())));}
+    const t=await telegram();configureViewport(t,'admin');identity=await call('rrAdminStatus');
+    if(identity?.isAdmin !== true){navigate('/',{rr_default:1},true);await navigationWait();return;}
+    adminChrome(identity,'Управление комнатой');model=await call('rrAdminRead');render();
+  }catch(e){adminChrome();const box=el('section',{class:'panel'});root.replaceChildren(box);launchFailure(box,e,start);}
 }
 start();
