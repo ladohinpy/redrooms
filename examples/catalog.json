@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "sample-collection",
+  "name": "Пример структуры — не новая игра",
+  "directors": [
+    { "id": "nolan", "name": "Кристофер Нолан", "enabled": true,
+      "films": [ { "id": "inception", "title": "Начало", "year": 2010, "original": "Inception", "status": "pending" } ] }
+  ]
+}

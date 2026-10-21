@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "games": [
+    {
+      "id": "v06",
+      "name": "Классическая комната v06",
+      "source": "src/rr-legacy-v06.html",
+      "adapter": "v06",
+      "aliases": ["v1"]
+    }
+  ]
+}

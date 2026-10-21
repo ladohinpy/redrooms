@@ -1,0 +1,23 @@
+{
+  "passed": 12,
+  "checks": [
+    "Administrator identity and overview render",
+    "Clone published catalog into draft",
+    "CSV file upload and parsing in actual editor",
+    "Bulk moderation and explicit save",
+    "Publish freezes catalog editing",
+    "Create draft release bound to code/catalog",
+    "Separate publication and default switching",
+    "Unlisted user denied by actual admin UI",
+    "390px mobile layout without horizontal overflow",
+    "Untrusted text does not become executable HTML",
+    "CAS conflict leaves unsaved editor text intact",
+    "No uncaught browser JavaScript errors in this workflow"
+  ],
+  "mode": "Offline Chromium DOM + loopback Node service",
+  "limitations": [
+    "Browser localhost navigation blocked by environment policy; no navigation/deeplink browser test claimed",
+    "Synthetic Telegram identities/SDK; memory repository, not Telegram cloud",
+    "Original 3D game not available as raw bytes; not visually exercised"
+  ]
+}
