@@ -1,0 +1,612 @@
+TAP version 13
+# Subtest: instrument inserts catalog gate before game starts and namespaces saves
+ok 1 - instrument inserts catalog gate before game starts and namespaces saves
+  ---
+  duration_ms: 1.576647
+  type: 'test'
+  ...
+# Subtest: instrument refuses ambiguous/missing marker, no regex guessing
+ok 2 - instrument refuses ambiguous/missing marker, no regex guessing
+  ---
+  duration_ms: 1.224065
+  type: 'test'
+  ...
+# Subtest: instrument refuses duplicate entry markers
+ok 3 - instrument refuses duplicate entry markers
+  ---
+  duration_ms: 0.19895
+  type: 'test'
+  ...
+# Subtest: extract actual embedded JSON
+ok 4 - extract actual embedded JSON
+  ---
+  duration_ms: 1.342264
+  type: 'test'
+  ...
+# Subtest: JSONC preserves URL and quoted comma text
+ok 5 - JSONC preserves URL and quoted comma text
+  ---
+  duration_ms: 0.333864
+  type: 'test'
+  ...
+# Subtest: preparation preserves source and existing modules, produces pinned code
+ok 6 - preparation preserves source and existing modules, produces pinned code
+  ---
+  duration_ms: 62.416114
+  type: 'test'
+  ...
+# Subtest: build is repeatable; old content hashes and save namespaces stay stable
+ok 7 - build is repeatable; old content hashes and save namespaces stay stable
+  ---
+  duration_ms: 112.082247
+  type: 'test'
+  ...
+# Subtest: production refuses missing IDs without touching original game
+ok 8 - production refuses missing IDs without touching original game
+  ---
+  duration_ms: 38.145295
+  type: 'test'
+  ...
+# Subtest: production accepts exactly two numeric IDs and keeps them out of public files
+ok 9 - production accepts exactly two numeric IDs and keeps them out of public files
+  ---
+  duration_ms: 47.277616
+  type: 'test'
+  ...
+# Subtest: source change under old game ID is rejected; root launcher remains intact
+ok 10 - source change under old game ID is rejected; root launcher remains intact
+  ---
+  duration_ms: 93.031999
+  type: 'test'
+  ...
+# Subtest: existing CLI gate dependency is snapshotted, not silently replaced
+ok 11 - existing CLI gate dependency is snapshotted, not silently replaced
+  ---
+  duration_ms: 88.135601
+  type: 'test'
+  ...
+# Subtest: separately identified second build can coexist without deleting the first
+ok 12 - separately identified second build can coexist without deleting the first
+  ---
+  duration_ms: 91.79237
+  type: 'test'
+  ...
+# Subtest: initial catalog and game survive without changing seed
+ok 13 - initial catalog and game survive without changing seed
+  ---
+  duration_ms: 3.45628
+  type: 'test'
+  ...
+# Subtest: imports default to pending, not approved
+ok 14 - imports default to pending, not approved
+  ---
+  duration_ms: 0.241775
+  type: 'test'
+  ...
+# Subtest: unreviewed catalog cannot be published
+ok 15 - unreviewed catalog cannot be published
+  ---
+  duration_ms: 1.009752
+  type: 'test'
+  ...
+# Subtest: excluded films and disabled directors are not playable
+ok 16 - excluded films and disabled directors are not playable
+  ---
+  duration_ms: 0.198279
+  type: 'test'
+  ...
+# Subtest: empty catalog allowed only in draft
+ok 17 - empty catalog allowed only in draft
+  ---
+  duration_ms: 0.195174
+  type: 'test'
+  ...
+# Subtest: reject duplicate director ID
+ok 18 - reject duplicate director ID
+  ---
+  duration_ms: 0.173331
+  type: 'test'
+  ...
+# Subtest: reject duplicate film ID globally
+ok 19 - reject duplicate film ID globally
+  ---
+  duration_ms: 0.115624
+  type: 'test'
+  ...
+# Subtest: reject invalid ID
+ok 20 - reject invalid ID
+  ---
+  duration_ms: 0.109014
+  type: 'test'
+  ...
+# Subtest: reject string year
+ok 21 - reject string year
+  ---
+  duration_ms: 0.380944
+  type: 'test'
+  ...
+# Subtest: reject fractional year
+ok 22 - reject fractional year
+  ---
+  duration_ms: 0.418832
+  type: 'test'
+  ...
+# Subtest: reject too old year
+ok 23 - reject too old year
+  ---
+  duration_ms: 0.262305
+  type: 'test'
+  ...
+# Subtest: reject far future year
+ok 24 - reject far future year
+  ---
+  duration_ms: 0.13909
+  type: 'test'
+  ...
+# Subtest: reject empty title
+ok 25 - reject empty title
+  ---
+  duration_ms: 0.162685
+  type: 'test'
+  ...
+# Subtest: reject long title
+ok 26 - reject long title
+  ---
+  duration_ms: 0.419432
+  type: 'test'
+  ...
+# Subtest: reject bad film state
+ok 27 - reject bad film state
+  ---
+  duration_ms: 0.140392
+  type: 'test'
+  ...
+# Subtest: reject schema mismatch
+ok 28 - reject schema mismatch
+  ---
+  duration_ms: 0.142605
+  type: 'test'
+  ...
+# Subtest: reject nonboolean director
+ok 29 - reject nonboolean director
+  ---
+  duration_ms: 0.101423
+  type: 'test'
+  ...
+# Subtest: reject too many directors
+ok 30 - reject too many directors
+  ---
+  duration_ms: 0.161844
+  type: 'test'
+  ...
+# Subtest: reject too many films per director
+ok 31 - reject too many films per director
+  ---
+  duration_ms: 1.140609
+  type: 'test'
+  ...
+# Subtest: 500 films maximum across directors
+ok 32 - 500 films maximum across directors
+  ---
+  duration_ms: 0.844793
+  type: 'test'
+  ...
+# Subtest: unknown fields are stripped; hostile text stays data
+ok 33 - unknown fields are stripped; hostile text stays data
+  ---
+  duration_ms: 0.142074
+  type: 'test'
+  ...
+# Subtest: title/year possible duplicates produce warnings, not silent deletion
+ok 34 - title/year possible duplicates produce warnings, not silent deletion
+  ---
+  duration_ms: 0.230137
+  type: 'test'
+  ...
+# Subtest: UTF-8 counting equals Node for Cyrillic and emoji
+ok 35 - UTF-8 counting equals Node for Cyrillic and emoji
+  ---
+  duration_ms: 0.143387
+  type: 'test'
+  ...
+# Subtest: reject oversized file even in unused fields
+ok 36 - reject oversized file even in unused fields
+  ---
+  duration_ms: 19.211513
+  type: 'test'
+  ...
+# Subtest: reject arbitrary game URL
+ok 37 - reject arbitrary game URL
+  ---
+  duration_ms: 0.25914
+  type: 'test'
+  ...
+# Subtest: reject initial alias collisions
+ok 38 - reject initial alias collisions
+  ---
+  duration_ms: 0.448856
+  type: 'test'
+  ...
+# Subtest: published catalog is immutable
+ok 39 - published catalog is immutable
+  ---
+  duration_ms: 0.689139
+  type: 'test'
+  ...
+# Subtest: clone edits never mutate original
+ok 40 - clone edits never mutate original
+  ---
+  duration_ms: 0.390769
+  type: 'test'
+  ...
+# Subtest: publish catalog and release do not switch global default
+ok 41 - publish catalog and release do not switch global default
+  ---
+  duration_ms: 0.669249
+  type: 'test'
+  ...
+# Subtest: explicit default switch updates game pointer and audit together
+ok 42 - explicit default switch updates game pointer and audit together
+  ---
+  duration_ms: 0.626395
+  type: 'test'
+  ...
+# Subtest: published release cannot be recreated under same ID
+ok 43 - published release cannot be recreated under same ID
+  ---
+  duration_ms: 0.418972
+  type: 'test'
+  ...
+# Subtest: draft catalog cannot be bound to a release
+ok 44 - draft catalog cannot be bound to a release
+  ---
+  duration_ms: 0.206601
+  type: 'test'
+  ...
+# Subtest: draft release hidden from players and previewable by admin
+ok 45 - draft release hidden from players and previewable by admin
+  ---
+  duration_ms: 0.998104
+  type: 'test'
+  ...
+# Subtest: default release cannot be archived
+ok 46 - default release cannot be archived
+  ---
+  duration_ms: 0.163406
+  type: 'test'
+  ...
+# Subtest: old release can be archived after both pointers switch
+ok 47 - old release can be archived after both pointers switch
+  ---
+  duration_ms: 0.660776
+  type: 'test'
+  ...
+# Subtest: old release still resolves after new default chosen
+ok 48 - old release still resolves after new default chosen
+  ---
+  duration_ms: 0.477149
+  type: 'test'
+  ...
+# Subtest: game override uses selected published release; v1 aliases v06
+ok 49 - game override uses selected published release; v1 aliases v06
+  ---
+  duration_ms: 0.629869
+  type: 'test'
+  ...
+# Subtest: missing release errors instead of falling back
+ok 50 - missing release errors instead of falling back
+  ---
+  duration_ms: 0.190517
+  type: 'test'
+  ...
+# Subtest: missing code hash does not load another build
+ok 51 - missing code hash does not load another build
+  ---
+  duration_ms: 0.13252
+  type: 'test'
+  ...
+# Subtest: sync refuses replacing deployed code under existing ID
+ok 52 - sync refuses replacing deployed code under existing ID
+  ---
+  duration_ms: 0.651943
+  type: 'test'
+  ...
+# Subtest: audit keeps latest 200 actions
+ok 53 - audit keeps latest 200 actions
+  ---
+  duration_ms: 47.803505
+  type: 'test'
+  ...
+# Subtest: selector {}
+ok 54 - selector {}
+  ---
+  duration_ms: 0.173622
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"admin"}
+ok 55 - selector {"startParam":"admin"}
+  ---
+  duration_ms: 0.051087
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"release_classic-1"}
+ok 56 - selector {"startParam":"release_classic-1"}
+  ---
+  duration_ms: 0.080982
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"game_v06"}
+ok 57 - selector {"startParam":"game_v06"}
+  ---
+  duration_ms: 0.03962
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"campaign42"}
+ok 58 - selector {"startParam":"campaign42"}
+  ---
+  duration_ms: 0.141413
+  type: 'test'
+  ...
+# Subtest: selector {"game":"v1","startParam":"release_other"}
+ok 59 - selector {"game":"v1","startParam":"release_other"}
+  ---
+  duration_ms: 0.075654
+  type: 'test'
+  ...
+# Subtest: selector {"release":"a","game":"b","startParam":"admin"}
+ok 60 - selector {"release":"a","game":"b","startParam":"admin"}
+  ---
+  duration_ms: 0.215765
+  type: 'test'
+  ...
+# Subtest: invalid selector {"release":""}
+ok 61 - invalid selector {"release":""}
+  ---
+  duration_ms: 0.130827
+  type: 'test'
+  ...
+# Subtest: invalid selector {"release":"../x"}
+ok 62 - invalid selector {"release":"../x"}
+  ---
+  duration_ms: 0.071147
+  type: 'test'
+  ...
+# Subtest: invalid selector {"game":"<script>"}
+ok 63 - invalid selector {"game":"<script>"}
+  ---
+  duration_ms: 0.067101
+  type: 'test'
+  ...
+# Subtest: invalid selector {"startParam":"release_"}
+ok 64 - invalid selector {"startParam":"release_"}
+  ---
+  duration_ms: 0.107813
+  type: 'test'
+  ...
+# Subtest: invalid selector {"startParam":"game_"}
+ok 65 - invalid selector {"startParam":"game_"}
+  ---
+  duration_ms: 0.087001
+  type: 'test'
+  ...
+# Subtest: JSON import always requires moderation
+ok 66 - JSON import always requires moderation
+  ---
+  duration_ms: 1.378088
+  type: 'test'
+  ...
+# Subtest: CSV with BOM/Cyrillic/CRLF/quoted separator
+ok 67 - CSV with BOM/Cyrillic/CRLF/quoted separator
+  ---
+  duration_ms: 0.762549
+  type: 'test'
+  ...
+# Subtest: CSV comma separator
+ok 68 - CSV comma separator
+  ---
+  duration_ms: 0.325792
+  type: 'test'
+  ...
+# Subtest: CSV escaped quote and embedded newline
+ok 69 - CSV escaped quote and embedded newline
+  ---
+  duration_ms: 0.32454
+  type: 'test'
+  ...
+# Subtest: reject CSV missing columns
+ok 70 - reject CSV missing columns
+  ---
+  duration_ms: 0.298741
+  type: 'test'
+  ...
+# Subtest: reject CSV bad year
+ok 71 - reject CSV bad year
+  ---
+  duration_ms: 0.121273
+  type: 'test'
+  ...
+# Subtest: reject CSV unclosed quote
+ok 72 - reject CSV unclosed quote
+  ---
+  duration_ms: 1.11421
+  type: 'test'
+  ...
+# Subtest: reject CSV duplicate headers
+ok 73 - reject CSV duplicate headers
+  ---
+  duration_ms: 0.102285
+  type: 'test'
+  ...
+# Subtest: reject CSV duplicate IDs
+ok 74 - reject CSV duplicate IDs
+  ---
+  duration_ms: 0.419002
+  type: 'test'
+  ...
+# Subtest: export CSV guards spreadsheet formulas and remains quoted UTF-8
+ok 75 - export CSV guards spreadsheet formulas and remains quoted UTF-8
+  ---
+  duration_ms: 0.598632
+  type: 'test'
+  ...
+# Subtest: JSON syntax error is readable
+ok 76 - JSON syntax error is readable
+  ---
+  duration_ms: 0.224329
+  type: 'test'
+  ...
+# Subtest: export also neutralizes formula prefixes after whitespace
+ok 77 - export also neutralizes formula prefixes after whitespace
+  ---
+  duration_ms: 0.130026
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects null
+ok 78 - verified ctx rejects null
+  ---
+  duration_ms: 1.208442
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects undefined
+ok 79 - verified ctx rejects undefined
+  ---
+  duration_ms: 0.164958
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 101
+ok 80 - verified ctx rejects 101
+  ---
+  duration_ms: 0.115064
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects -1
+ok 81 - verified ctx rejects -1
+  ---
+  duration_ms: 0.075043
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 0
+ok 82 - verified ctx rejects 0
+  ---
+  duration_ms: 0.143426
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 1.1
+ok 83 - verified ctx rejects 1.1
+  ---
+  duration_ms: 0.069755
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects Infinity
+ok 84 - verified ctx rejects Infinity
+  ---
+  duration_ms: 0.117367
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 9007199254740992
+ok 85 - verified ctx rejects 9007199254740992
+  ---
+  duration_ms: 0.062314
+  type: 'test'
+  ...
+# Subtest: status exposes only caller identity, not entire allowlist
+ok 86 - status exposes only caller identity, not entire allowlist
+  ---
+  duration_ms: 0.919346
+  type: 'test'
+  ...
+# Subtest: forged user ID in input cannot read admin data
+ok 87 - forged user ID in input cannot read admin data
+  ---
+  duration_ms: 1.490077
+  type: 'test'
+  ...
+# Subtest: forged ctx field inside input cannot issue command
+ok 88 - forged ctx field inside input cannot issue command
+  ---
+  duration_ms: 0.271369
+  type: 'test'
+  ...
+# Subtest: both explicit admins have access
+ok 89 - both explicit admins have access
+  ---
+  duration_ms: 1.405039
+  type: 'test'
+  ...
+# Subtest: subscriber false fails closed with trusted join URL
+ok 90 - subscriber false fails closed with trusted join URL
+  ---
+  duration_ms: 0.283908
+  type: 'test'
+  ...
+# Subtest: subscription network error does not become access
+ok 91 - subscription network error does not become access
+  ---
+  duration_ms: 0.148373
+  type: 'test'
+  ...
+# Subtest: verified start_param selects requested release
+ok 92 - verified start_param selects requested release
+  ---
+  duration_ms: 0.626014
+  type: 'test'
+  ...
+# Subtest: input start_param cannot bypass selector source
+ok 93 - input start_param cannot bypass selector source
+  ---
+  duration_ms: 0.261424
+  type: 'test'
+  ...
+# Subtest: admin deep-link is not an admin grant
+ok 94 - admin deep-link is not an admin grant
+  ---
+  duration_ms: 0.11273
+  type: 'test'
+  ...
+# Subtest: two admins saving same revision: exactly one atomic success
+ok 95 - two admins saving same revision: exactly one atomic success
+  ---
+  duration_ms: 1.084885
+  type: 'test'
+  ...
+# Subtest: missing revision rejected, no mutation
+ok 96 - missing revision rejected, no mutation
+  ---
+  duration_ms: 1.042431
+  type: 'test'
+  ...
+# Subtest: invalid command leaves revision and data unchanged
+ok 97 - invalid command leaves revision and data unchanged
+  ---
+  duration_ms: 0.547275
+  type: 'test'
+  ...
+# Subtest: initialization race never resets earlier writes
+ok 98 - initialization race never resets earlier writes
+  ---
+  duration_ms: 0.178369
+  type: 'test'
+  ...
+# (node:2565) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual repository: SQLite JSON insert/read and non-resetting initialization
+ok 99 - actual repository: SQLite JSON insert/read and non-resetting initialization
+  ---
+  duration_ms: 5.783859
+  type: 'test'
+  ...
+# Subtest: actual repository: conditional update fails on stale revision without data loss
+ok 100 - actual repository: conditional update fails on stale revision without data loss
+  ---
+  duration_ms: 1.721575
+  type: 'test'
+  ...
+1..100
+# tests 100
+# suites 0
+# pass 100
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 611.726561

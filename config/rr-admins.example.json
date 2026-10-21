@@ -1,0 +1,4 @@
+{
+  "adminIds": [],
+  "note": "Укажите ровно два разных положительных числовых Telegram user ID — Павла и Виталия. Не usernames, не ID бота, не токены. Сохраните как rr-admins.local.json либо задайте RR_ADMIN_IDS=число,число в GitHub Actions Variables."
+}

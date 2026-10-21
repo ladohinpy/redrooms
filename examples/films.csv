@@ -1,0 +1,4 @@
+director_id;director_name;film_id;title;year;original;status
+nolan;Кристофер Нолан;inception;Начало;2010;Inception;pending
+nolan;Кристофер Нолан;interstellar;Интерстеллар;2014;Interstellar;pending
+kurosawa;Акира Куросава;rashomon;Расёмон;1950;Rashomon;pending
