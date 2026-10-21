@@ -1,3 +1,5 @@
+> Обновление TABLES ADMIN 2: начните с `START-HERE.md`. В публикацию добавлен `rrSendSetLink`; ключ, два ID и workflow прежние. Схема БД не меняется. URL Main Mini App должен вести на корень `https://app8804859840.tgcloud.ai/`, вход в редактор — `startapp=admin`.
+
 # Релиз: разово загрузить на прежний сервер с прежним ключом
 
 > Обновление 21.10.2026: [CLI false / локальный снимок и миграция BotFather](FIX-CLI-SNAPSHOT.md).

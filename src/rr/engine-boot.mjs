@@ -1,35 +1,38 @@
-import { call, telegram, launchInput, navigate, el, launchFailure } from './client.mjs';
+import {call,telegram,launchInput,navigate,el,launchFailure,stage,navigationWait} from './client.mjs';
+import {samePage,transportPath} from './routes.mjs';
 export async function prepareEngine(engineId) {
-  const overlay = el('section', { id: 'rr-engine-overlay', role: 'status' });
-  Object.assign(overlay.style, { position:'fixed', inset:'0', zIndex:'2147483000', background:'#170a10', color:'#f8eee7', display:'grid', placeContent:'center', padding:'28px', fontFamily:'system-ui', textAlign:'center' });
-  overlay.append(el('p', { text: 'Загружаем коллекцию релиза…' })); document.body.append(overlay);
+  const overlay=el('section',{id:'rr-engine-overlay',role:'status'});
+  Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'2147483000',background:'#170a10',color:'#f8eee7',display:'grid',alignContent:'center',justifyItems:'center',padding:'calc(var(--rr-safe-top,0px) + 24px) 24px 24px',fontFamily:'system-ui',textAlign:'center',overflow:'auto'});
+  const status=el('p',{text:'Подключаем Telegram…'});overlay.append(status);document.body.append(overlay);
+  const update=text=>{stage(text);status.textContent=text;};
   try {
-    await telegram();
-    const input = launchInput();
-    if (!input.release && !input.game) input.game = engineId;
-    const data = await call('rrGetLaunch',input);
-    if (data.admin) { navigate('/admin.html'); return await new Promise(() => {}); }
-    if (data.game.id !== engineId || data.game.entry !== location.pathname) {
-      if (!/^\/games\/[a-z0-9_-]+\/[a-f0-9]{16}\/index\.html$/.test(data.game.entry)) throw new Error('Неверный путь сборки.');
-      navigate(data.game.entry, { release: data.release.id }); return await new Promise(() => {});
+    update('Подключаем Telegram…');await telegram();
+    update('Проверяем доступ и загружаем набор…');
+    // A bare game URL uses the global default, NOT an accidental per-build default.
+    const data=await call('rrGetLaunch',launchInput());
+    if(data.admin) {navigate('/admin.html',{},true);await navigationWait();return;}
+    const runtime=data.runtime || data.game;
+    update('Проверяем адрес комнаты…');
+    transportPath(runtime?.entry);
+    if(runtime.id!==engineId || !samePage(runtime.entry,location.pathname)) {
+      navigate(runtime.entry,{release:data.release.id},true);await navigationWait();return;
     }
-    const embedded = document.getElementById('default-dataset');
-    if (!embedded) throw new Error('В сборке отсутствует место для каталога.');
-    embedded.textContent = JSON.stringify(data.catalog);
-    window.RR_RELEASE = Object.freeze(data.release);
-    window.RR_SAVE_PREFIX = `rr:v1:${data.userId}:${data.game.id}:${data.release.id}:${data.release.catalogVersionId}:`;
-    // Copy, never delete, the original v06 local save. Only the original published seed qualifies.
-    if (data.release.id === 'classic-1' && data.release.catalogVersionId === 'original-201-v1') {
-      try {
-        for (const key of Object.keys(localStorage)) if (key.startsWith(`red-room-v06-pack:${data.catalog.id}:`) && localStorage.getItem(window.RR_SAVE_PREFIX + key) === null) localStorage.setItem(window.RR_SAVE_PREFIX + key,localStorage.getItem(key));
-      } catch { /* Private mode or quota: gameplay still works, persistence may not. */ }
+    const embedded=document.getElementById('default-dataset');
+    if(!embedded) throw new Error('В сборке нет места для набора кассет.');
+    embedded.textContent=JSON.stringify(data.catalog);
+    window.RR_RELEASE=Object.freeze(data.release);
+    // Preserve the logical release/game save namespace when repairing the v06 renderer.
+    window.RR_SAVE_PREFIX=`rr:v1:${data.userId}:${data.game.id}:${data.release.id}:${data.release.catalogVersionId}:`;
+    if(data.release.id==='classic-1' && data.release.catalogVersionId==='original-201-v1') {
+      try {for(const k of Object.keys(localStorage))if(k.startsWith(`red-room-v06-pack:${data.catalog.id}:`) && localStorage.getItem(window.RR_SAVE_PREFIX+k)===null)localStorage.setItem(window.RR_SAVE_PREFIX+k,localStorage.getItem(k));}catch{}
     }
-    try { localStorage.setItem(`rr:last-release:${data.userId}`, data.release.id); } catch {}
-    const tools = el('div', { id:'rr-game-tools' });
-    Object.assign(tools.style,{position:'fixed',top:'calc(env(safe-area-inset-top,0px) + 8px)',right:'8px',zIndex:'6000',display:'flex',gap:'6px',fontFamily:'system-ui',fontSize:'11px'});
-    const home = el('button',{text:data.preview ? `ТЕСТ · ${data.release.id}` : data.release.id, title:'Открыть текущую основную игру', onclick:() => { if (confirm('Перейти к основной версии? Прогресс этого релиза останется на устройстве.')) navigate('/',{rr_default:1}); }});
-    Object.assign(home.style,{fontSize:'11px',padding:'6px 9px',borderRadius:'10px',background:'#261018',color:'#fff1e8',border:'1px solid #975c66'}); tools.append(home);
-    if (data.isAdmin) { const admin = home.cloneNode(false); admin.textContent='Админка'; admin.addEventListener('click',() => navigate('/admin.html')); tools.append(admin); }
-    document.body.append(tools); overlay.remove(); return data;
-  } catch (e) { launchFailure(overlay,e,() => location.reload()); throw e; }
+    try {sessionStorage.removeItem('rr:navigation-guard');}catch{}
+    const tools=el('nav',{id:'rr-game-tools','aria-label':'Набор и управление'});
+    Object.assign(tools.style,{position:'fixed',top:'calc(var(--rr-safe-top,0px) + 8px)',left:'calc(var(--rr-safe-left,0px) + 12px)',right:'calc(var(--rr-safe-right,0px) + 12px)',zIndex:'6000',display:'flex',justifyContent:'space-between',gap:'8px',fontFamily:'system-ui',pointerEvents:'none'});
+    const button=(text,handler)=>{const b=el('button',{text,onclick:handler});Object.assign(b.style,{fontSize:'12px',padding:'9px 12px',borderRadius:'10px',background:'#261018ed',color:'#fff1e8',border:'1px solid #975c66',pointerEvents:'auto',maxWidth:'48%',minWidth:'0',textOverflow:'ellipsis',overflow:'hidden',whiteSpace:'nowrap',minHeight:'38px'});return b;};
+    tools.append(button(data.release.name,()=>{if(confirm('Открыть основной набор? Прогресс текущего набора сохранится.'))navigate('/',{rr_default:1});}));
+    if(data.isAdmin)tools.append(button('Управление наборами',()=>navigate('/admin.html')));
+    document.body.append(tools);
+    update('Создаём 3D-комнату…');overlay.remove();return data;
+  } catch(e) {launchFailure(overlay,e,()=>location.reload());throw e;}
 }
