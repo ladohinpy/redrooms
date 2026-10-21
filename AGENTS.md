@@ -1,3 +1,22 @@
+# Current stage — Red Room Admin & Releases (2026-10-21)
+
+This section supersedes conflicting stage-0 statements below. Database/admin/release
+management is explicitly authorized. The original v06, membership gate and secrets rules
+remain in force. Read docs/FIX-CLI-SNAPSHOT.md and docs/RELEASE-DEPLOY.md first.
+
+- Build: node scripts/rr-prepare.cjs; test: node scripts/rr-check.cjs.
+- Publication: node scripts/rr-deploy.cjs --confirm ONLY on owner intent.
+- CLI 0.2.0 uses a narrow local response compatibility guard; never stringify false,
+  skip errors, disable revision checks, or use --force to get past a failure.
+- Root tgcloud/schema.js contains the managed table definition after prepare.
+  tgcloud/lib/rr/schema.js is a compatibility export required by store.js: keep it.
+- push and migration are separate. --safe avoids an interactive BotFather confirmation;
+  do not apply concurrent changes from BotFather while an Action publishes.
+- CLI run uses local source in the cloud: verify the actual published app separately.
+- Preserve src/rr-legacy-v06.html, config/rr-built-games.json, public/games and runtime assets.
+
+## Historical instructions (2026-10-17; retain security rules, not stage-0 scope)
+
 # Redrooms — instructions for AI coding agents
 
 ## Scope of this repository (2026-10-17)
@@ -40,3 +59,7 @@ Read `README.md` and `docs/LAUNCH-TELEGRAM.md` before changing code. Old archite
 - `npm run check` passes. PR lists files changed and test evidence; publish requires explicit owner decision.
 
 Official documentation: https://core.telegram.org/bots/serverless and https://core.telegram.org/bots/webapps.
+
+
+## RED ROOM ADMIN V1
+Read README.md and docs/RELEASE-DEPLOY.md. Preserve src/rr-legacy-v06.html, config/rr-built-games.json and every public/games/ + public/rr/runtime/ asset. Never modify a published game ID in place. Build with scripts/rr-prepare.cjs; use verified ctx.initData for authorization. Do not put secrets in public files. Do not run push/migrate without explicit deployment intent.
