@@ -2,6 +2,8 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),{spawnSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
+try { console.log(`JAVASCRIPT SYNTAX OK (${require('./rr-syntax.cjs').checkSyntax(root)} files).`); }
+catch(error) { console.error(error.message); process.exit(1); }
 // Fail before tests/deployment if a forbidden header was restored by hand.
 // --tests-only retains its original meaning: no prepared project is required.
 if(!process.argv.includes('--tests-only')){

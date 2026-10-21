@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "games": [
+    {
+      "id": "v06",
+      "name": "Классическая комната v06",
+      "entry": "/games/v06/05ac2cca6a93c5b2/index.html",
+      "codeHash": "05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749",
+      "catalogSchemaVersion": 1,
+      "aliases": [
+        "v1"
+      ],
+      "source": "src/rr-legacy-v06.html",
+      "sourceHash": "cb046f137ea4e25180a10a313c12cd4e9d6dfa57dca7d16915f55a3d779df93a",
+      "runtimeAssets": [
+        {
+          "path": "rr/runtime/32bb4b76e60a8e7f/client.mjs",
+          "hash": "a748424fc8e6d690a9a94a3f702e5df51a976dea5cd722fca2dcff7f1aaa1e9c"
+        },
+        {
+          "path": "rr/runtime/32bb4b76e60a8e7f/engine-boot.mjs",
+          "hash": "070e2aa61c8ad5ee11e5ed98158fd76426f44984f3ebdf2d07aeb740a5a5f90a"
+        },
+        {
+          "path": "rr/frozen/5a1a959d5955f6ea/access-gate.js",
+          "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+        }
+      ]
+    },
+    {
+      "id": "v07-tables",
+      "name": "Комната: произвольные столы v07",
+      "entry": "/games/v07-tables/4c7b0fb7cf2d4da8/index.html",
+      "codeHash": "4c7b0fb7cf2d4da84737bd3673b8c2caa5edc293883d46b46fa6abca42281530",
+      "catalogSchemaVersion": 1,
+      "aliases": [
+        "tables"
+      ],
+      "optionalYear": true,
+      "source": "src/rr-game-v07.html",
+      "sourceHash": "470bbb24c1ce8e95dc114a190ebe743865b8a29ca74fce1debd89d3d2ad51627",
+      "runtimeAssets": [
+        {
+          "path": "rr/runtime/187ac543cc87c08d/client.mjs",
+          "hash": "ba376f2a3391139406c85618da6480cb29609a136b61780897994bfd8df5c4bd"
+        },
+        {
+          "path": "rr/runtime/187ac543cc87c08d/routes.mjs",
+          "hash": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+        },
+        {
+          "path": "rr/runtime/187ac543cc87c08d/engine-boot.mjs",
+          "hash": "4be4be204bc7c953c5c92b404defe22b5bb37e9476058266480fdfe51f0bfb1b"
+        },
+        {
+          "path": "rr/frozen/5a1a959d5955f6ea/access-gate.js",
+          "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+        }
+      ]
+    }
+  ]
+}

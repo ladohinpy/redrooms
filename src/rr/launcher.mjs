@@ -1,13 +1,15 @@
-import { call, launchInput, navigate, launchFailure } from './client.mjs';
-const box = document.getElementById('rr-launch-status');
+import {call, launchInput, navigate, launchFailure, adminRequested, stage, navigationWait} from './client.mjs';
+import {transportPath} from './routes.mjs';
+const box=document.getElementById('rr-launch-status');
 async function start() {
-  box.textContent = 'Проверяем доступ и выбираем релиз…';
+  box.textContent='Проверяем доступ и выбираем набор…';stage('выбор набора');
   try {
-    const result = await call('rrGetLaunch', launchInput());
-    if (result.admin) { navigate('/admin.html'); return; }
-    if (!/^\/games\/[a-z0-9_-]+\/[a-f0-9]{16}\/index\.html$/.test(result.game?.entry || '')) throw new Error('Сервер вернул некорректный путь сборки.');
-    // Pin the exact release. A concurrent change of the default must not change this party.
-    navigate(result.game.entry, { release: result.release.id });
-  } catch (e) { launchFailure(box,e,start); }
+    if(adminRequested()) {navigate('/admin.html',{},true);await navigationWait();return;}
+    const result=await call('rrGetLaunch',launchInput());
+    if(result.admin) {navigate('/admin.html',{},true);await navigationWait();return;}
+    const engine=result.runtime || result.game;
+    stage('переход к комнате');box.textContent=`Открываем «${result.release.name}»…`;
+    navigate(transportPath(engine?.entry),{release:result.release.id},true);await navigationWait();
+  } catch(e) {launchFailure(box,e,start);}
 }
-start();
+window.RR_MODULE_STARTED=true;start();

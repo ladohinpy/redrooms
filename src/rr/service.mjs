@@ -39,7 +39,13 @@ export function createService({ repository, adminIds, games, seed, checkSubscrip
         throw e;
       }
       const row = await state();
-      return { ...resolveLaunch(row.state, selector, isAdmin(uid), games), userId: uid, isAdmin: isAdmin(uid) };
+      const selected = resolveLaunch(row.state, selector, isAdmin(uid), games);
+      // Repair the transport/UI of the known frozen v06 WITHOUT rewriting stored releases,
+      // catalogs, default selection, old assets or save namespaces. Never substitute arbitrary builds.
+      const compatibleRuntime = selected.game.id === 'v06' &&
+        selected.game.codeHash === '05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749'
+        ? games.find(g => g.id === 'v07-tables' && g.optionalYear === true) : null;
+      return { ...selected, runtime: compatibleRuntime || selected.game, userId: uid, isAdmin: isAdmin(uid) };
     }
   };
 }

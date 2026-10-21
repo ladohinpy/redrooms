@@ -27,7 +27,7 @@ function cloud(args){console.log('\n> tgcloud '+args.map((arg,i)=>args[i-1]==='-
 node('scripts/rr-prepare.cjs',['--production']);node('scripts/rr-check.cjs');
 cloud(['fetch']);
 // Include existing membership dependency without touching the bot's other handlers.
-cloud(['push','tgcloud/schema.js','tgcloud/lib/rr/','tgcloud/lib/subscription.js','tgcloud/endpoints/checkAccess.js','tgcloud/endpoints/rrAdminStatus.js','tgcloud/endpoints/rrAdminRead.js','tgcloud/endpoints/rrAdminCommand.js','tgcloud/endpoints/rrGetLaunch.js','tgcloud/endpoints/rrHealth.js']);
+cloud(['push','tgcloud/schema.js','tgcloud/lib/rr/','tgcloud/lib/subscription.js','tgcloud/endpoints/checkAccess.js','tgcloud/endpoints/rrAdminStatus.js','tgcloud/endpoints/rrAdminRead.js','tgcloud/endpoints/rrAdminCommand.js','tgcloud/endpoints/rrGetLaunch.js','tgcloud/endpoints/rrHealth.js','tgcloud/endpoints/rrSendSetLink.js']);
 cloud(['migrate','--dry-run']);
 cloud(['migrate','--safe']); // Additive schema only. No yes/force/drop shortcuts.
 const config=fs.readFileSync(path.join(root,'tgcloud/lib/rr/config.js'),'utf8');

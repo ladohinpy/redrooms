@@ -1,0 +1,12 @@
+{
+  "format": "red-room-tables",
+  "version": 1,
+  "id": "four-tables-example",
+  "name": "Пример четырёх столов",
+  "tables": [
+    {"name":"Первая категория","titles":"Кассета 1\nКассета 2","delimiter":"lines"},
+    {"name":"Вторая категория","titles":"Кассета 3; Кассета 4","delimiter":"semicolon"},
+    {"name":"Третья категория","titles":"Кассета 5\nКассета 6","delimiter":"lines"},
+    {"name":"Четвёртая категория","titles":"Кассета 7\nКассета 8","delimiter":"lines"}
+  ]
+}

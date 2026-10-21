@@ -63,3 +63,6 @@ Official documentation: https://core.telegram.org/bots/serverless and https://co
 
 ## RED ROOM ADMIN V1
 Read README.md and docs/RELEASE-DEPLOY.md. Preserve src/rr-legacy-v06.html, config/rr-built-games.json and every public/games/ + public/rr/runtime/ asset. Never modify a published game ID in place. Build with scripts/rr-prepare.cjs; use verified ctx.initData for authorization. Do not put secrets in public files. Do not run push/migrate without explicit deployment intent.
+
+## TABLES ADMIN 2
+Simple four-table UI is separate from legacy in-game JSON tools. Nullable years must never be replaced with fabricated dates. New code uses v07-tables. Preserve known-v06 compatibility runtime mapping and logical save namespace. Never edit published frozen assets in place. No public auth bypass or fake Telegram ctx outside tests. Run JS syntax, unit, integrity and offline WebGL tests; report that live Telegram still needs manual testing.

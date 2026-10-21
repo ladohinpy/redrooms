@@ -6,7 +6,19 @@
       "name": "Классическая комната v06",
       "source": "src/rr-legacy-v06.html",
       "adapter": "v06",
-      "aliases": ["v1"]
+      "aliases": [
+        "v1"
+      ]
+    },
+    {
+      "id": "v07-tables",
+      "name": "Комната: произвольные столы v07",
+      "source": "src/rr-game-v07.html",
+      "adapter": "v06",
+      "aliases": [
+        "tables"
+      ],
+      "optionalYear": true
     }
   ]
 }

@@ -1,3 +1,4 @@
+import { simpleCatalog, SIMPLE_BUILD } from './simple.mjs';
 /** Pure domain rules. Shared by tests, administrator UI and Telegram backend.
  * No Telegram IDs, credentials, DOM, SDK or network dependencies here. */
 export const LIMITS = Object.freeze({ fileBytes: 1048576, stateBytes: 4194304, directors: 12, films: 500, perDirector: 300, title: 140, catalogs: 30, releases: 100, audit: 200 });
@@ -33,8 +34,8 @@ export function normalizeCatalog(raw, defaultStatus = 'pending') {
       object(f0, 'Фильм');
       const status = f0.status === undefined ? defaultStatus : f0.status;
       if (!['pending', 'approved', 'excluded'].includes(status)) fail('Статус фильма: pending, approved или excluded.');
-      if (!Number.isInteger(f0.year) || f0.year < 1800 || f0.year > 2100) fail('Год должен быть целым числом от 1800 до 2100.');
-      const f = { id: id(f0.id, 'ID фильма'), title: label(f0.title, 'Название фильма'), year: f0.year, original: label(f0.original === undefined ? f0.title : f0.original, 'Оригинальное название'), status };
+      if (f0.year != null && (!Number.isInteger(f0.year) || f0.year < 1800 || f0.year > 2100)) fail('Год должен быть целым числом от 1800 до 2100.');
+      const f = { id: id(f0.id, 'ID фильма'), title: label(f0.title, 'Название фильма'), year: f0.year ?? null, original: label(f0.original === undefined ? f0.title : f0.original, 'Оригинальное название'), status };
       allFilmIds.push(f.id); d.films.push(f);
     }
     pack.directors.push(d);
@@ -70,7 +71,7 @@ export function gameBuild(game) {
   if (!/^[a-f0-9]{64}$/.test(game.codeHash)) fail('У сборки отсутствует SHA-256.');
   if (game.catalogSchemaVersion !== 1) fail('Сборка должна поддерживать схему каталога 1.');
   const aliases = game.aliases || []; if (!Array.isArray(aliases)) fail('aliases должен быть массивом.'); aliases.forEach(a => id(a, 'Псевдоним сборки'));
-  return { id: game.id, name: label(game.name, 'Название сборки', 100), entry: game.entry, codeHash: game.codeHash, catalogSchemaVersion: 1, aliases };
+  return { id: game.id, name: label(game.name, 'Название сборки', 100), entry: game.entry, codeHash: game.codeHash, catalogSchemaVersion: 1, aliases, ...(game.optionalYear === true ? {optionalYear:true} : {}) };
 }
 export function createInitialState(seed, games, now) {
   const builds = games.map(gameBuild); unique(builds.flatMap(g => [g.id, ...g.aliases]), 'версии / псевдонимы сборок'); if (!builds.length) fail('Нет сборок.');
@@ -93,6 +94,7 @@ function compatible(state, release, available) {
   if (!deployed) fail('Нужная сборка не включена в текущий деплой. Верните её файлы; не подменяйте версию другой сборкой.', 'BUILD_UNAVAILABLE');
   const cat = find(state.catalog_versions, release.catalogVersionId, 'Коллекция');
   if (cat.status !== 'published' || !cat.playable || cat.playable.schemaVersion !== game.catalogSchemaVersion) fail('Релиз требует опубликованную совместимую коллекцию.', 'INCOMPATIBLE');
+  if (!game.optionalYear && cat.playable.directors.some(d => d.films.some(f => f.year == null))) fail('Для набора без годов выберите сборку v07-tables.', 'INCOMPATIBLE');
   return { game, cat };
 }
 /** One command transforms one state document. Caller performs a single DB CAS. */
@@ -101,6 +103,41 @@ export function applyCommand(original, command, actor, availableGames, now = new
   const s = clone(original), input = object(command.input || {}, 'Данные');
   const available = availableGames.map(gameBuild); let target = '', summary = '';
   switch (command.action) {
+    case 'saveSimpleSet':
+    case 'publishSimpleSet': {
+      target = id(input.id, 'Код набора');
+      if (target.length > 56) fail('Код набора для Telegram-ссылки: не более 56 символов.');
+      const publish = command.action === 'publishSimpleSet';
+      const existing = s.catalog_versions.find(c => c.id === target);
+      if (existing && existing.status !== 'draft') fail('Опубликованный набор нельзя перезаписать. Создайте копию.', 'IMMUTABLE');
+      if (s.game_releases.some(r => r.id === target)) fail('Этот код уже принадлежит релизу. Выберите другой.', 'DUPLICATE');
+      if (!existing && s.catalog_versions.length >= LIMITS.catalogs) fail('Достигнут предел версий каталога.', 'CAPACITY');
+      const name = label(input.name, 'Название набора', 100);
+      const catalog = normalizeCatalog(simpleCatalog({...input,name}, existing?.catalog, publish));
+      const c = existing || { id:target, revision:0, createdAt:now };
+      Object.assign(c, {name, catalog, status:publish?'published':'draft', playable:publish?playableCatalog(catalog):null,
+        revision:c.revision+1, updatedAt:now, updatedBy:String(actor), editor:'four-tables'});
+      if (!existing) s.catalog_versions.push(c);
+      if (publish) {
+        if (typeof input.makeDefault !== 'boolean') fail('Подтвердите, делать ли набор основным.');
+        if (s.game_releases.length >= LIMITS.releases) fail('Достигнут предел релизов.', 'CAPACITY');
+        const game = available.find(g => g.id === SIMPLE_BUILD && g.optionalYear === true);
+        if (!game) fail('Сначала опубликуйте сборку v07-tables.', 'BUILD_UNAVAILABLE');
+        const registered = s.game_versions.find(g => g.id === game.id);
+        if (registered && (registered.codeHash !== game.codeHash || registered.entry !== game.entry)) fail('Сборка изменилась под прежним ID.', 'IMMUTABLE');
+        if (!registered) s.game_versions.push(clone(game));
+        const r = { id:target, name, gameVersionId:game.id, catalogVersionId:target, codeHash:game.codeHash,
+          status:'published', visibility:input.makeDefault?'public':'unlisted', createdAt:now, updatedAt:now };
+        compatible(s,r,available); s.game_releases.push(r);
+        if (input.makeDefault) s.app_settings.defaultReleaseId=target;
+        if (input.makeDefault || !s.app_settings.gameDefaults.some(d=>d.gameVersionId===game.id)) {
+          s.app_settings.gameDefaults=s.app_settings.gameDefaults.filter(d=>d.gameVersionId!==game.id);
+          s.app_settings.gameDefaults.push({gameVersionId:game.id,releaseId:target});
+        }
+      }
+      summary=publish ? (input.makeDefault?'Набор опубликован и выбран основным':'Набор опубликован по отдельной ссылке; основная игра не изменена') : 'Сохранён черновик четырёх столов';
+      break;
+    }
     case 'createCatalog': {
       target = id(input.id, 'ID версии каталога');
       if (s.catalog_versions.some(c => c.id === target)) fail('ID версии каталога уже занят.', 'DUPLICATE');
@@ -177,6 +214,7 @@ export function applyCommand(original, command, actor, availableGames, now = new
 export function parseSelector({ release, game, startParam } = {}) {
   if (release !== undefined && release !== null) return { kind: 'release', value: id(release, 'release') };
   if (game !== undefined && game !== null) return { kind: 'game', value: id(game, 'game') };
+  if (typeof startParam === 'string' && startParam.startsWith('set_')) return {kind:'release',value:id(startParam.slice(4),'startapp set')};
   if (startParam === 'admin') return { kind: 'admin' };
   if (typeof startParam === 'string' && startParam.startsWith('release_')) return { kind: 'release', value: id(startParam.slice(8), 'startapp release') };
   if (typeof startParam === 'string' && startParam.startsWith('game_')) return { kind: 'game', value: id(startParam.slice(5), 'startapp game') };
