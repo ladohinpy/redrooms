@@ -44,6 +44,54 @@ function instrument(source,gameId,bootUrl){
   const injection=`\n<!-- RR-INSTRUMENTED-V1: fixed release/catalog before the existing game starts -->\n${base?'':'<base href="/">\n'}<script>\nwindow.RRPrepareLaunch = function () {\n  if (!window.RRLaunchPromise) window.RRLaunchPromise = import(${JSON.stringify(bootUrl)}).then(function(m) { return m.prepareEngine(${JSON.stringify(gameId)}); });\n  return window.RRLaunchPromise;\n};\n</script>\n`;
   return oneReplace(html,/<head\b[^>]*>/gi,m=>m+injection,'head');
 }
+
+// RR-SCHEMA-FIX-1: keep the migration entry point self-contained. The observed
+// cloud migration could not resolve lib/rr/schema even after a successful push.
+// Only the exact legacy generated export is removed; unrelated tables survive.
+const RR_SCHEMA_BEGIN = '// BEGIN RR ADMIN SCHEMA (managed by rr-prepare.cjs)';
+const RR_SCHEMA_END = '// END RR ADMIN SCHEMA';
+const RR_SCHEMA_BLOCK = `${RR_SCHEMA_BEGIN}
+import {
+  table as rrSchemaTable,
+  text as rrSchemaText,
+  integer as rrSchemaInteger,
+  json as rrSchemaJson
+} from 'sdk/db';
+
+export const rrAdminState = rrSchemaTable('rr_admin_state', {
+  id: rrSchemaText('id').primaryKey(),
+  revision: rrSchemaInteger('revision').notNull(),
+  state: rrSchemaJson('state_json').notNull()
+});
+${RR_SCHEMA_END}`;
+function ensureStandaloneSchema(source) {
+  if (typeof source !== 'string') stop('Схема должна быть JavaScript-текстом.');
+  const begins = source.split(RR_SCHEMA_BEGIN).length - 1;
+  const ends = source.split(RR_SCHEMA_END).length - 1;
+  let base = source;
+  if (begins || ends) {
+    const first = source.indexOf(RR_SCHEMA_BEGIN), last = source.indexOf(RR_SCHEMA_END);
+    if (begins !== 1 || ends !== 1 || last < first) {
+      stop('Повреждены маркеры RR ADMIN SCHEMA. Схема не изменена; проверьте tgcloud/schema.js.');
+    }
+    const existing = source.slice(first, last + RR_SCHEMA_END.length);
+    if (existing.replace(/\r\n/g, '\n') !== RR_SCHEMA_BLOCK) {
+      stop('Управляемый блок RR ADMIN SCHEMA изменён вручную. Автозамена запрещена: проверьте схему.');
+    }
+    base = source.slice(0, first) + source.slice(last + RR_SCHEMA_END.length);
+  }
+  const legacy = /^[ \t]*export[ \t]*\{[ \t]*rrAdminState[ \t]*\}[ \t]*from[ \t]*(['"])\.\/lib\/rr\/schema\.js\1[ \t]*;?[ \t]*\r?$/gm;
+  const matches = [...base.matchAll(legacy)];
+  if (matches.length > 1) stop('Несколько старых экспортов rrAdminState. Схема не изменена.');
+  if (begins && matches.length) stop('Смешаны старая и новая схемы rrAdminState. Проверьте tgcloud/schema.js.');
+  base = base.replace(legacy, '');
+  base = base.replace(/^[ \t]*\/\/ Red Room administration: additive table; data is never reset by deployment\.[ \t]*\r?$/gm, '');
+  if (/\b(?:rrAdminState|rrSchemaTable|rrSchemaText|rrSchemaInteger|rrSchemaJson)\b/.test(base)) {
+    stop('В tgcloud/schema.js есть нестандартное объявление rrAdminState или занятое служебное имя. Автозамена запрещена.');
+  }
+  return (base.trimEnd() ? base.trimEnd() + '\n\n' : '') + RR_SCHEMA_BLOCK + '\n';
+}
+
 async function prepare(){
   const domain=await import(pathToFileURL(path.join(root,'src/rr/domain.mjs')).href);
   const production=process.argv.includes('--production');
@@ -112,7 +160,7 @@ async function prepare(){
   for(const name of ['domain','service'])write(`tgcloud/lib/rr/${name}.js`,read(`src/rr/${name}.mjs`).replaceAll("'./domain.mjs'","'./domain.js'"));
   for(const name of ['domain','import','client','launcher','admin'])write(`public/rr/${name}.mjs`,read(`src/rr/${name}.mjs`));
   const schema=exists('tgcloud/schema.js')?read('tgcloud/schema.js'):'';
-  if(!schema.includes("'./lib/rr/schema.js'"))write('tgcloud/schema.js',schema+"\n// Red Room administration: additive table; data is never reset by deployment.\nexport { rrAdminState } from './lib/rr/schema.js';\n");
+  write('tgcloud/schema.js', ensureStandaloneSchema(schema));
   if(!exists('tgcloud.jsonc'))stop('Не найден существующий tgcloud.jsonc. Сначала возьмите актуальную Telegram-ветку.');
   const cloud=parseJSONC(read('tgcloud.jsonc'));
   cloud.static={...(cloud.static||{}),source:'public',spa:false};
@@ -137,4 +185,4 @@ async function prepare(){
   console.log(`Prepared ${games.length} game build(s); initial catalog ${seed.directors.reduce((n,d)=>n+d.films.length,0)} films / ${seed.directors.length} directors. Admins: ${admins.length}. No deployment performed.`);
 }
 if(require.main===module)prepare().catch(e=>{console.error('RR PREPARE FAILED:',e.message);process.exitCode=1;});
-module.exports={parseJSONC,jsonScript,instrument};
+module.exports={parseJSONC,jsonScript,instrument,ensureStandaloneSchema};

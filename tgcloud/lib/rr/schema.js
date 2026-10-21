@@ -1,8 +1,4 @@
-import { table, text, integer, json } from 'sdk/db';
-// A single atomic aggregate for this two-administrator MVP. See ARCHITECTURE.md.
-// Do not use unsupported foreign keys or assume cross-call transactions.
-export const rrAdminState = table('rr_admin_state', {
-  id: text('id').primaryKey(),
-  revision: integer('revision').notNull(),
-  state: json('state_json').notNull()
-});
+// Compatibility export for store.js and previously deployed modules.
+// Define the table only in the root schema. Never make root schema depend
+// on this library: migrations must be able to evaluate root schema alone.
+export { rrAdminState } from '../../schema.js';
