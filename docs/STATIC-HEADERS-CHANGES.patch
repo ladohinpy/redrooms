@@ -1,0 +1,334 @@
+--- a/scripts/rr-prepare.cjs
++++ b/scripts/rr-prepare.cjs
+@@ -90,6 +90,30 @@
+     stop('В tgcloud/schema.js есть нестандартное объявление rrAdminState или занятое служебное имя. Автозамена запрещена.');
+   }
+   return (base.trimEnd() ? base.trimEnd() + '\n\n' : '') + RR_SCHEMA_BLOCK + '\n';
++}
++
++// RR-STATIC-HEADERS-FIX-1: this header was rejected by Telegram at
++// /static/prepare (2026-10-21). Check the known incompatibility locally;
++// do NOT claim this is a complete replica of Telegram's server validator.
++function validateStaticHeaders(cloud) {
++  const headers = cloud?.static?.headers;
++  if (headers === undefined) return;
++  if (!Array.isArray(headers)) stop('tgcloud.jsonc: static.headers должен быть массивом правил.');
++  for (const [i, rule] of headers.entries()) {
++    if (!rule || typeof rule !== 'object' || Array.isArray(rule) ||
++        typeof rule.path !== 'string' || !rule.set ||
++        typeof rule.set !== 'object' || Array.isArray(rule.set)) {
++      stop(`tgcloud.jsonc: некорректное правило static.headers[${i}].`);
++    }
++    for (const name of Object.keys(rule.set)) {
++      if (name.trim().toLowerCase() === 'x-content-type-options') {
++        stop(`tgcloud.jsonc: static.headers[${i}] (${rule.path}): ` +
++          'Telegram отклоняет пользовательский X-Content-Type-Options. ' +
++          'Удалите это поле из set, не заменяйте его на null. ' +
++          'Проверка выполнена локально; запрос публикации не отправлялся.');
++      }
++    }
++  }
+ }
+ 
+ async function prepare(){
+@@ -165,7 +189,10 @@
+   const cloud=parseJSONC(read('tgcloud.jsonc'));
+   cloud.static={...(cloud.static||{}),source:'public',spa:false};
+   const oldHeaders=Array.isArray(cloud.static.headers)?cloud.static.headers:[];
+-  cloud.static.headers=[...oldHeaders.filter(h=>h.path!=='/*'),{path:'/*',set:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer'}}];
++  // Regenerate the existing managed catch-all rule WITHOUT the rejected header.
++  // Editing only tgcloud.jsonc is insufficient: this builder runs before each deploy.
++  cloud.static.headers=[...oldHeaders.filter(h=>h.path!=='/*'),{path:'/*',set:{'Cache-Control':'no-store','Referrer-Policy':'no-referrer'}}];
++  validateStaticHeaders(cloud); // Check retained path-specific rules before any files are written.
+   delete cloud.static.immutable; // Keep launch/control files fresh; hashed builds remain immutable by convention.
+   write('tgcloud.jsonc',JSON.stringify(cloud,null,2)+'\n');
+   if(exists('package.json')){
+@@ -185,4 +212,4 @@
+   console.log(`Prepared ${games.length} game build(s); initial catalog ${seed.directors.reduce((n,d)=>n+d.films.length,0)} films / ${seed.directors.length} directors. Admins: ${admins.length}. No deployment performed.`);
+ }
+ if(require.main===module)prepare().catch(e=>{console.error('RR PREPARE FAILED:',e.message);process.exitCode=1;});
+-module.exports={parseJSONC,jsonScript,instrument,ensureStandaloneSchema};
++module.exports={parseJSONC,jsonScript,instrument,ensureStandaloneSchema,validateStaticHeaders};
+--- a/scripts/rr-check.cjs
++++ b/scripts/rr-check.cjs
+@@ -2,6 +2,15 @@
+ 'use strict';
+ const fs=require('node:fs'),path=require('node:path'),{spawnSync}=require('node:child_process');
+ const root=path.resolve(__dirname,'..');
++// Fail before tests/deployment if a forbidden header was restored by hand.
++// --tests-only retains its original meaning: no prepared project is required.
++if(!process.argv.includes('--tests-only')){
++  try{
++    const {parseJSONC,validateStaticHeaders}=require('./rr-prepare.cjs');
++    validateStaticHeaders(parseJSONC(fs.readFileSync(path.join(root,'tgcloud.jsonc'),'utf8')));
++    console.log('STATIC HEADER PREFLIGHT OK (known X-Content-Type-Options restriction).');
++  }catch(error){console.error('STATIC CONFIG FAILED: '+error.message);process.exit(1);}
++}
+ const testDir=path.join(root,'tests/rr');
+ const tests=fs.readdirSync(testDir).filter(n=>n.endsWith('.test.mjs')).map(n=>path.join(testDir,n));
+ const run=spawnSync(process.execPath,['--test',...tests],{cwd:root,stdio:'inherit'});
+--- a/tgcloud.jsonc
++++ b/tgcloud.jsonc
+@@ -8,7 +8,6 @@
+         "path": "/*",
+         "set": {
+           "Cache-Control": "no-store",
+-          "X-Content-Type-Options": "nosniff",
+           "Referrer-Policy": "no-referrer"
+         }
+       }
+--- a/tests/rr/static-headers.test.mjs
++++ b/tests/rr/static-headers.test.mjs
+@@ -0,0 +1,106 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import os from 'node:os';
++import path from 'node:path';
++import { createRequire } from 'node:module';
++import { fileURLToPath } from 'node:url';
++import { spawnSync } from 'node:child_process';
++import { legacyFixture } from './helpers.mjs';
++const require = createRequire(import.meta.url);
++const { parseJSONC, validateStaticHeaders } = require('../../scripts/rr-prepare.cjs');
++const root = fileURLToPath(new URL('../../', import.meta.url));
++const blocked = { path: '/*', set: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer' } };
++const allowed = { path: '/*', set: { 'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer' } };
++const config = headers => ({ static: { source: 'public', spa: false, headers } });
++const write = (dir, name, text) => { const p = path.join(dir, name); fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, text); };
++function fixture(headers = [blocked]) {
++  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rr-static-headers-'));
++  for (const name of ['src/rr', 'scripts', 'tgcloud/lib/rr', 'tgcloud/endpoints', 'public/admin.html', 'public/rr/admin.css']) {
++    fs.cpSync(path.join(root, name), path.join(dir, name), { recursive: true });
++  }
++  write(dir, 'config/rr-game-builds.json', JSON.stringify({ schemaVersion: 1, games: [{ id: 'v06', name: 'Fixture', source: 'src/rr-legacy-v06.html', adapter: 'v06', aliases: ['v1'] }] }));
++  write(dir, 'public/index.html', legacyFixture());
++  write(dir, 'public/access-gate.js', '// LOCAL TEST FIXTURE ONLY\n');
++  write(dir, 'tgcloud/schema.js', '// fixture\n');
++  write(dir, 'tgcloud.jsonc', JSON.stringify({ ...config(headers), ownerField: 'keep', static: { ...config(headers).static, redirects: [{ from: '/old', to: '/new', status: 301 }] } }));
++  return dir;
++}
++const run = (dir, file) => spawnSync(process.execPath, [path.join(dir, file)], { cwd: dir, env: { ...process.env, RR_ADMIN_IDS: '' }, encoding: 'utf8' });
++const cleanup = dir => fs.rmSync(dir, { recursive: true, force: true });
++const readConfig = dir => parseJSONC(fs.readFileSync(path.join(dir, 'tgcloud.jsonc'), 'utf8'));
++
++test('static headers: known bad config from the cloud log is rejected locally', () => {
++  assert.throws(() => validateStaticHeaders(config([blocked])), /X-Content-Type-Options/);
++});
++test('static headers: the corrected managed rule passes the local guard without mutation', () => {
++  const c = config([allowed]); const before = structuredClone(c);
++  validateStaticHeaders(c); assert.deepEqual(c, before);
++});
++for (const name of ['x-content-type-options', 'X-CONTENT-TYPE-OPTIONS', 'X-Content-Type-Options']) {
++  test('static headers: case-insensitive check for ' + name, () => {
++    assert.throws(() => validateStaticHeaders(config([{ path: '/admin.html', set: { [name]: 'nosniff' } }])), /static.headers\[0\]/);
++  });
++}
++test('static headers: setting the forbidden name to null is not a workaround', () => {
++  assert.throws(() => validateStaticHeaders(config([{ path: '/*', set: { 'X-Content-Type-Options': null } }])), /не заменяйте его на null/);
++});
++test('static headers: any retained path is checked, not just the catch-all', () => {
++  assert.throws(() => validateStaticHeaders(config([allowed, { ...blocked, path: '/rr/*' }])), /static.headers\[1\]/);
++});
++test('static headers: omitted headers and an empty array are supported', () => {
++  validateStaticHeaders({ static: { source: 'public' } }); validateStaticHeaders(config([]));
++});
++test('static headers: malformed header arrays/rules fail locally', () => {
++  for (const headers of [false, null, {}, 'text', [null], [false], [[]], [{ path: '/*' }], [{ path: '/*', set: [] }]]) {
++    assert.throws(() => validateStaticHeaders(config(headers)), /static.headers/);
++  }
++});
++test('static headers: unrelated header values are not silently deleted or rewritten', () => {
++  const c = config([{ path: '/old', set: { 'Referrer-Policy': null, 'Cache-Control': 'no-cache' } }]);
++  const before = structuredClone(c); validateStaticHeaders(c); assert.deepEqual(c, before);
++});
++test('static headers: actual prepare removes old managed header and preserves code/settings', () => {
++  const dir = fixture();
++  try {
++    const game = fs.readFileSync(path.join(dir, 'public/index.html'), 'utf8');
++    const result = run(dir, 'scripts/rr-prepare.cjs'); assert.equal(result.status, 0, result.stderr);
++    const c = readConfig(dir); assert.deepEqual(c.static.headers, [allowed]);
++    assert.equal(c.ownerField, 'keep'); assert.deepEqual(c.static.redirects, [{ from: '/old', to: '/new', status: 301 }]);
++    assert.equal(fs.readFileSync(path.join(dir, 'src/rr-legacy-v06.html'), 'utf8'), game);
++    validateStaticHeaders(c);
++  } finally { cleanup(dir); }
++});
++test('static headers: repeated prepare cannot reintroduce the blocked header or change game hashes', () => {
++  const dir = fixture();
++  try {
++    assert.equal(run(dir, 'scripts/rr-prepare.cjs').status, 0);
++    const first = fs.readFileSync(path.join(dir, 'tgcloud.jsonc'), 'utf8');
++    const manifest = fs.readFileSync(path.join(dir, 'config/rr-built-games.json'), 'utf8');
++    assert.equal(run(dir, 'scripts/rr-prepare.cjs').status, 0);
++    assert.equal(fs.readFileSync(path.join(dir, 'tgcloud.jsonc'), 'utf8'), first);
++    assert.equal(fs.readFileSync(path.join(dir, 'config/rr-built-games.json'), 'utf8'), manifest);
++  } finally { cleanup(dir); }
++});
++test('static headers: retained incompatible path stops preparation BEFORE any writes', () => {
++  const dir = fixture([blocked, { ...blocked, path: '/rr/*' }]);
++  try {
++    const watched = ['public/index.html', 'tgcloud.jsonc', 'tgcloud/schema.js'];
++    const before = watched.map(n => fs.readFileSync(path.join(dir, n), 'utf8'));
++    const result = run(dir, 'scripts/rr-prepare.cjs'); assert.notEqual(result.status, 0); assert.match(result.stderr, /X-Content-Type-Options/);
++    assert.deepEqual(watched.map(n => fs.readFileSync(path.join(dir, n), 'utf8')), before);
++    assert.ok(!fs.existsSync(path.join(dir, 'src/rr-legacy-v06.html')));
++  } finally { cleanup(dir); }
++});
++test('static headers: the standalone check stops early on forbidden project config', () => {
++  const dir = fixture();
++  try {
++    const result = run(dir, 'scripts/rr-check.cjs');
++    assert.notEqual(result.status, 0); assert.match(result.stderr, /STATIC CONFIG FAILED/);
++    assert.doesNotMatch(result.stdout, /TAP version/);
++  } finally { cleanup(dir); }
++});
++test('static headers: deploy still checks the prepared project before the first cloud call', () => {
++  const source = fs.readFileSync(path.join(root, 'scripts/rr-deploy.cjs'), 'utf8');
++  assert.ok(source.indexOf("node('scripts/rr-check.cjs')") < source.indexOf("cloud(['fetch'])"));
++});
+--- a/README.md
++++ b/README.md
+@@ -1,4 +1,11 @@
+ # Красная комната — админка, каталоги и релизы
++
++> **Исправление static headers — 21.10.2026.** Если публикация доходит до
++> `tgcloud push public/` и получает `Header can not be set: X-Content-Type-Options`,
++> используйте исправленный `scripts/rr-prepare.cjs`: он больше не добавляет
++> отклоняемый заголовок. Изменять только `tgcloud.jsonc` недостаточно.
++> См. [инструкцию](docs/FIX-STATIC-HEADERS.md). Базу и ключ заново настраивать не нужно.
++
+ 
+ Ветка обновления: `feature/admin-releases` · версия функции: `admin-releases-v1`.
+ Проект: https://github.com/ladohinpy/redrooms
+--- a/docs/FIX-STATIC-HEADERS.md
++++ b/docs/FIX-STATIC-HEADERS.md
+@@ -0,0 +1,129 @@
++# Исправление публикации интерфейса: X-Content-Type-Options
++
++Дата: 21 октября 2026. Основа: присланный main + предыдущий патч CLI snapshot.
++
++## Что подтвердил новый журнал
++
++В журнале «Вставленный текст(1).txt»:
++
++- Прошли 151 локальный тест.
++- `tgcloud fetch` получил 15 модулей, серверная revision 3.
++- Публикация серверных модулей: `No changes to deploy`.
++- `migrate --dry-run` показал создание `rr_admin_state`.
++- `migrate --safe` успешно применил одно изменение: таблица создана.
++- `tgcloud run endpoints/rrHealth` ответил:
++  `{ok:true,revision:1,defaultReleaseId:'classic-1',catalogs:1,games:1}`.
++- Ошибка появилась только при `tgcloud push public/`, на `Preparing static version`:
++  `Header can not be set: X-Content-Type-Options (field: headers, rule: 0)`.
++
++`revision:1` в ответе rrHealth — версия данных приложения, а revision 3 у fetch —
++ревизия опубликованных модулей. Это разные счётчики; само различие не означает конфликт.
++
++Успешный CLI run — контрольный запуск кода с CLI-контекстом в облаке и доступом к БД,
++а не полная проверка всех опубликованных endpoint из Mini App.
++В этом запуске серверный push не менял модули, поэтому журнал не доказывает,
++что предыдущий адаптер обработки false был задействован для нового изменяющего push.
++
++## Причина
++
++Сборщик `scripts/rr-prepare.cjs` формировал правило для всех статических файлов:
++
++```json
++{
++  "path": "/*",
++  "set": {
++    "Cache-Control": "no-store",
++    "X-Content-Type-Options": "nosniff",
++    "Referrer-Policy": "no-referrer"
++  }
++}
++```
++
++Сервер Telegram отказал в пользовательской установке `X-Content-Type-Options`.
++Это подтверждённое ограничение для данного запроса; из лога нельзя заключить,
++что Telegram сам выставляет этот заголовок или каков его полный список запретов.
++
++Изменение только сгенерированного tgcloud.jsonc неустойчиво: перед каждым релизом
++prepare снова формировал старое правило. Исправлен именно источник генерации.
++
++## Что делает патч
++
++1. Убирает `X-Content-Type-Options` из генерируемого общего правила.
++2. Убирает его из приложенного tgcloud.jsonc. Остаются `Cache-Control: no-store`
++   и `Referrer-Policy: no-referrer`.
++3. Добавляет локальную проверку известного несовместимого имени, включая другое
++   написание регистра и попытку указать null. Это не полная копия серверной проверки.
++4. Проверяет сохранившиеся правила для отдельных путей до записи файлов сборки.
++   Если в них есть запрещённое имя, сборка останавливается, не удаляя настройки молча.
++5. `rr-check.cjs` проверяет реальную конфигурацию перед тестами. В текущем deploy
++   эта проверка выполняется до первого облачного вызова.
++6. Добавляет 15 регрессионных тестов. Остальные 151 тест сохранены.
++
++Существующее поведение сборщика для общего правила `/*` сохранено: это управляемое
++правило, которое пересоздаётся при подготовке; частные правила сохраняются.
++Патч не меняет базу, административные права, проверку подписки, игровой код,
++каталог, старые игровые сборки, CLI-адаптер, ключ или workflow публикации.
++
++## Применение через GitHub
++
++1. Создайте от текущего main ветку `fix/static-headers`.
++2. Распакуйте ZIP и перенесите его содержимое в корень репозитория, сохранив пути.
++   Например, `scripts/rr-prepare.cjs` должен заменить файл в папке scripts,
++   а не появиться в корне. Сам ZIP загружать как исходник не нужно.
++3. Проверьте список изменений, сохраните commit, объедините PR с main.
++4. Запустите НОВЫЙ Run workflow: `Publish Red Room — Admin & Releases`, main,
++   подтверждение PUBLISH. Используйте прежние TGCLOUD_TOKEN и RR_ADMIN_IDS.
++
++Этот пакет предполагает, что предыдущий CLI snapshot fix уже установлен,
++как показывает строка `CLI 0.2.0 response guard ready` в последнем журнале.
++Он не заменяет весь проект и не отменяет предыдущие исправления.
++
++Если после присланного main вы самостоятельно меняли tgcloud.jsonc, не стирайте
++свои настройки целиком: обновите скрипты и тесты, затем выполните prepare,
++проверьте diff конфигурации. Игровые исходники и настройки доступа не трогайте.
++
++## Проверки перед публикацией
++
++В рабочей копии:
++
++```bash
++node scripts/rr-prepare.cjs
++node scripts/rr-check.cjs
++```
++
++Без RR_ADMIN_IDS локальная подготовка создаёт закрытый список администраторов
++без записей; это НЕ production-публикация. Штатный Action перед публикацией
++повторно выполняет `--production` с двумя ID из уже существующих настроек.
++
++Новый маркер проверки:
++
++```text
++STATIC HEADER PREFLIGHT OK (known X-Content-Type-Options restriction).
++```
++
++После уже успешной миграции ожидается отсутствие изменений схемы, если никто
++не менял её отдельно. Это не повод удалять или заново создавать таблицу.
++Не выполняйте сброс БД, не отключайте проверки и не используйте --force.
++Ручное подтверждение в BotFather для устранения этой ошибки не требуется.
++
++После завершения Action проверьте настоящий Mini App: вход участника и
++неподписанного пользователя, доступ двух администраторов, старт classic-1,
++открытие каталога и работу опубликованного интерфейса.
++
++## Что действительно проверено
++
++Локально проверены исходное состояние (151 тест) и исправленная сборка (166 тестов),
++повторная подготовка, сохранность исходной игры, игрового манифеста и ресурсов.
++Отдельно патч наложен на присланный ZIP main с предыдущим CLI-патчем и проверен
++повторно. Никакие команды push, migrate или run в живом Telegram здесь не выполнялись.
++Зелёные локальные тесты не гарантируют, что сервер примет все прочие параметры.
++Точная ошибка этого журнала устранена в конфигурации, которую отправит сборщик.
++
++## Источники и границы вывода
++
++- Журнал пользователя «Вставленный текст(1).txt», строки 913–992.
++- Содержимое присланного main и предыдущего патча CLI.
++- Официальная документация: https://core.telegram.org/bots/serverless
++  В просмотренном описании static.headers есть правила path/set и пример
++  Referrer-Policy. Полного перечня запрещённых имён в просмотренном фрагменте нет.
++  Основание удалить именно X-Content-Type-Options — прямой отказ сервера в логе.
