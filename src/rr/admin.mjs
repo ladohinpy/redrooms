@@ -1,4 +1,4 @@
-import {el,call,telegram,configureViewport,navigate,notify,saveFile,copy,stage,launchFailure} from './client.mjs';
+import {el,call,telegram,configureViewport,navigate,notify,saveFile,copy,stage,launchFailure,adminChrome,navigationWait} from './client.mjs';
 import {catalogToRows,splitTitles,simpleCatalog,setLink,SIMPLE_VERSION} from './simple.mjs';
 import {normalizeCatalog,LIMITS} from './domain.mjs';
 window.RR_MODULE_STARTED=true;
@@ -60,7 +60,18 @@ function render(){if(!model)return;const s=model.state,def=s.game_releases.find(
  const history=el('details',{class:'panel'},el('summary',{text:'История действий'}),...s.audit.slice(-15).reverse().map(a=>el('div',{class:'history-row',text:`${a.at} · ID ${a.actor} · ${a.summary} (${a.target})`})));
  app.replaceChildren(top,el('div',{class:'layout'},sidebar,el('div',{},editor(),history)));updateReview();
 }
-async function boot(){stage('вход в управление');try{const t=await telegram();configureViewport(t,'admin');identity=await call('rrAdminStatus');document.getElementById('identity').textContent=`Telegram ID: ${identity.userId} · ${SIMPLE_VERSION}`;
- if(!identity.isAdmin){app.replaceChildren(el('section',{class:'panel'},el('h2',{text:'Нет доступа к управлению'}),el('p',{text:'Ваш Telegram ID не включён в два разрешённых аккаунта.'})));return;}
- await fetchData();}catch(e){const box=el('section',{class:'panel'});app.replaceChildren(box);launchFailure(box,e,boot);}}
+async function boot(){
+ adminChrome();stage('вход в управление');
+ try {
+   const t=await telegram();configureViewport(t,'admin');
+   identity=await call('rrAdminStatus');
+   if(identity?.isAdmin !== true){
+     // Even a direct /admin URL is just the ordinary game for a non-administrator.
+     navigate('/',{rr_default:1},true);await navigationWait();return;
+   }
+   adminChrome(identity);await fetchData();
+ } catch(e) {
+   adminChrome();const box=el('section',{class:'panel'});app.replaceChildren(box);launchFailure(box,e,boot);
+ }
+}
 boot();

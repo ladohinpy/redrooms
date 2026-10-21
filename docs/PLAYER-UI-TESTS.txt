@@ -1,0 +1,1532 @@
+JAVASCRIPT SYNTAX OK (53 files).
+STATIC HEADER PREFLIGHT OK (known X-Content-Type-Options restriction).
+TAP version 13
+# Subtest: instrument inserts catalog gate before game starts and namespaces saves
+ok 1 - instrument inserts catalog gate before game starts and namespaces saves
+  ---
+  duration_ms: 2.479216
+  type: 'test'
+  ...
+# Subtest: instrument refuses ambiguous/missing marker, no regex guessing
+ok 2 - instrument refuses ambiguous/missing marker, no regex guessing
+  ---
+  duration_ms: 0.456821
+  type: 'test'
+  ...
+# Subtest: instrument refuses duplicate entry markers
+ok 3 - instrument refuses duplicate entry markers
+  ---
+  duration_ms: 0.235862
+  type: 'test'
+  ...
+# Subtest: extract actual embedded JSON
+ok 4 - extract actual embedded JSON
+  ---
+  duration_ms: 1.526366
+  type: 'test'
+  ...
+# Subtest: JSONC preserves URL and quoted comma text
+ok 5 - JSONC preserves URL and quoted comma text
+  ---
+  duration_ms: 0.493726
+  type: 'test'
+  ...
+# Subtest: preparation preserves source and existing modules, produces pinned code
+ok 6 - preparation preserves source and existing modules, produces pinned code
+  ---
+  duration_ms: 83.409409
+  type: 'test'
+  ...
+# Subtest: build is repeatable; old content hashes and save namespaces stay stable
+ok 7 - build is repeatable; old content hashes and save namespaces stay stable
+  ---
+  duration_ms: 134.833496
+  type: 'test'
+  ...
+# Subtest: production refuses missing IDs without touching original game
+ok 8 - production refuses missing IDs without touching original game
+  ---
+  duration_ms: 58.154797
+  type: 'test'
+  ...
+# Subtest: production accepts exactly two numeric IDs and keeps them out of public files
+ok 9 - production accepts exactly two numeric IDs and keeps them out of public files
+  ---
+  duration_ms: 72.810674
+  type: 'test'
+  ...
+# Subtest: source change under old game ID is rejected; root launcher remains intact
+ok 10 - source change under old game ID is rejected; root launcher remains intact
+  ---
+  duration_ms: 125.666617
+  type: 'test'
+  ...
+# Subtest: existing CLI gate dependency is snapshotted, not silently replaced
+ok 11 - existing CLI gate dependency is snapshotted, not silently replaced
+  ---
+  duration_ms: 140.412945
+  type: 'test'
+  ...
+# Subtest: separately identified second build can coexist without deleting the first
+ok 12 - separately identified second build can coexist without deleting the first
+  ---
+  duration_ms: 139.328537
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: undefined
+ok 13 - CLI guard: no modules section is preserved: undefined
+  ---
+  duration_ms: 1.12713
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: null
+ok 14 - CLI guard: no modules section is preserved: null
+  ---
+  duration_ms: 0.372004
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: {}
+ok 15 - CLI guard: no modules section is preserved: {}
+  ---
+  duration_ms: 0.153088
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: {"revision":3}
+ok 16 - CLI guard: no modules section is preserved: {"revision":3}
+  ---
+  duration_ms: 0.137165
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: {"canonical_modules":null}
+ok 17 - CLI guard: no modules section is preserved: {"canonical_modules":null}
+  ---
+  duration_ms: 0.106298
+  type: 'test'
+  ...
+# Subtest: CLI guard: ordinary string map and response identity stay unchanged
+ok 18 - CLI guard: ordinary string map and response identity stay unchanged
+  ---
+  duration_ms: 0.557251
+  type: 'test'
+  ...
+# Subtest: CLI guard: false triggers ONE read, same revision, full module set; no mutation
+ok 19 - CLI guard: false triggers ONE read, same revision, full module set; no mutation
+  ---
+  duration_ms: 0.909075
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: true
+ok 20 - CLI guard: unknown source type fails closed: true
+  ---
+  duration_ms: 0.470732
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: 7
+ok 21 - CLI guard: unknown source type fails closed: 7
+  ---
+  duration_ms: 0.373597
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: {}
+ok 22 - CLI guard: unknown source type fails closed: {}
+  ---
+  duration_ms: 0.398264
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: []
+ok 23 - CLI guard: unknown source type fails closed: []
+  ---
+  duration_ms: 0.220759
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: null
+ok 24 - CLI guard: unknown source type fails closed: null
+  ---
+  duration_ms: 0.093139
+  type: 'test'
+  ...
+# Subtest: CLI guard: invalid map rejected: false
+ok 25 - CLI guard: invalid map rejected: false
+  ---
+  duration_ms: 0.132868
+  type: 'test'
+  ...
+# Subtest: CLI guard: invalid map rejected: []
+ok 26 - CLI guard: invalid map rejected: []
+  ---
+  duration_ms: 0.124616
+  type: 'test'
+  ...
+# Subtest: CLI guard: invalid map rejected: "text"
+ok 27 - CLI guard: invalid map rejected: "text"
+  ---
+  duration_ms: 0.070806
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: undefined
+ok 28 - CLI guard: no unversioned recovery: undefined
+  ---
+  duration_ms: 0.222272
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: null
+ok 29 - CLI guard: no unversioned recovery: null
+  ---
+  duration_ms: 0.14744
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: "3"
+ok 30 - CLI guard: no unversioned recovery: "3"
+  ---
+  duration_ms: 0.076834
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: -1
+ok 31 - CLI guard: no unversioned recovery: -1
+  ---
+  duration_ms: 0.070685
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: 3.5
+ok 32 - CLI guard: no unversioned recovery: 3.5
+  ---
+  duration_ms: 0.05368
+  type: 'test'
+  ...
+# Subtest: CLI guard: concurrent or unknown revision stops: 2
+ok 33 - CLI guard: concurrent or unknown revision stops: 2
+  ---
+  duration_ms: 0.121471
+  type: 'test'
+  ...
+# Subtest: CLI guard: concurrent or unknown revision stops: 4
+ok 34 - CLI guard: concurrent or unknown revision stops: 4
+  ---
+  duration_ms: 0.066339
+  type: 'test'
+  ...
+# Subtest: CLI guard: concurrent or unknown revision stops: undefined
+ok 35 - CLI guard: concurrent or unknown revision stops: undefined
+  ---
+  duration_ms: 0.059709
+  type: 'test'
+  ...
+# Subtest: CLI guard: concurrent or unknown revision stops: "3"
+ok 36 - CLI guard: concurrent or unknown revision stops: "3"
+  ---
+  duration_ms: 0.050455
+  type: 'test'
+  ...
+# Subtest: CLI guard: GET failure cannot become success; raw token/error is not leaked
+ok 37 - CLI guard: GET failure cannot become success; raw token/error is not leaked
+  ---
+  duration_ms: 0.27511
+  type: 'test'
+  ...
+# Subtest: CLI guard: a second false is not stringified or silently ignored
+ok 38 - CLI guard: a second false is not stringified or silently ignored
+  ---
+  duration_ms: 0.125488
+  type: 'test'
+  ...
+# Subtest: CLI guard: missing remote module stops
+ok 39 - CLI guard: missing remote module stops
+  ---
+  duration_ms: 0.142722
+  type: 'test'
+  ...
+# Subtest: CLI guard: extra remote module stops
+ok 40 - CLI guard: extra remote module stops
+  ---
+  duration_ms: 0.128151
+  type: 'test'
+  ...
+# Subtest: CLI guard: invalid manifest stops
+ok 41 - CLI guard: invalid manifest stops
+  ---
+  duration_ms: 0.103684
+  type: 'test'
+  ...
+# Subtest: CLI guard: empty source is legitimate text
+ok 42 - CLI guard: empty source is legitimate text
+  ---
+  duration_ms: 0.98628
+  type: 'test'
+  ...
+# Subtest: CLI guard: static-only response recovery preserves named modules
+ok 43 - CLI guard: static-only response recovery preserves named modules
+  ---
+  duration_ms: 0.260068
+  type: 'test'
+  ...
+# Subtest: CLI patch: precise anchor, no effect outside response handling, idempotent
+ok 44 - CLI patch: precise anchor, no effect outside response handling, idempotent
+  ---
+  duration_ms: 0.298465
+  type: 'test'
+  ...
+# Subtest: CLI patch: refuses changed or repeated contract, no guessing
+ok 45 - CLI patch: refuses changed or repeated contract, no guessing
+  ---
+  duration_ms: 0.155532
+  type: 'test'
+  ...
+# Subtest: CLI patch: CRLF source and path with spaces are supported
+ok 46 - CLI patch: CRLF source and path with spaces are supported
+  ---
+  duration_ms: 0.083865
+  type: 'test'
+  ...
+# Subtest: CLI patch: installed dependency gets a syntax-checked fix, rejects other version
+ok 47 - CLI patch: installed dependency gets a syntax-checked fix, rejects other version
+  ---
+  duration_ms: 44.94182
+  type: 'test'
+  ...
+# Subtest: CLI fixture: reproduce false/writeFileSync error, then repair without redeploy
+ok 48 - CLI fixture: reproduce false/writeFileSync error, then repair without redeploy
+  ---
+  duration_ms: 100.560777
+  type: 'test'
+  ...
+# Subtest: CLI fixture: revision mismatch cannot overwrite any snapshot file
+ok 49 - CLI fixture: revision mismatch cannot overwrite any snapshot file
+  ---
+  duration_ms: 43.33176
+  type: 'test'
+  ...
+# Subtest: Deployment still uses fetch, dry-run, safe migration and health before frontend
+ok 50 - Deployment still uses fetch, dry-run, safe migration and health before frontend
+  ---
+  duration_ms: 0.296112
+  type: 'test'
+  ...
+# Subtest: initial catalog and game survive without changing seed
+ok 51 - initial catalog and game survive without changing seed
+  ---
+  duration_ms: 4.574479
+  type: 'test'
+  ...
+# Subtest: imports default to pending, not approved
+ok 52 - imports default to pending, not approved
+  ---
+  duration_ms: 0.276722
+  type: 'test'
+  ...
+# Subtest: unreviewed catalog cannot be published
+ok 53 - unreviewed catalog cannot be published
+  ---
+  duration_ms: 0.690769
+  type: 'test'
+  ...
+# Subtest: excluded films and disabled directors are not playable
+ok 54 - excluded films and disabled directors are not playable
+  ---
+  duration_ms: 0.325855
+  type: 'test'
+  ...
+# Subtest: empty catalog allowed only in draft
+ok 55 - empty catalog allowed only in draft
+  ---
+  duration_ms: 0.295881
+  type: 'test'
+  ...
+# Subtest: reject duplicate director ID
+ok 56 - reject duplicate director ID
+  ---
+  duration_ms: 0.286948
+  type: 'test'
+  ...
+# Subtest: reject duplicate film ID globally
+ok 57 - reject duplicate film ID globally
+  ---
+  duration_ms: 0.199027
+  type: 'test'
+  ...
+# Subtest: reject invalid ID
+ok 58 - reject invalid ID
+  ---
+  duration_ms: 0.185757
+  type: 'test'
+  ...
+# Subtest: reject string year
+ok 59 - reject string year
+  ---
+  duration_ms: 0.485724
+  type: 'test'
+  ...
+# Subtest: reject fractional year
+ok 60 - reject fractional year
+  ---
+  duration_ms: 0.554156
+  type: 'test'
+  ...
+# Subtest: reject too old year
+ok 61 - reject too old year
+  ---
+  duration_ms: 0.380707
+  type: 'test'
+  ...
+# Subtest: reject far future year
+ok 62 - reject far future year
+  ---
+  duration_ms: 0.22777
+  type: 'test'
+  ...
+# Subtest: reject empty title
+ok 63 - reject empty title
+  ---
+  duration_ms: 0.207609
+  type: 'test'
+  ...
+# Subtest: reject long title
+ok 64 - reject long title
+  ---
+  duration_ms: 0.634666
+  type: 'test'
+  ...
+# Subtest: reject bad film state
+ok 65 - reject bad film state
+  ---
+  duration_ms: 0.273007
+  type: 'test'
+  ...
+# Subtest: reject schema mismatch
+ok 66 - reject schema mismatch
+  ---
+  duration_ms: 0.128551
+  type: 'test'
+  ...
+# Subtest: reject nonboolean director
+ok 67 - reject nonboolean director
+  ---
+  duration_ms: 0.164095
+  type: 'test'
+  ...
+# Subtest: reject too many directors
+ok 68 - reject too many directors
+  ---
+  duration_ms: 0.203142
+  type: 'test'
+  ...
+# Subtest: reject too many films per director
+ok 69 - reject too many films per director
+  ---
+  duration_ms: 1.177225
+  type: 'test'
+  ...
+# Subtest: 500 films maximum across directors
+ok 70 - 500 films maximum across directors
+  ---
+  duration_ms: 2.689459
+  type: 'test'
+  ...
+# Subtest: unknown fields are stripped; hostile text stays data
+ok 71 - unknown fields are stripped; hostile text stays data
+  ---
+  duration_ms: 0.224464
+  type: 'test'
+  ...
+# Subtest: title/year possible duplicates produce warnings, not silent deletion
+ok 72 - title/year possible duplicates produce warnings, not silent deletion
+  ---
+  duration_ms: 0.318735
+  type: 'test'
+  ...
+# Subtest: UTF-8 counting equals Node for Cyrillic and emoji
+ok 73 - UTF-8 counting equals Node for Cyrillic and emoji
+  ---
+  duration_ms: 0.1947
+  type: 'test'
+  ...
+# Subtest: reject oversized file even in unused fields
+ok 74 - reject oversized file even in unused fields
+  ---
+  duration_ms: 24.045855
+  type: 'test'
+  ...
+# Subtest: reject arbitrary game URL
+ok 75 - reject arbitrary game URL
+  ---
+  duration_ms: 0.188561
+  type: 'test'
+  ...
+# Subtest: reject initial alias collisions
+ok 76 - reject initial alias collisions
+  ---
+  duration_ms: 0.200559
+  type: 'test'
+  ...
+# Subtest: published catalog is immutable
+ok 77 - published catalog is immutable
+  ---
+  duration_ms: 0.67781
+  type: 'test'
+  ...
+# Subtest: clone edits never mutate original
+ok 78 - clone edits never mutate original
+  ---
+  duration_ms: 0.366026
+  type: 'test'
+  ...
+# Subtest: publish catalog and release do not switch global default
+ok 79 - publish catalog and release do not switch global default
+  ---
+  duration_ms: 0.689537
+  type: 'test'
+  ...
+# Subtest: explicit default switch updates game pointer and audit together
+ok 80 - explicit default switch updates game pointer and audit together
+  ---
+  duration_ms: 0.822306
+  type: 'test'
+  ...
+# Subtest: published release cannot be recreated under same ID
+ok 81 - published release cannot be recreated under same ID
+  ---
+  duration_ms: 0.573905
+  type: 'test'
+  ...
+# Subtest: draft catalog cannot be bound to a release
+ok 82 - draft catalog cannot be bound to a release
+  ---
+  duration_ms: 0.226778
+  type: 'test'
+  ...
+# Subtest: draft release hidden from players and previewable by admin
+ok 83 - draft release hidden from players and previewable by admin
+  ---
+  duration_ms: 1.005408
+  type: 'test'
+  ...
+# Subtest: default release cannot be archived
+ok 84 - default release cannot be archived
+  ---
+  duration_ms: 0.170664
+  type: 'test'
+  ...
+# Subtest: old release can be archived after both pointers switch
+ok 85 - old release can be archived after both pointers switch
+  ---
+  duration_ms: 0.671811
+  type: 'test'
+  ...
+# Subtest: old release still resolves after new default chosen
+ok 86 - old release still resolves after new default chosen
+  ---
+  duration_ms: 0.535057
+  type: 'test'
+  ...
+# Subtest: game override uses selected published release; v1 aliases v06
+ok 87 - game override uses selected published release; v1 aliases v06
+  ---
+  duration_ms: 0.687034
+  type: 'test'
+  ...
+# Subtest: missing release errors instead of falling back
+ok 88 - missing release errors instead of falling back
+  ---
+  duration_ms: 0.122072
+  type: 'test'
+  ...
+# Subtest: missing code hash does not load another build
+ok 89 - missing code hash does not load another build
+  ---
+  duration_ms: 0.237865
+  type: 'test'
+  ...
+# Subtest: sync refuses replacing deployed code under existing ID
+ok 90 - sync refuses replacing deployed code under existing ID
+  ---
+  duration_ms: 0.612613
+  type: 'test'
+  ...
+# Subtest: audit keeps latest 200 actions
+ok 91 - audit keeps latest 200 actions
+  ---
+  duration_ms: 50.396636
+  type: 'test'
+  ...
+# Subtest: selector {}
+ok 92 - selector {}
+  ---
+  duration_ms: 0.229952
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"admin"}
+ok 93 - selector {"startParam":"admin"}
+  ---
+  duration_ms: 0.059298
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"release_classic-1"}
+ok 94 - selector {"startParam":"release_classic-1"}
+  ---
+  duration_ms: 0.049975
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"game_v06"}
+ok 95 - selector {"startParam":"game_v06"}
+  ---
+  duration_ms: 0.042734
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"campaign42"}
+ok 96 - selector {"startParam":"campaign42"}
+  ---
+  duration_ms: 0.139418
+  type: 'test'
+  ...
+# Subtest: selector {"game":"v1","startParam":"release_other"}
+ok 97 - selector {"game":"v1","startParam":"release_other"}
+  ---
+  duration_ms: 0.049203
+  type: 'test'
+  ...
+# Subtest: selector {"release":"a","game":"b","startParam":"admin"}
+ok 98 - selector {"release":"a","game":"b","startParam":"admin"}
+  ---
+  duration_ms: 0.039669
+  type: 'test'
+  ...
+# Subtest: invalid selector {"release":""}
+ok 99 - invalid selector {"release":""}
+  ---
+  duration_ms: 0.125918
+  type: 'test'
+  ...
+# Subtest: invalid selector {"release":"../x"}
+ok 100 - invalid selector {"release":"../x"}
+  ---
+  duration_ms: 0.045728
+  type: 'test'
+  ...
+# Subtest: invalid selector {"game":"<script>"}
+ok 101 - invalid selector {"game":"<script>"}
+  ---
+  duration_ms: 0.038408
+  type: 'test'
+  ...
+# Subtest: invalid selector {"startParam":"release_"}
+ok 102 - invalid selector {"startParam":"release_"}
+  ---
+  duration_ms: 0.043004
+  type: 'test'
+  ...
+# Subtest: invalid selector {"startParam":"game_"}
+ok 103 - invalid selector {"startParam":"game_"}
+  ---
+  duration_ms: 0.04007
+  type: 'test'
+  ...
+# Subtest: JSON import always requires moderation
+ok 104 - JSON import always requires moderation
+  ---
+  duration_ms: 1.458444
+  type: 'test'
+  ...
+# Subtest: CSV with BOM/Cyrillic/CRLF/quoted separator
+ok 105 - CSV with BOM/Cyrillic/CRLF/quoted separator
+  ---
+  duration_ms: 0.654626
+  type: 'test'
+  ...
+# Subtest: CSV comma separator
+ok 106 - CSV comma separator
+  ---
+  duration_ms: 0.28854
+  type: 'test'
+  ...
+# Subtest: CSV escaped quote and embedded newline
+ok 107 - CSV escaped quote and embedded newline
+  ---
+  duration_ms: 0.268961
+  type: 'test'
+  ...
+# Subtest: reject CSV missing columns
+ok 108 - reject CSV missing columns
+  ---
+  duration_ms: 0.678982
+  type: 'test'
+  ...
+# Subtest: reject CSV bad year
+ok 109 - reject CSV bad year
+  ---
+  duration_ms: 0.123193
+  type: 'test'
+  ...
+# Subtest: reject CSV unclosed quote
+ok 110 - reject CSV unclosed quote
+  ---
+  duration_ms: 2.52867
+  type: 'test'
+  ...
+# Subtest: reject CSV duplicate headers
+ok 111 - reject CSV duplicate headers
+  ---
+  duration_ms: 0.130354
+  type: 'test'
+  ...
+# Subtest: reject CSV duplicate IDs
+ok 112 - reject CSV duplicate IDs
+  ---
+  duration_ms: 0.491723
+  type: 'test'
+  ...
+# Subtest: export CSV guards spreadsheet formulas and remains quoted UTF-8
+ok 113 - export CSV guards spreadsheet formulas and remains quoted UTF-8
+  ---
+  duration_ms: 0.640084
+  type: 'test'
+  ...
+# Subtest: JSON syntax error is readable
+ok 114 - JSON syntax error is readable
+  ---
+  duration_ms: 0.256643
+  type: 'test'
+  ...
+# Subtest: export also neutralizes formula prefixes after whitespace
+ok 115 - export also neutralizes formula prefixes after whitespace
+  ---
+  duration_ms: 0.138386
+  type: 'test'
+  ...
+# Subtest: player subscription screen has named channel, exactly two buttons, no administrative controls
+ok 116 - player subscription screen has named channel, exactly two buttons, no administrative controls
+  ---
+  duration_ms: 2.847425
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: TIMEOUT
+ok 117 - player error copy never echoes backend details: TIMEOUT
+  ---
+  duration_ms: 0.498533
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: CHECK_UNAVAILABLE
+ok 118 - player error copy never echoes backend details: CHECK_UNAVAILABLE
+  ---
+  duration_ms: 0.150674
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: INTERNAL_ERROR
+ok 119 - player error copy never echoes backend details: INTERNAL_ERROR
+  ---
+  duration_ms: 0.140699
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: FORBIDDEN
+ok 120 - player error copy never echoes backend details: FORBIDDEN
+  ---
+  duration_ms: 0.197404
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: NOT_FOUND
+ok 121 - player error copy never echoes backend details: NOT_FOUND
+  ---
+  duration_ms: 0.132718
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: NAVIGATION_LOOP
+ok 122 - player error copy never echoes backend details: NAVIGATION_LOOP
+  ---
+  duration_ms: 0.217624
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: NAVIGATION_BLOCKED
+ok 123 - player error copy never echoes backend details: NAVIGATION_BLOCKED
+  ---
+  duration_ms: 0.141692
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: AUTH_REQUIRED
+ok 124 - player error copy never echoes backend details: AUTH_REQUIRED
+  ---
+  duration_ms: 0.441679
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: undefined
+ok 125 - player error copy never echoes backend details: undefined
+  ---
+  duration_ms: 0.428849
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: javascript:alert(1)
+ok 126 - untrusted join URL is not a public link: javascript:alert(1)
+  ---
+  duration_ms: 0.262301
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: https://evil.test
+ok 127 - untrusted join URL is not a public link: https://evil.test
+  ---
+  duration_ms: 0.088642
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: https://t.me/okay?token=secret
+ok 128 - untrusted join URL is not a public link: https://t.me/okay?token=secret
+  ---
+  duration_ms: 0.077936
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: //evil.test
+ok 129 - untrusted join URL is not a public link: //evil.test
+  ---
+  duration_ms: 0.059829
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: https://t.me/okay/../else
+ok 130 - untrusted join URL is not a public link: https://t.me/okay/../else
+  ---
+  duration_ms: 0.061011
+  type: 'test'
+  ...
+# Subtest: public retry does not navigate to management
+ok 131 - public retry does not navigate to management
+  ---
+  duration_ms: 0.192086
+  type: 'test'
+  ...
+# Subtest: admin initial HTML is neutral even before JS and on script failure
+ok 132 - admin initial HTML is neutral even before JS and on script failure
+  ---
+  duration_ms: 0.260649
+  type: 'test'
+  ...
+# Subtest: admin-advanced initial HTML is neutral even before JS and on script failure
+ok 133 - admin-advanced initial HTML is neutral even before JS and on script failure
+  ---
+  duration_ms: 0.105898
+  type: 'test'
+  ...
+# Subtest: launcher HTML has no management link, version banner or debug fallback
+ok 134 - launcher HTML has no management link, version banner or debug fallback
+  ---
+  duration_ms: 0.191025
+  type: 'test'
+  ...
+# Subtest: default launch overrides retained unsigned admin hint
+ok 135 - default launch overrides retained unsigned admin hint
+  ---
+  duration_ms: 0.197645
+  type: 'test'
+  ...
+# Subtest: outsider admin deep-link is ordinary subscribed game, not an admin refusal page
+ok 136 - outsider admin deep-link is ordinary subscribed game, not an admin refusal page
+  ---
+  duration_ms: 1.797439
+  type: 'test'
+  ...
+# Subtest: outsider admin deep-link still requires subscription
+ok 137 - outsider admin deep-link still requires subscription
+  ---
+  duration_ms: 0.443411
+  type: 'test'
+  ...
+# Subtest: actual allowed admin retains private direct entry: 101
+ok 138 - actual allowed admin retains private direct entry: 101
+  ---
+  duration_ms: 0.553335
+  type: 'test'
+  ...
+# Subtest: actual allowed admin retains private direct entry: 202
+ok 139 - actual allowed admin retains private direct entry: 202
+  ---
+  duration_ms: 0.662197
+  type: 'test'
+  ...
+# Subtest: private data are not read on denied administrative request
+ok 140 - private data are not read on denied administrative request
+  ---
+  duration_ms: 0.229763
+  type: 'test'
+  ...
+# Subtest: public UI runtime preserves release/game identity for v06
+ok 141 - public UI runtime preserves release/game identity for v06
+  ---
+  duration_ms: 0.65079
+  type: 'test'
+  ...
+# Subtest: public UI runtime preserves release/game identity for v07-tables
+ok 142 - public UI runtime preserves release/game identity for v07-tables
+  ---
+  duration_ms: 0.364113
+  type: 'test'
+  ...
+# Subtest: runtime repair never swaps an unknown user build
+ok 143 - runtime repair never swaps an unknown user build
+  ---
+  duration_ms: 0.42968
+  type: 'test'
+  ...
+# Subtest: public source and prepared assets match; next preparation cannot restore debug widgets
+ok 144 - public source and prepared assets match; next preparation cannot restore debug widgets
+  ---
+  duration_ms: 0.641256
+  type: 'test'
+  ...
+# Subtest: schema fix: empty schema gets a direct table declaration, not a project import
+ok 145 - schema fix: empty schema gets a direct table declaration, not a project import
+  ---
+  duration_ms: 2.891
+  type: 'test'
+  ...
+# Subtest: schema fix: removes the exact legacy generated export and preserves owner content
+ok 146 - schema fix: removes the exact legacy generated export and preserves owner content
+  ---
+  duration_ms: 0.256883
+  type: 'test'
+  ...
+# Subtest: schema fix: repeated preparation is byte-for-byte stable
+ok 147 - schema fix: repeated preparation is byte-for-byte stable
+  ---
+  duration_ms: 0.193208
+  type: 'test'
+  ...
+# Subtest: schema fix: CRLF and double-quoted legacy export are supported
+ok 148 - schema fix: CRLF and double-quoted legacy export are supported
+  ---
+  duration_ms: 0.155261
+  type: 'test'
+  ...
+# Subtest: schema fix: a custom rrAdminState declaration is not overwritten
+ok 149 - schema fix: a custom rrAdminState declaration is not overwritten
+  ---
+  duration_ms: 0.724981
+  type: 'test'
+  ...
+# Subtest: schema fix: duplicate legacy exports fail closed
+ok 150 - schema fix: duplicate legacy exports fail closed
+  ---
+  duration_ms: 0.400527
+  type: 'test'
+  ...
+# Subtest: schema fix: partial and duplicate managed markers fail closed
+ok 151 - schema fix: partial and duplicate managed markers fail closed
+  ---
+  duration_ms: 0.238816
+  type: 'test'
+  ...
+# Subtest: schema fix: hand-edited managed columns are never silently reset
+ok 152 - schema fix: hand-edited managed columns are never silently reset
+  ---
+  duration_ms: 0.20093
+  type: 'test'
+  ...
+# Subtest: schema fix: mixed old and new forms fail closed
+ok 153 - schema fix: mixed old and new forms fail closed
+  ---
+  duration_ms: 0.981793
+  type: 'test'
+  ...
+# Subtest: schema fix: isolated local evaluation rejects the old dependency and accepts the new table
+ok 154 - schema fix: isolated local evaluation rejects the old dependency and accepts the new table
+  ---
+  duration_ms: 3.645795
+  type: 'test'
+  ...
+# Subtest: schema fix: unrelated SDK table uses its own names without collisions
+ok 155 - schema fix: unrelated SDK table uses its own names without collisions
+  ---
+  duration_ms: 1.788266
+  type: 'test'
+  ...
+# Subtest: schema fix: runtime compatibility module points TO root schema, not vice versa
+ok 156 - schema fix: runtime compatibility module points TO root schema, not vice versa
+  ---
+  duration_ms: 1.782597
+  type: 'test'
+  ...
+# Subtest: schema fix: actual prepare repairs the legacy root and cannot reintroduce it on next build
+ok 157 - schema fix: actual prepare repairs the legacy root and cannot reintroduce it on next build
+  ---
+  duration_ms: 126.301203
+  type: 'test'
+  ...
+# Subtest: actual send-link endpoint takes recipient ONLY from verified context
+ok 158 - actual send-link endpoint takes recipient ONLY from verified context
+  ---
+  duration_ms: 6.182777
+  type: 'test'
+  ...
+# Subtest: actual send-link endpoint checks admin before Bot API write
+ok 159 - actual send-link endpoint checks admin before Bot API write
+  ---
+  duration_ms: 1.926102
+  type: 'test'
+  ...
+# Subtest: actual send-link endpoint refuses unpublished release
+ok 160 - actual send-link endpoint refuses unpublished release
+  ---
+  duration_ms: 0.914172
+  type: 'test'
+  ...
+# Subtest: actual send-link endpoint hides underlying Bot API error
+ok 161 - actual send-link endpoint hides underlying Bot API error
+  ---
+  duration_ms: 1.130936
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects null
+ok 162 - verified ctx rejects null
+  ---
+  duration_ms: 1.704481
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects undefined
+ok 163 - verified ctx rejects undefined
+  ---
+  duration_ms: 0.126598
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 101
+ok 164 - verified ctx rejects 101
+  ---
+  duration_ms: 0.109883
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects -1
+ok 165 - verified ctx rejects -1
+  ---
+  duration_ms: 0.149944
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 0
+ok 166 - verified ctx rejects 0
+  ---
+  duration_ms: 0.078838
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 1.1
+ok 167 - verified ctx rejects 1.1
+  ---
+  duration_ms: 0.064466
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects Infinity
+ok 168 - verified ctx rejects Infinity
+  ---
+  duration_ms: 0.117124
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 9007199254740992
+ok 169 - verified ctx rejects 9007199254740992
+  ---
+  duration_ms: 0.967493
+  type: 'test'
+  ...
+# Subtest: status exposes only caller identity, not entire allowlist
+ok 170 - status exposes only caller identity, not entire allowlist
+  ---
+  duration_ms: 0.968865
+  type: 'test'
+  ...
+# Subtest: forged user ID in input cannot read admin data
+ok 171 - forged user ID in input cannot read admin data
+  ---
+  duration_ms: 0.600606
+  type: 'test'
+  ...
+# Subtest: forged ctx field inside input cannot issue command
+ok 172 - forged ctx field inside input cannot issue command
+  ---
+  duration_ms: 0.274098
+  type: 'test'
+  ...
+# Subtest: both explicit admins have access
+ok 173 - both explicit admins have access
+  ---
+  duration_ms: 1.380919
+  type: 'test'
+  ...
+# Subtest: subscriber false fails closed with trusted join URL
+ok 174 - subscriber false fails closed with trusted join URL
+  ---
+  duration_ms: 0.364293
+  type: 'test'
+  ...
+# Subtest: subscription network error does not become access
+ok 175 - subscription network error does not become access
+  ---
+  duration_ms: 0.150174
+  type: 'test'
+  ...
+# Subtest: verified start_param selects requested release
+ok 176 - verified start_param selects requested release
+  ---
+  duration_ms: 1.098298
+  type: 'test'
+  ...
+# Subtest: input start_param cannot bypass selector source
+ok 177 - input start_param cannot bypass selector source
+  ---
+  duration_ms: 0.270914
+  type: 'test'
+  ...
+# Subtest: admin deep-link is not an admin grant
+ok 178 - admin deep-link is not an admin grant
+  ---
+  duration_ms: 0.340417
+  type: 'test'
+  ...
+# Subtest: two admins saving same revision: exactly one atomic success
+ok 179 - two admins saving same revision: exactly one atomic success
+  ---
+  duration_ms: 4.982748
+  type: 'test'
+  ...
+# Subtest: missing revision rejected, no mutation
+ok 180 - missing revision rejected, no mutation
+  ---
+  duration_ms: 0.861324
+  type: 'test'
+  ...
+# Subtest: invalid command leaves revision and data unchanged
+ok 181 - invalid command leaves revision and data unchanged
+  ---
+  duration_ms: 0.607606
+  type: 'test'
+  ...
+# Subtest: initialization race never resets earlier writes
+ok 182 - initialization race never resets earlier writes
+  ---
+  duration_ms: 0.294138
+  type: 'test'
+  ...
+# Subtest: four tables: new cassettes have null year, no fabricated values
+ok 183 - four tables: new cassettes have null year, no fabricated values
+  ---
+  duration_ms: 4.515562
+  type: 'test'
+  ...
+# Subtest: four tables: separate lines support CRLF and BOM
+ok 184 - four tables: separate lines support CRLF and BOM
+  ---
+  duration_ms: 0.906872
+  type: 'test'
+  ...
+# Subtest: four tables: automatic semicolon parsing
+ok 185 - four tables: automatic semicolon parsing
+  ---
+  duration_ms: 0.279697
+  type: 'test'
+  ...
+# Subtest: four tables: commas inside titles are never guessed
+ok 186 - four tables: commas inside titles are never guessed
+  ---
+  duration_ms: 0.225066
+  type: 'test'
+  ...
+# Subtest: four tables: comma mode explicitly supported
+ok 187 - four tables: comma mode explicitly supported
+  ---
+  duration_ms: 0.208661
+  type: 'test'
+  ...
+# Subtest: four tables: duplicate answer across tables rejected
+ok 188 - four tables: duplicate answer across tables rejected
+  ---
+  duration_ms: 0.793743
+  type: 'test'
+  ...
+# Subtest: four tables: duplicate within a table rejected
+ok 189 - four tables: duplicate within a table rejected
+  ---
+  duration_ms: 0.310032
+  type: 'test'
+  ...
+# Subtest: four tables: NFC duplicate rejected
+ok 190 - four tables: NFC duplicate rejected
+  ---
+  duration_ms: 0.279958
+  type: 'test'
+  ...
+# Subtest: four tables: empty or repeated table labels rejected on publication
+ok 191 - four tables: empty or repeated table labels rejected on publication
+  ---
+  duration_ms: 0.580625
+  type: 'test'
+  ...
+# Subtest: four tables: no empty published table
+ok 192 - four tables: no empty published table
+  ---
+  duration_ms: 0.547396
+  type: 'test'
+  ...
+# Subtest: four tables: drafts can be incomplete
+ok 193 - four tables: drafts can be incomplete
+  ---
+  duration_ms: 0.371124
+  type: 'test'
+  ...
+# Subtest: four tables: too few or too many rows refused
+ok 194 - four tables: too few or too many rows refused
+  ---
+  duration_ms: 0.259777
+  type: 'test'
+  ...
+# Subtest: four tables: metadata and film IDs are kept when re-editing a draft
+ok 195 - four tables: metadata and film IDs are kept when re-editing a draft
+  ---
+  duration_ms: 0.427347
+  type: 'test'
+  ...
+# Subtest: four tables: deterministic IDs and round-trip titles
+ok 196 - four tables: deterministic IDs and round-trip titles
+  ---
+  duration_ms: 0.539163
+  type: 'test'
+  ...
+# Subtest: simple command: save is atomic and leaves default alone
+ok 197 - simple command: save is atomic and leaves default alone
+  ---
+  duration_ms: 2.691473
+  type: 'test'
+  ...
+# Subtest: simple command: publish by link creates catalogue and release together
+ok 198 - simple command: publish by link creates catalogue and release together
+  ---
+  duration_ms: 1.452515
+  type: 'test'
+  ...
+# Subtest: simple command: publish and make default switches in same state mutation
+ok 199 - simple command: publish and make default switches in same state mutation
+  ---
+  duration_ms: 0.714856
+  type: 'test'
+  ...
+# Subtest: simple command: publishes existing draft without duplicating
+ok 200 - simple command: publishes existing draft without duplicating
+  ---
+  duration_ms: 1.268371
+  type: 'test'
+  ...
+# Subtest: simple command: published sets immutable
+ok 201 - simple command: published sets immutable
+  ---
+  duration_ms: 1.593957
+  type: 'test'
+  ...
+# Subtest: simple command: long link code refused
+ok 202 - simple command: long link code refused
+  ---
+  duration_ms: 0.332295
+  type: 'test'
+  ...
+# Subtest: simple command: no runtime means no partial publication
+ok 203 - simple command: no runtime means no partial publication
+  ---
+  duration_ms: 0.733534
+  type: 'test'
+  ...
+# Subtest: simple command: default must be explicitly boolean
+ok 204 - simple command: default must be explicitly boolean
+  ---
+  duration_ms: 0.399185
+  type: 'test'
+  ...
+# Subtest: simple command: registers uploaded v07 without resetting prior defaults or audit
+ok 205 - simple command: registers uploaded v07 without resetting prior defaults or audit
+  ---
+  duration_ms: 0.589779
+  type: 'test'
+  ...
+# Subtest: nullable years incompatible with unpatched v06
+ok 206 - nullable years incompatible with unpatched v06
+  ---
+  duration_ms: 0.643409
+  type: 'test'
+  ...
+# Subtest: set_ link selects explicit set, normal launch retains default
+ok 207 - set_ link selects explicit set, normal launch retains default
+  ---
+  duration_ms: 0.920892
+  type: 'test'
+  ...
+# Subtest: set_ link cannot become administrator grant
+ok 208 - set_ link cannot become administrator grant
+  ---
+  duration_ms: 0.163674
+  type: 'test'
+  ...
+# Subtest: link formatter bounded, correct Main Mini App parameter
+ok 209 - link formatter bounded, correct Main Mini App parameter
+  ---
+  duration_ms: 0.314799
+  type: 'test'
+  ...
+# Subtest: canonical path: index file and directory are same page
+ok 210 - canonical path: index file and directory are same page
+  ---
+  duration_ms: 0.281009
+  type: 'test'
+  ...
+# Subtest: canonical path: different build stays different
+ok 211 - canonical path: different build stays different
+  ---
+  duration_ms: 0.115843
+  type: 'test'
+  ...
+# Subtest: simple service: ordinary user cannot publish
+ok 212 - simple service: ordinary user cannot publish
+  ---
+  duration_ms: 1.095864
+  type: 'test'
+  ...
+# Subtest: simple service: both admins, stale write rejected without wiping text/state
+ok 213 - simple service: both admins, stale write rejected without wiping text/state
+  ---
+  duration_ms: 1.051047
+  type: 'test'
+  ...
+# Subtest: legacy runtime repair: exact known v06 gets new runtime but unchanged release and save identity
+ok 214 - legacy runtime repair: exact known v06 gets new runtime but unchanged release and save identity
+  ---
+  duration_ms: 0.599103
+  type: 'test'
+  ...
+# Subtest: legacy runtime repair: unknown builds are not silently replaced
+ok 215 - legacy runtime repair: unknown builds are not silently replaced
+  ---
+  duration_ms: 0.389861
+  type: 'test'
+  ...
+# (node:3450) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual repository: SQLite JSON insert/read and non-resetting initialization
+ok 216 - actual repository: SQLite JSON insert/read and non-resetting initialization
+  ---
+  duration_ms: 5.560218
+  type: 'test'
+  ...
+# Subtest: actual repository: conditional update fails on stale revision without data loss
+ok 217 - actual repository: conditional update fails on stale revision without data loss
+  ---
+  duration_ms: 1.509921
+  type: 'test'
+  ...
+# Subtest: static headers: known bad config from the cloud log is rejected locally
+ok 218 - static headers: known bad config from the cloud log is rejected locally
+  ---
+  duration_ms: 2.497263
+  type: 'test'
+  ...
+# Subtest: static headers: the corrected managed rule passes the local guard without mutation
+ok 219 - static headers: the corrected managed rule passes the local guard without mutation
+  ---
+  duration_ms: 0.767164
+  type: 'test'
+  ...
+# Subtest: static headers: case-insensitive check for x-content-type-options
+ok 220 - static headers: case-insensitive check for x-content-type-options
+  ---
+  duration_ms: 0.490131
+  type: 'test'
+  ...
+# Subtest: static headers: case-insensitive check for X-CONTENT-TYPE-OPTIONS
+ok 221 - static headers: case-insensitive check for X-CONTENT-TYPE-OPTIONS
+  ---
+  duration_ms: 0.180348
+  type: 'test'
+  ...
+# Subtest: static headers: case-insensitive check for X-Content-Type-Options
+ok 222 - static headers: case-insensitive check for X-Content-Type-Options
+  ---
+  duration_ms: 0.350552
+  type: 'test'
+  ...
+# Subtest: static headers: setting the forbidden name to null is not a workaround
+ok 223 - static headers: setting the forbidden name to null is not a workaround
+  ---
+  duration_ms: 0.936727
+  type: 'test'
+  ...
+# Subtest: static headers: any retained path is checked, not just the catch-all
+ok 224 - static headers: any retained path is checked, not just the catch-all
+  ---
+  duration_ms: 0.730119
+  type: 'test'
+  ...
+# Subtest: static headers: omitted headers and an empty array are supported
+ok 225 - static headers: omitted headers and an empty array are supported
+  ---
+  duration_ms: 0.097085
+  type: 'test'
+  ...
+# Subtest: static headers: malformed header arrays/rules fail locally
+ok 226 - static headers: malformed header arrays/rules fail locally
+  ---
+  duration_ms: 0.600675
+  type: 'test'
+  ...
+# Subtest: static headers: unrelated header values are not silently deleted or rewritten
+ok 227 - static headers: unrelated header values are not silently deleted or rewritten
+  ---
+  duration_ms: 0.512805
+  type: 'test'
+  ...
+# Subtest: static headers: actual prepare removes old managed header and preserves code/settings
+ok 228 - static headers: actual prepare removes old managed header and preserves code/settings
+  ---
+  duration_ms: 74.761342
+  type: 'test'
+  ...
+# Subtest: static headers: repeated prepare cannot reintroduce the blocked header or change game hashes
+ok 229 - static headers: repeated prepare cannot reintroduce the blocked header or change game hashes
+  ---
+  duration_ms: 127.250472
+  type: 'test'
+  ...
+# Subtest: static headers: retained incompatible path stops preparation BEFORE any writes
+ok 230 - static headers: retained incompatible path stops preparation BEFORE any writes
+  ---
+  duration_ms: 61.201374
+  type: 'test'
+  ...
+# Subtest: static headers: the standalone check stops early on forbidden project config
+ok 231 - static headers: the standalone check stops early on forbidden project config
+  ---
+  duration_ms: 1019.396059
+  type: 'test'
+  ...
+# Subtest: static headers: deploy still checks the prepared project before the first cloud call
+ok 232 - static headers: deploy still checks the prepared project before the first cloud call
+  ---
+  duration_ms: 0.186238
+  type: 'test'
+  ...
+# Subtest: reproduce old index.html/directory bug: valid reply navigates again and never resolves
+ok 233 - reproduce old index.html/directory bug: valid reply navigates again and never resolves
+  ---
+  duration_ms: 13.417511
+  type: 'test'
+  ...
+# Subtest: fixed real boot accepts canonical directory, returns catalog and removes loading overlay
+ok 234 - fixed real boot accepts canonical directory, returns catalog and removes loading overlay
+  ---
+  duration_ms: 2.041714
+  type: 'test'
+  ...
+# Subtest: blocked redirect does not leave an unresolved promise
+ok 235 - blocked redirect does not leave an unresolved promise
+  ---
+  duration_ms: 1.182603
+  type: 'test'
+  ...
+# Subtest: syntax preflight rejects a browser syntax error before deployment
+ok 236 - syntax preflight rejects a browser syntax error before deployment
+  ---
+  duration_ms: 35.282476
+  type: 'test'
+  ...
+# Subtest: static verifier checks exact file contents and Javascript MIME without touching APIs
+ok 237 - static verifier checks exact file contents and Javascript MIME without touching APIs
+  ---
+  duration_ms: 9.86783
+  type: 'test'
+  ...
+# Subtest: static verifier refuses a stale document
+ok 238 - static verifier refuses a stale document
+  ---
+  duration_ms: 0.931238
+  type: 'test'
+  ...
+1..238
+# tests 238
+# suites 0
+# pass 238
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1976.917761
+BUILD INTEGRITY OK. Tests use local adapters; Telegram cloud integration is checked separately by rrHealth during deployment.
+
+
+OFFLINE BROWSER: PLAYER UI
+PASS desktop nonsubscriber: exactly two public buttons
+PASS no debug/admin text, including intermediate frames False
+PASS no horizontal overflow False
+PASS channel button uses the existing server-provided channel, not a guessed address
+PASS retry is still ordinary subscription check
+PASS mobile nonsubscriber: exactly two public buttons
+PASS no debug/admin text, including intermediate frames True
+PASS no horizontal overflow True
+PASS channel button uses the existing server-provided channel, not a guessed address
+PASS retry is still ordinary subscription check
+PASS admin denied visitor redirects to ordinary launch with no admin chrome
+PASS admin denied visitor never requests private data
+PASS admin slow authorization never flashes editor or identity
+PASS admin authorization failure never displays raw server error
+PASS admin-advanced denied visitor redirects to ordinary launch with no admin chrome
+PASS admin-advanced denied visitor never requests private data
+PASS admin-advanced slow authorization never flashes editor or identity
+PASS admin-advanced authorization failure never displays raw server error
+PASS verified administrator 101 retains editor and default controls
+PASS admin save remains functional
+PASS verified administrator 202 retains editor and default controls
+PASS second admin sees saved shared draft
+PASS forged admin launch hint still gives ordinary subscription screen
+PASS public internal error displays only friendly copy
+PASS real 201-cassette game starts: 303
+PASS subscriber game has no management button
+PASS subscriber game nav has no admin accessibility label
+PASS real 201-cassette game starts: 101
+PASS management button exists only after verified admin response
+PASS no uncaught browser JS errors
+TOTAL 30
+
+
+OFFLINE BROWSER: COMPLETE PREVIOUS SUITE
+PASS Admin 101 authenticated in synthetic SDK; separate editor is displayed
+PASS Four arbitrary captions, newline and automatic semicolon parsing, no year fields
+PASS Save draft succeeds without JSON input
+PASS Admin 202 reads the same persisted draft
+PASS Stale second-admin save rejected; unsaved text retained
+PASS Second admin can save after intentional refresh
+PASS Atomic publication by link does not switch global default
+PASS Published version is read-only; notifications can be dismissed
+PASS Signed-context set_ selector resolves the public set
+PASS Non-subscriber denied by real service
+PASS Ordinary account returns to public game without administrative chrome
+PASS Make default switches future ordinary launches
+PASS Original catalog and classic release preserved
+PASS Editing published set starts a distinct copy
+PASS Optional JSON file input fills table fields without publication
+PASS Ambiguous duplicate answers are visible before publication
+PASS Admin 800x600: no horizontal overflow
+PASS Admin 390x844: no horizontal overflow
+PASS Mobile topbar below simulated Telegram safe+content area
+PASS Admin does not keep fullscreen request active
+BEGIN GAME browser-set 1000
+PAGE CREATED
+SET GAME CONTENT False
+CONTENT SET False
+PASS Real WebGL game ready: browser-set 1000x800
+PASS Canonical directory path does not redirect again: 1000x800
+PASS No fabricated/null years on page: 1000x800
+PASS Start card fits viewport width: 1000
+PASS Start button enters game: 1000x800
+BEGIN GAME classic-1 1100
+PAGE CREATED
+SET GAME CONTENT False
+CONTENT SET False
+PASS Real WebGL game ready: classic-1 1100x850
+PASS Canonical directory path does not redirect again: 1100x850
+PASS No fabricated/null years on page: 1100x850
+PASS Start card fits viewport width: 1100
+PASS Start button enters game: 1100x850
+BEGIN GAME browser-set 390
+PAGE CREATED
+SET GAME CONTENT True
+CONTENT SET True
+PASS Real WebGL game ready: browser-set 390x844
+PASS Canonical directory path does not redirect again: 390x844
+PASS No fabricated/null years on page: 390x844
+PASS Start card fits viewport width: 390
+PASS Game toolbar below Telegram safe area
+PASS Start button enters game: 390x844
+PASS Mobile control #mobileAction visible within viewport
+PASS Mobile control #joystick visible within viewport
+PASS No uncaught browser Javascript errors
+BROWSER CHECKS PASSED: 39

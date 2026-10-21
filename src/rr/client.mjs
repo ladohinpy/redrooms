@@ -26,7 +26,7 @@ export function telegram() {
     const ready = () => {
       const t = window.Telegram?.WebApp;
       if (!t?.Serverless?.call) { reject(new Error('В этом клиенте нет Telegram Serverless. Обновите Telegram и откройте Mini App через бота.')); return; }
-      if (!t.initData) { reject(new Error('Откройте игру внутри Telegram через её бота. Обычная вкладка браузера не даёт авторизации.')); return; }
+      if (!t.initData) { reject(Object.assign(new Error('Откройте игру через Telegram.'), {code:'AUTH_REQUIRED'})); return; }
       t.ready?.(); configureViewport(t); resolve(t);
     };
     if (window.Telegram?.WebApp?.Serverless?.call) { ready(); return; }
@@ -87,20 +87,46 @@ export async function copy(text) {
   try { await navigator.clipboard.writeText(text); notify('Ссылка скопирована.'); }
   catch { const t = el('textarea', { value: text, readOnly: true }); document.body.append(t); t.select(); notify('Автокопирование недоступно: выделенная ссылка готова для копирования.'); }
 }
+/** Public UI must not render server messages, account details or diagnostic controls.
+ * Authorization remains server-side; this is presentation, not an access-control substitute. */
+export function playerMessage(error) {
+  if (error?.code === 'SUBSCRIPTION_REQUIRED') return 'Для входа подпишитесь на канал «Витальное кино» и нажмите «Проверить снова».';
+  if (error?.code === 'AUTH_REQUIRED') return 'Откройте «Красную комнату» через бота в Telegram.';
+  if (error?.code === 'NOT_FOUND' || error?.code === 'FORBIDDEN') return 'Этот набор сейчас недоступен. Попробуйте открыть игру заново.';
+  return 'Не удалось открыть игру. Проверьте подключение к интернету и попробуйте ещё раз.';
+}
 export function launchFailure(container, error, retry) {
-  container.replaceChildren(el('p', { class: 'error-text', text: error.message }));
-  const join = error.parameters?.joinUrl;
-  if (typeof join === 'string' && /^https:\/\/t\.me\/[a-zA-Z0-9_+\-]+$/.test(join)) container.append(el('button', { text: 'Открыть канал', onclick: async () => { const t = await telegram(); t.openTelegramLink(join); } }));
-  container.append(el('p',{class:'muted',text:`Этап: ${window.RR_DIAGNOSTIC?.stage || 'запуск'} · ${error.code || 'ERROR'} · tables-admin-2`}),
-    el('button', { text: 'Проверить снова', onclick: retry }),
-    el('button',{text:'Открыть управление',onclick:()=>navigate('/admin.html')}),
-    el('button',{text:'Скопировать диагностику',onclick:()=>copy(JSON.stringify({...window.RR_DIAGNOSTIC,code:error.code||'ERROR'},null,2))}));
-  // No silent fallback to a different release or to a local catalog.
+  const subscription = error?.code === 'SUBSCRIPTION_REQUIRED';
+  container.replaceChildren(el('p', { class: 'error-text', text: playerMessage(error) }));
+  if (container.id === 'rr-engine-overlay') container.prepend(el('small',{text:'ИГРА КАНАЛА «ВИТАЛЬНОЕ КИНО»'}),el('h1',{text:'Красная комната'}));
+  const join = error?.parameters?.joinUrl;
+  if (subscription && typeof join === 'string' && /^https:\/\/t\.me\/[a-zA-Z0-9_+\-]+$/.test(join)) {
+    container.append(el('button', { type: 'button', text: 'Открыть канал «Витальное кино»', onclick: async () => {
+      try { const t = await telegram(); t.openTelegramLink(join); }
+      catch (e) { launchFailure(container, e, retry); }
+    } }));
+  }
+  container.append(el('button', { type: 'button', text: subscription ? 'Проверить снова' : 'Попробовать снова', onclick: retry }));
+  // Technical diagnostics may be inspected by developers, but are not rendered for players.
+}
+/** Neutral shell until a fresh server response explicitly grants access. */
+export function adminChrome(identity = null, heading = 'Наборы кассет') {
+  const allowed = identity?.isAdmin === true;
+  document.title = allowed ? 'Красная комната — наборы' : 'Красная комната';
+  const title = document.querySelector('.topbar h1');
+  if (title) title.textContent = allowed ? heading : 'Красная комната';
+  const eyebrow = document.querySelector('.topbar .eyebrow');
+  if (eyebrow) eyebrow.textContent = allowed ? 'КРАСНАЯ КОМНАТА / УПРАВЛЕНИЕ' : 'ИГРА КАНАЛА «ВИТАЛЬНОЕ КИНО»';
+  const label = document.getElementById('identity');
+  if (label) { label.textContent = allowed ? `Telegram ID: ${identity.userId}` : ''; label.hidden = !allowed; }
+  const footer = document.getElementById('admin-footer');
+  if (footer) footer.hidden = !allowed;
 }
 
 export function stage(name) { window.RR_DIAGNOSTIC={version:'tables-admin-2',stage:name,path:location.pathname,at:new Date().toISOString()}; }
 export function adminRequested() {
   const p=new URLSearchParams(location.search);
+  if (p.get('rr_default') === '1') return false; // Do not reopen management from a retained Telegram start parameter.
   return p.get('admin')==='1' || p.get('startapp')==='admin' || p.get('tgWebAppStartParam')==='admin';
 }
 export function configureViewport(t, mode='game') {

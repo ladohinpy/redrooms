@@ -30,8 +30,12 @@ export function createService({ repository, adminIds, games, seed, checkSubscrip
     async launch(input, ctx) {
       const uid = verifiedUser(ctx); object(input || {}, 'Параметры');
       // The launch parameter is an instruction, never proof of administrator rights.
-      const selector = parseSelector({ release: input?.release, game: input?.game, startParam: input?.default === true ? undefined : ctx?.initData?.start_param });
-      if (selector.kind === 'admin') return { admin: true, userId: uid, isAdmin: isAdmin(uid) };
+      let selector = parseSelector({ release: input?.release, game: input?.game, startParam: input?.default === true ? undefined : ctx?.initData?.start_param });
+      if (selector.kind === 'admin') {
+        if (isAdmin(uid)) return { admin: true, userId: uid, isAdmin: true };
+        // Non-admin startapp=admin has the same access checks and UI as an ordinary launch.
+        selector = parseSelector({});
+      }
       const access = await checkSubscription(ctx);
       if (access?.allowed !== true) {
         const e = new DomainError('Для входа подпишитесь на канал и нажмите «Проверить снова».', 'SUBSCRIPTION_REQUIRED');
@@ -40,11 +44,15 @@ export function createService({ repository, adminIds, games, seed, checkSubscrip
       }
       const row = await state();
       const selected = resolveLaunch(row.state, selector, isAdmin(uid), games);
-      // Repair the transport/UI of the known frozen v06 WITHOUT rewriting stored releases,
-      // catalogs, default selection, old assets or save namespaces. Never substitute arbitrary builds.
-      const compatibleRuntime = selected.game.id === 'v06' &&
-        selected.game.codeHash === '05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749'
+      // Public-UI hotfix: use the new renderer only for the exact two known shipped builds.
+      // Preserve stored releases, catalog bindings, selected default, logical game and save keys.
+      const repairable =
+        (selected.game.id === 'v06' && selected.game.codeHash === '05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749') ||
+        (selected.game.id === 'v07-tables' && selected.game.codeHash === '4c7b0fb7cf2d4da84737bd3673b8c2caa5edc293883d46b46fa6abca42281530');
+      const publicRuntime = games.find(g => g.id === 'v08-player-ui' && g.optionalYear === true);
+      const previousRepair = selected.game.id === 'v06'
         ? games.find(g => g.id === 'v07-tables' && g.optionalYear === true) : null;
+      const compatibleRuntime = repairable ? (publicRuntime || previousRepair) : null;
       return { ...selected, runtime: compatibleRuntime || selected.game, userId: uid, isAdmin: isAdmin(uid) };
     }
   };

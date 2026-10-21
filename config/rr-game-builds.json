@@ -19,6 +19,16 @@
         "tables"
       ],
       "optionalYear": true
+    },
+    {
+      "id": "v08-player-ui",
+      "name": "Комната: экран игрока v08",
+      "source": "src/rr-game-v08.html",
+      "adapter": "v06",
+      "aliases": [
+        "player-ui"
+      ],
+      "optionalYear": true
     }
   ]
 }

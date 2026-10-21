@@ -57,6 +57,37 @@
           "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
         }
       ]
+    },
+    {
+      "id": "v08-player-ui",
+      "name": "Комната: экран игрока v08",
+      "entry": "/games/v08-player-ui/e646963e07411913/index.html",
+      "codeHash": "e646963e07411913b92698b7ca200ea86ec2832cd0aafa4fb127be59a4f24d84",
+      "catalogSchemaVersion": 1,
+      "aliases": [
+        "player-ui"
+      ],
+      "optionalYear": true,
+      "source": "src/rr-game-v08.html",
+      "sourceHash": "e84bccf61a70fed132d8920546365668f6d83a6417676bd514cb73f2a057fa77",
+      "runtimeAssets": [
+        {
+          "path": "rr/runtime/e0251ae250ce3446/client.mjs",
+          "hash": "66121d612ec73b7bb9ca89a5fdbae7ebdea9489bc7726133645ccb770e29482c"
+        },
+        {
+          "path": "rr/runtime/e0251ae250ce3446/routes.mjs",
+          "hash": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+        },
+        {
+          "path": "rr/runtime/e0251ae250ce3446/engine-boot.mjs",
+          "hash": "3c8361364af8be783c0f759cf00783252a979e199981ba36a731691dc3211462"
+        },
+        {
+          "path": "rr/frozen/5a1a959d5955f6ea/access-gate.js",
+          "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+        }
+      ]
     }
   ]
 }
