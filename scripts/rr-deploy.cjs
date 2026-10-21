@@ -15,7 +15,15 @@ if(pkg.version!=='0.2.0'){console.error('Требуется проверяемы
 const bin=typeof pkg.bin==='string'?pkg.bin:pkg.bin?.tgcloud;
 if(!bin)throw new Error('У CLI не найден executable tgcloud.');
 const cli=path.resolve(path.dirname(pkgPath),bin);
-function cloud(args){console.log('\n> tgcloud '+args.slice(0,2).join(' '));const r=spawnSync(process.execPath,[cli,...args],{cwd:root,stdio:'inherit'});if(r.status!==0){console.error('Публикация остановлена. Следующие этапы НЕ выполнены. Не используйте --force.');process.exit(r.status||1);}}
+// Repair only the known CLI post-deploy snapshot response. No cloud side effects.
+try {
+  const { installCliResponseFix } = require('./rr-cli-compat.cjs');
+  installCliResponseFix(root);
+  console.log('CLI 0.2.0 response guard ready. No deployment performed.');
+} catch(error) {
+  console.error('CLI compatibility check failed: ' + error.message); process.exit(1);
+}
+function cloud(args){console.log('\n> tgcloud '+args.map((arg,i)=>args[i-1]==='--ctx'?'[admin CLI test context]':arg).join(' '));const r=spawnSync(process.execPath,[cli,...args],{cwd:root,stdio:'inherit'});if(r.status!==0){console.error('Публикация остановлена. Следующие этапы НЕ выполнены. Не используйте --force.');process.exit(r.status||1);}}
 node('scripts/rr-prepare.cjs',['--production']);node('scripts/rr-check.cjs');
 cloud(['fetch']);
 // Include existing membership dependency without touching the bot's other handlers.
