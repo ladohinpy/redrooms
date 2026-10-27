@@ -54,7 +54,7 @@ export async function call(name, input = {}) {
 }
 export function launchInput() {
   const p = new URLSearchParams(location.search), input = {};
-  for (const key of ['release','game']) if (p.has(key)) input[key] = p.get(key);
+  for (const key of ['release','game','previewCatalogId']) if (p.has(key)) input[key] = p.get(key);
   if (p.has('set') && !input.release) input.release=p.get('set');
   const hint=p.get('startapp') || p.get('tgWebAppStartParam');
   if (!input.release && !input.game && hint?.startsWith('set_')) input.release=hint.slice(4);

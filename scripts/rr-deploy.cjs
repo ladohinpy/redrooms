@@ -25,15 +25,19 @@ try {
 }
 function cloud(args){console.log('\n> tgcloud '+args.map((arg,i)=>args[i-1]==='--ctx'?'[admin CLI test context]':arg).join(' '));const r=spawnSync(process.execPath,[cli,...args],{cwd:root,stdio:'inherit'});if(r.status!==0){console.error('Публикация остановлена. Следующие этапы НЕ выполнены. Не используйте --force.');process.exit(r.status||1);}}
 node('scripts/rr-prepare.cjs',['--production']);node('scripts/rr-check.cjs');
-cloud(['fetch']);
-// Include existing membership dependency without touching the bot's other handlers.
-cloud(['push','tgcloud/schema.js','tgcloud/lib/rr/','tgcloud/lib/subscription.js','tgcloud/endpoints/checkAccess.js','tgcloud/endpoints/rrAdminStatus.js','tgcloud/endpoints/rrAdminRead.js','tgcloud/endpoints/rrAdminCommand.js','tgcloud/endpoints/rrGetLaunch.js','tgcloud/endpoints/rrHealth.js','tgcloud/endpoints/rrSendSetLink.js']);
-cloud(['migrate','--dry-run']);
-cloud(['migrate','--safe']); // Additive schema only. No yes/force/drop shortcuts.
 const config=fs.readFileSync(path.join(root,'tgcloud/lib/rr/config.js'),'utf8');
 const ids=JSON.parse(config.match(/Object\.freeze\((\[[\s\S]*?\])\)/)[1]);
-// CLI Access is privileged. Synthetic ctx is ONLY for this local CLI smoke test,
-// never accepted by public client calls. rrHealth is still an admin-only endpoint.
-cloud(['run','endpoints/rrHealth','{}','--ctx',JSON.stringify({initData:{user:{id:ids[0]}}})]);
+const context=JSON.stringify({initData:{user:{id:ids[0]}}});
+// CLI run uses local modules on Telegram; preflight/backup do not deploy code.
+cloud(['run','endpoints/rrDeployment',JSON.stringify({action:'info'}),'--ctx',context]);
+cloud(['run','endpoints/rrDeployment',JSON.stringify({action:'backup'}),'--ctx',context]);
+cloud(['fetch']);
+// Additive schema FIRST: the previous backend keeps working until new tables exist.
+cloud(['push','tgcloud/schema.js']);
+cloud(['migrate','--dry-run']);
+cloud(['migrate','--safe']); // No yes/force/drop shortcuts.
+cloud(['run','endpoints/rrDeployment',JSON.stringify({action:'probe'}),'--ctx',context]);
+cloud(['push','tgcloud/lib/rr/','tgcloud/lib/subscription.js','tgcloud/endpoints/checkAccess.js','tgcloud/endpoints/rrAdminStatus.js','tgcloud/endpoints/rrAdminRead.js','tgcloud/endpoints/rrAdminCommand.js','tgcloud/endpoints/rrGetLaunch.js','tgcloud/endpoints/rrHealth.js','tgcloud/endpoints/rrSendSetLink.js','tgcloud/endpoints/rrContest.js','tgcloud/endpoints/rrBackup.js','tgcloud/endpoints/rrDeployment.js']);
+cloud(['run','endpoints/rrHealth','{}','--ctx',context]);
 cloud(['push','public/']);
-console.log('\nПубликация завершена. Откройте Mini App в Telegram и выполните ручной smoke-check из документации. URL бота и прежний CLI token не менялись.');
+console.log('Публикация завершена. Проверьте два аккаунта и обычного игрока в Telegram. База не сбрасывалась.');

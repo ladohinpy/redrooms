@@ -29,6 +29,17 @@
         "player-ui"
       ],
       "optionalYear": true
+    },
+    {
+      "id": "v09-contests",
+      "name": "Комната: конкурс и авторские материалы v09",
+      "source": "src/rr-game-v09.html",
+      "adapter": "v06",
+      "aliases": [
+        "contest"
+      ],
+      "optionalYear": true,
+      "contestEngine": true
     }
   ]
 }
