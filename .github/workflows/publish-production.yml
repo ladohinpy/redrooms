@@ -1,0 +1,43 @@
+name: Publish Red Room — PRODUCTION
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Введите PUBLISH для обновления существующего приложения'
+        required: true
+        type: string
+      admin_ids:
+        description: 'Два Telegram ID через запятую; пусто = Repository variable RR_ADMIN_IDS'
+        required: false
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: redrooms-production-mutations
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: inputs.confirm == 'PUBLISH' && github.ref == 'refs/heads/main'
+    environment: production
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TGCLOUD_TOKEN: ${{ secrets.TGCLOUD_PRODUCTION_TOKEN }}
+      RR_ADMIN_IDS: ${{ inputs.admin_ids || vars.RR_ADMIN_IDS }}
+      RR_ENVIRONMENT: production
+      RR_EXPECTED_BOT_USERNAME: ${{ vars.RR_PRODUCTION_BOT_USERNAME }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate required configuration
+        shell: bash
+        run: |
+          test -n "$TGCLOUD_TOKEN" || { echo 'Нет ключа выбранной среды'; exit 1; }
+          test -n "$RR_EXPECTED_BOT_USERNAME" || { echo 'Укажите ожидаемое имя бота для выбранной среды'; exit 1; }
+          test -n "$RR_ADMIN_IDS" || { echo 'Нет двух Telegram ID в RR_ADMIN_IDS'; exit 1; }
+      - name: Install pinned CLI
+        run: npm install --no-save --package-lock=false @tgcloud/cli@0.2.0
+      - name: Build, test, publish backend, migrate safely, smoke-test, publish frontend
+        run: node scripts/rr-deploy.cjs --confirm

@@ -1,0 +1,54 @@
+name: Red Room — Private JSON Backups
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: redrooms-stage-mutations
+      cancel-in-progress: false
+    env:
+      TGCLOUD_TOKEN: ${{ secrets.TGCLOUD_TOKEN }}
+      RR_ADMIN_IDS: ${{ vars.RR_ADMIN_IDS }}
+      RR_ENVIRONMENT: stage
+      RR_EXPECTED_BOT_USERNAME: ${{ vars.RR_STAGE_BOT_USERNAME }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Configuration
+        run: test -n "$TGCLOUD_TOKEN" && test -n "$RR_ADMIN_IDS" && test -n "$RR_EXPECTED_BOT_USERNAME"
+      - name: Install pinned CLI
+        run: npm install --no-save --package-lock=false @tgcloud/cli@0.2.0
+      - name: Send private JSON to both administrators
+        run: node scripts/rr-backup.cjs --confirm
+  production:
+    if: vars.RR_PRODUCTION_BACKUPS_ENABLED == 'true'
+    environment: production
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: redrooms-production-mutations
+      cancel-in-progress: false
+    env:
+      TGCLOUD_TOKEN: ${{ secrets.TGCLOUD_PRODUCTION_TOKEN }}
+      RR_ADMIN_IDS: ${{ vars.RR_ADMIN_IDS }}
+      RR_ENVIRONMENT: production
+      RR_EXPECTED_BOT_USERNAME: ${{ vars.RR_PRODUCTION_BOT_USERNAME }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Configuration
+        run: test -n "$TGCLOUD_TOKEN" && test -n "$RR_ADMIN_IDS" && test -n "$RR_EXPECTED_BOT_USERNAME"
+      - name: Install pinned CLI
+        run: npm install --no-save --package-lock=false @tgcloud/cli@0.2.0
+      - name: Send private JSON to both administrators
+        run: node scripts/rr-backup.cjs --confirm

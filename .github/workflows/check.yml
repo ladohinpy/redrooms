@@ -15,5 +15,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Check v06 HTML, game catalogue and subscription flow
-        run: npm run check
+      - name: Build and check RedRooms, contests, backups and subscription
+        run: node scripts/rr-prepare.cjs && npm run check
