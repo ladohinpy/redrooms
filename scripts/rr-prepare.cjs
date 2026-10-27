@@ -186,7 +186,7 @@ async function prepare(){
   if(expectedBot&&!/^[a-zA-Z0-9_]{5,32}$/.test(expectedBot))stop('Неверное имя целевого бота.');
   if(production&&environment==='production'&&!expectedBot)stop('Для боевого деплоя требуется RR_EXPECTED_BOT_USERNAME.');
   write('tgcloud/lib/rr/config.js','// Generated server-only allowlist. No secrets.\nexport const ADMIN_IDS = Object.freeze('+JSON.stringify(admins)+');\nexport const DEPLOY_ENV = '+JSON.stringify(environment)+';\nexport const EXPECTED_BOT_USERNAME = '+JSON.stringify(expectedBot)+';\n');
-  for(const name of ['domain','service','simple','digest','content','contest-domain','contest-service','record-store','backup','backup-service','sdk-bind','sdk-probe'])write(`tgcloud/lib/rr/${name}.js`,read(`src/rr/${name}.mjs`).replace(/(from\s+['"]\.\/[^'"]+)\.mjs(['"])/g,'$1.js$2'));
+  for(const name of ['domain','admin-access','service','simple','digest','content','contest-domain','contest-service','record-store','backup','backup-service','sdk-bind','sdk-probe'])write(`tgcloud/lib/rr/${name}.js`,read(`src/rr/${name}.mjs`).replace(/(from\s+['"]\.\/[^'"]+)\.mjs(['"])/g,'$1.js$2'));
   for(const name of ['domain','import','simple','routes','client','launcher','admin','admin-advanced','rich-text','admin-contest','contest-client'])write(`public/rr/${name}.mjs`,read(`src/rr/${name}.mjs`));
   for(const name of ['admin','admin-advanced']) {
     write(`public/${name}.html`,read(`src/rr/${name}.html`));

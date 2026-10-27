@@ -1,20 +1,16 @@
 import { DomainError, fail, object, byteLength, LIMITS, createInitialState, applyCommand, parseSelector, resolveLaunch } from './domain.mjs';
-export function verifiedUser(ctx) {
-  const uid = ctx?.initData?.user?.id;
-  if (!Number.isSafeInteger(uid) || uid <= 0) fail('Откройте приложение через Telegram.', 'AUTH_REQUIRED');
-  return uid;
-}
+import {verifiedUser,createAdminPolicy} from './admin-access.mjs';
+export {verifiedUser} from './admin-access.mjs';
 export function createService({ repository, adminIds, games, seed, checkSubscription, now = () => new Date().toISOString() }) {
-  const isAdmin = uid => adminIds.includes(uid);
-  const admin = ctx => { const uid = verifiedUser(ctx); if (!isAdmin(uid)) fail('Доступ только администраторам.', 'FORBIDDEN'); return uid; };
+  const policy=createAdminPolicy(adminIds),isAdmin=policy.isAdmin,admin=policy.requireAdmin;
   async function state() {
     return await repository.read() || await repository.initialize(createInitialState(seed, games, now()));
   }
   return {
-    async status(_input, ctx) { const uid = verifiedUser(ctx); return { userId: uid, isAdmin: isAdmin(uid), configured: adminIds.length === 2 }; },
+    async status(_input, ctx) { return policy.status(ctx); },
     async read(_input, ctx) {
-      admin(ctx); const row = await state();
-      return { revision: row.revision, state: row.state, availableGames: games, limits: LIMITS };
+      const uid=admin(ctx); const row = await state();
+      return { revision: row.revision, state: row.state, availableGames: games, limits: LIMITS, access:{userId:uid,isAdmin:true} };
     },
     async command(input, ctx) {
       const uid = admin(ctx); object(input, 'Запрос');
@@ -65,7 +61,10 @@ export function createService({ repository, adminIds, games, seed, checkSubscrip
       const compatibleRuntime=cleanRuntime && cleanSources[selected.game.id]===selected.game.codeHash
         ? cleanRuntime : contestRuntime && ['v06','v07-tables','v08-player-ui','v09-contests'].includes(selected.game.id)
         ? contestRuntime : repairable ? (publicRuntime || previousRepair) : null;
-      return { ...selected, runtime: compatibleRuntime || selected.game, userId: uid, isAdmin: isAdmin(uid) };
+      const entryFix=games.find(g=>g.id==='v11-access-entry'&&g.contestEngine===true);
+      const entrySources={"v06":"05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749","v07-tables":"4c7b0fb7cf2d4da84737bd3673b8c2caa5edc293883d46b46fa6abca42281530","v08-player-ui":"e646963e07411913b92698b7ca200ea86ec2832cd0aafa4fb127be59a4f24d84","v09-contests":"69026d9e0f0512e3d86565e5026e967db36814734485a002ef129be802c6f4d1","v10-clean-start":"9fe3373af2f0d407b86760748604ca373f82195e262dfebc0a1d3dfd92cc8337"};
+      const runtime=entryFix&&entrySources[selected.game.id]===selected.game.codeHash ? entryFix : compatibleRuntime||selected.game;
+      return { ...selected, runtime, userId: uid, isAdmin: isAdmin(uid) };
     }
   };
 }

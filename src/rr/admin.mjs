@@ -1,5 +1,5 @@
 import {mountAdminTools,extraHasChanges,cloneWholeSet,downloadFullBackup} from './admin-contest.mjs';
-import {el,call,telegram,configureViewport,navigate,notify,saveFile,copy,stage,launchFailure,adminChrome,navigationWait} from './client.mjs';
+import {el,call,telegram,configureViewport,authorizeEditor,navigate,notify,saveFile,copy,stage,launchFailure,adminChrome,navigationWait} from './client.mjs';
 import {catalogToRows,splitTitles,simpleCatalog,setLink,SIMPLE_VERSION} from './simple.mjs';
 import {normalizeCatalog,LIMITS} from './domain.mjs';
 window.RR_MODULE_STARTED=true;
@@ -20,7 +20,7 @@ function newSet(from){if(!leave())return;if(from){return cloneWholeSet(from,asyn
 function setBusy(value){busy=value;app.classList.toggle('busy',value);for(const x of app.querySelectorAll('fieldset'))x.disabled=value;}
 async function refresh(){if(!leave())return;await fetchData();}
 async function fetchData(){setBusy(true);try{model=await call('rrAdminRead');const id=selectedId || model.state.catalog_versions[0]?.id;if(id)choose(id);else render();}finally{setBusy(false);}}
-async function command(action,data){setBusy(true);try{const next=await call('rrAdminCommand',{expectedRevision:model.revision,action,input:data});model=next;dirty=false;try{window.Telegram.WebApp.disableClosingConfirmation?.();}catch{}return true;}catch(e){notify(e.code==='CONFLICT'?e.message+'\nВаш текст остался в редакторе. Скачайте черновик перед обновлением.':e.message,true);return false;}finally{setBusy(false);}}
+async function command(action,data){setBusy(true);try{const next=await call('rrAdminCommand',{expectedRevision:model.revision,action,input:data});model={...next,access:model.access};dirty=false;try{window.Telegram.WebApp.disableClosingConfirmation?.();}catch{}return true;}catch(e){notify(e.code==='CONFLICT'?e.message+'\nВаш текст остался в редакторе. Скачайте черновик перед обновлением.':e.message,true);return false;}finally{setBusy(false);}}
 function payload(){const clean={id:form.id.trim(),name:form.name.trim(),tables:form.tables.map(r=>({...r}))};normalizeCatalog(simpleCatalog(clean,current()?.catalog,false));return clean;}
 async function save(){const data=payload();if(await command('saveSimpleSet',data)){choose(data.id);notify('Черновик сохранён. Основной набор не изменился.');}}
 async function publish(makeDefault){const data=payload();normalizeCatalog(simpleCatalog(data,current()?.catalog,true));if(!confirm(makeDefault?'Опубликовать этот набор и запускать его по умолчанию для всех новых игроков?':'Опубликовать набор по отдельной ссылке? Основной набор останется прежним.'))return;
@@ -55,24 +55,33 @@ function editor(){if(!form)return el('section',{class:'panel empty',text:'Соз
  else panel.append(el('div',{class:'actions'},button('Сохранить черновик',save),button('Опубликовать по ссылке',()=>publish(false),'primary'),button('Опубликовать и сделать основным',()=>publish(true))),el('p',{class:'help',text:'Публикация подтверждает весь список кассет. Набор и релиз сохраняются одной операцией: промежуточных полуопубликованных версий нет.'}));
  panel.append(linkPanel(r),el('details',{},el('summary',{text:'Файлы, резервная копия и дополнительные инструменты'}),el('div',{class:'actions'},button('Скачать черновик',downloadDraft),button('Подробный редактор',()=>{if(leave())navigate('/admin-advanced.html');})),!readonly && field('Импорт JSON (необязательно)',el('input',{type:'file',accept:'.json,application/json',class:'import-line',onchange:async e=>{try{await loadFile(e.target.files[0]);}catch(er){notify(er.message,true);}finally{e.target.value='';}}}))));return panel;
 }
-function render(){if(!model)return;const s=model.state,def=s.game_releases.find(r=>r.id===s.app_settings.defaultReleaseId);
+function render(){
+ if(identity?.isAdmin!==true||model?.access?.isAdmin!==true||model.access.userId!==identity.userId)return;if(!model)return;const s=model.state,def=s.game_releases.find(r=>r.id===s.app_settings.defaultReleaseId);
  const top=el('section',{class:'panel current'},el('div',{},el('span',{class:'badge default-badge',text:'ЗАПУСКАЕТСЯ ПО УМОЛЧАНИЮ'}),el('strong',{id:'default-name',text:def?.name||'Не выбран'}),el('p',{class:'help',text:def?`Код: ${def.id}`:''})),el('div',{class:'actions'},button('Открыть основную игру',()=>{if(leave())navigate('/',{rr_default:1});}),button('Обновить',refresh)));
  const sidebar=el('aside',{class:'panel sidebar'},button('+ Новый набор',()=>newSet(),'primary'),el('p',{class:'help',text:'Сохранённые версии'}),el('div',{class:'list'},...s.catalog_versions.map(c=>{const release=s.game_releases.find(r=>r.catalogVersionId===c.id && r.status==='published');const b=button('',()=>{if(!leave())return;try{choose(c.id);}catch(e){notify(e.message,true);}},selectedId===c.id?'selected':'');b.append(el('strong',{text:c.name}),el('small',{text:release?.id===s.app_settings.defaultReleaseId?'Основной набор':names[c.status]||c.status}));return b;})),button('Резервная копия базы',downloadFullBackup));
  const history=el('details',{class:'panel'},el('summary',{text:'История действий'}),...s.audit.slice(-15).reverse().map(a=>el('div',{class:'history-row',text:`${a.at} · ID ${a.actor} · ${a.summary} (${a.target})`})));
  app.replaceChildren(top,el('div',{class:'layout'},sidebar,el('div',{},editor(),history)));mountAdminTools(app,{model,current,identity,choose,onReload:fetchData});updateReview();
 }
+let booting=null;
 async function boot(){
- adminChrome();stage('вход в управление');
- try {
+ if(booting)return booting;
+ app.hidden=true;adminChrome();identity={};model=null;
+ booting=(async()=>{try {
    const t=await telegram();configureViewport(t,'admin');
-   identity=await call('rrAdminStatus');
-   if(identity?.isAdmin !== true){
-     // Even a direct /admin URL is just the ordinary game for a non-administrator.
-     navigate('/',{rr_default:1},true);await navigationWait();return;
-   }
-   adminChrome(identity);await fetchData();
+   const access=await authorizeEditor();identity=access.identity;model=access.model;
+   adminChrome(identity);
+   const id=selectedId||model.state.catalog_versions[0]?.id;
+   if(id)choose(id);else render();app.hidden=false;
  } catch(e) {
-   adminChrome();const box=el('section',{class:'panel'});app.replaceChildren(box);launchFailure(box,e,boot);
- }
+   identity={};model=null;app.replaceChildren();adminChrome();
+   if(['FORBIDDEN','AUTH_REQUIRED'].includes(e?.code)){
+     try{navigate('/',{rr_default:1},true);await navigationWait();}catch{}
+   }
+   const box=el('section',{class:'panel'});app.replaceChildren(box);app.hidden=false;launchFailure(box,e,boot);
+ }finally{booting=null;}})();return booting;
 }
+function lockEditor(){identity={};model=null;app.hidden=true;app.replaceChildren();adminChrome();}
+addEventListener('rr-access-denied',lockEditor);
+addEventListener('pagehide',lockEditor);
+addEventListener('pageshow',event=>{if(event.persisted)void boot();});
 boot();

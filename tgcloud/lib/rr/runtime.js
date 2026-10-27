@@ -1,3 +1,4 @@
+import {createAdminPolicy,verifiedUser} from './admin-access.js';
 import { setLink } from './simple.js';
 import { api, EndpointError } from 'sdk';
 import checkAccess from '../../endpoints/checkAccess.js';
@@ -8,12 +9,20 @@ import { GAMES, SEED } from './generated.js';
 // The existing API now reads the migrated, versioned catalog repository.
 export async function invoke(method, input, ctx) {
   try {
+    const policy=createAdminPolicy(ADMIN_IDS);
+    verifiedUser(ctx);
+    if(['read','command','sendLink','health'].includes(method)||input?.previewCatalogId)policy.requireAdmin(ctx);
+    if(method==='status'){
+      const status=policy.status(ctx);
+      if(status.isAdmin){try{const bot=await api.getMe({});if(/^[a-zA-Z0-9_]{5,32}$/.test(bot?.username||''))status.botUsername=bot.username;}catch{}}
+      return status;
+    }
     const package1=await getPackage1(); const service=package1.catalog;
     if(method==='launch'&&input?.previewCatalogId){
       const status=await service.status({},ctx);
       if(status.isAdmin!==true)throw new EndpointError('Набор недоступен.',{code:'NOT_FOUND'});
       const preview=await package1.contest.preview({catalogId:input.previewCatalogId},ctx);
-      const game=GAMES.find(g=>g.id==='v10-clean-start'&&g.contestEngine) || GAMES.find(g=>g.id==='v09-contests'&&g.contestEngine);
+      const game=GAMES.find(g=>g.id==='v11-access-entry'&&g.contestEngine) || GAMES.find(g=>g.id==='v10-clean-start'&&g.contestEngine) || GAMES.find(g=>g.id==='v09-contests'&&g.contestEngine);
       if(!game)throw new EndpointError('Нужна обновлённая сборка игры.',{code:'NOT_READY'});
       return {game,runtime:game,catalog:preview.catalog,previewCatalogId:preview.previewCatalogId,previewLobby:preview,userId:status.userId,isAdmin:true,release:{id:preview.releaseId,name:preview.name,catalogVersionId:preview.catalogVersionId}};
     }

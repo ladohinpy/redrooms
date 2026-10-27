@@ -1,13 +1,13 @@
 /** Privileged CLI uses the same verified-admin guard; never exposes backup to players. */
 import {api,InputFile,db,EndpointError} from 'sdk';
 import {ADMIN_IDS,DEPLOY_ENV,EXPECTED_BOT_USERNAME} from '../lib/rr/config.js';
-import {verifiedUser} from '../lib/rr/service.js';
+import {createAdminPolicy} from '../lib/rr/admin-access.js';
 import {packBackup,backupFileName,MAX_BACKUP_BYTES} from '../lib/rr/backup.js';
 import {utf8} from '../lib/rr/digest.js';
 import {probeStorage} from '../lib/rr/sdk-probe.js';
 import {getPackage1,boundary,raw} from '../lib/rr/package1-runtime.js';
 export default async function(input,ctx){return boundary(async()=>{
- const uid=verifiedUser(ctx);if(!ADMIN_IDS.includes(uid))throw new EndpointError('Доступ только администраторам.',{code:'FORBIDDEN'});
+ const uid=createAdminPolicy(ADMIN_IDS).requireAdmin(ctx);
  const bot=await api.getMe({});
  if(EXPECTED_BOT_USERNAME&&bot.username?.toLowerCase()!==EXPECTED_BOT_USERNAME.toLowerCase())throw new EndpointError('Ключ относится к другому боту.',{code:'WRONG_BOT'});
  if(!EXPECTED_BOT_USERNAME)throw new EndpointError('Укажите ожидаемый username бота для этой среды.',{code:'TARGET_REQUIRED'});

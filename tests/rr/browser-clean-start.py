@@ -22,7 +22,7 @@ try:
  model=m.rpc({'name':'rrAdminRead','uid':101,'input':{}})['result']
  out=m.rpc({'name':'rrAdminCommand','uid':101,'input':{'action':'publishSimpleSet','expectedRevision':model['revision'],'input':{'id':'entry-test','name':'тест1','makeDefault':False,'tables':[{'name':str(2020+i),'titles':'\n'.join(f'Кассета {i+1}.{j+1}' for j in range(3)),'delimiter':'lines'} for i in range(4)]}}})
  assert 'error' not in out,out
- check('new sets choose v10 renderer',next(r for r in out['result']['state']['game_releases'] if r['id']=='entry-test')['gameVersionId']=='v10-clean-start')
+ check('new sets choose v11 renderer',next(r for r in out['result']['state']['game_releases'] if r['id']=='entry-test')['gameVersionId']=='v11-access-entry')
  with m.sync_playwright() as p:
   browser=p.chromium.launch(executable_path=os.environ.get('CHROMIUM','/usr/bin/chromium'),headless=False,args=['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--ignore-gpu-blocklist','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
   def page(uid,mobile=False):
