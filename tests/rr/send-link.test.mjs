@@ -3,6 +3,7 @@ import {setLink} from '../../src/rr/simple.mjs';
 const src=fs.readFileSync(new URL('../../tgcloud/lib/rr/runtime.js',import.meta.url),'utf8');
 function sandbox(uid=101,{published=true,forbidden=false,sendFails=false}={}){let reads=0;const sent=[];class EndpointError extends Error{constructor(message,parameters){super(message);this.parameters=parameters;}}
  const context=vm.createContext({EndpointError,setLink,ADMIN_IDS:[101,202],GAMES:[],SEED:{},repository:{},checkAccess(){},createService:()=>({read:async()=>{reads++;if(forbidden){const e=new Error('Forbidden');e.name='DomainError';e.code='FORBIDDEN';throw e;}return {state:{game_releases:[{id:'test-set',name:'Test',status:published?'published':'draft'}]}};}}),api:{getMe:async()=>({username:'RedRoomTestBot'}),sendMessage:async x=>{if(sendFails)throw Error('Secret internal error');sent.push(x);}}});
+ context.getPackage1=async()=>({catalog:context.createService()});
  vm.runInContext(src.replace(/^import .*;\n/gm,'').replace('export async function invoke','async function invoke')+'\nglobalThis.invokeFn=invoke;',context);
  return {run:input=>context.invokeFn('sendLink',input,{initData:{user:{id:uid}}}),sent,get reads(){return reads;}};
 }

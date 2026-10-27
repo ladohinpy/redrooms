@@ -19,7 +19,7 @@ async function start() {
     }
     const engine=result.runtime || result.game;
     stage('переход к комнате');box.textContent='Открываем комнату…';
-    navigate(transportPath(engine?.entry),{release:result.release.id},true);await navigationWait();
+    navigate(transportPath(engine?.entry),result.previewCatalogId?{previewCatalogId:result.previewCatalogId}:{release:result.release.id},true);await navigationWait();
   } catch(e) {launchFailure(box,e,start);}
 }
 window.RR_MODULE_STARTED=true;start();
