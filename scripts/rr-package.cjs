@@ -5,7 +5,7 @@ const fs=require('node:fs'),path=require('node:path'),zlib=require('node:zlib'),
 const root=path.resolve(__dirname,'..');
 if(!fs.existsSync(path.join(root,'src/rr-legacy-v06.html'))||!fs.existsSync(path.join(root,'config/rr-built-games.json')))throw new Error('Сначала примените пакет к существующему репозиторию и выполните rr-prepare.cjs. Это ещё не полный проект.');
 const allowed=['.github','config','docs','examples','public','scripts','src','tests','tgcloud'];
-const top=['.gitignore','AGENTS.md','README.md','START-HERE.md','CHANGELOG.md','package.json','package-lock.json','tgcloud.jsonc'];
+const top=['.gitignore','AGENTS.md','README.md','START-HERE.md','CHANGELOG.md','package.json','package-lock.json','tgcloud.jsonc','MANIFEST.sha256','PACKAGE1-MANIFEST.json'];
 const files=[];
 function scan(rel){const p=path.join(root,rel),s=fs.lstatSync(p);if(s.isSymbolicLink())throw new Error('Символические ссылки не пакуются: '+rel);if(s.isDirectory()){for(const n of fs.readdirSync(p))if(!['node_modules','.git','.tgcloud','.rr-test','__pycache__'].includes(n))scan(rel+'/'+n);}else if(!/\.local\.json$|\.rr-tmp$|\.pyc$|(^|\/)\.env/.test(rel)&&rel!=='tgcloud/lib/rr/config.js')files.push(rel);}
 for(const d of allowed)if(fs.existsSync(path.join(root,d)))scan(d);

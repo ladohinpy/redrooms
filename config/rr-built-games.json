@@ -88,6 +88,46 @@
           "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
         }
       ]
+    },
+    {
+      "id": "v09-contests",
+      "name": "Комната: конкурс и авторские материалы v09",
+      "entry": "/games/v09-contests/69026d9e0f0512e3/index.html",
+      "codeHash": "69026d9e0f0512e3d86565e5026e967db36814734485a002ef129be802c6f4d1",
+      "catalogSchemaVersion": 1,
+      "aliases": [
+        "contest"
+      ],
+      "optionalYear": true,
+      "contestEngine": true,
+      "source": "src/rr-game-v09.html",
+      "sourceHash": "64422fa8bbc9cf1b2fce952c3662a229f0870403a7b42ced374aca074353aa5d",
+      "runtimeAssets": [
+        {
+          "path": "rr/runtime/9d9e0e08350536b4/client.mjs",
+          "hash": "0b6b58c9348bbec58c5f0b9c0f6b81f08f721b8da54eeb627242d4fddca1bff3"
+        },
+        {
+          "path": "rr/runtime/9d9e0e08350536b4/routes.mjs",
+          "hash": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+        },
+        {
+          "path": "rr/runtime/9d9e0e08350536b4/engine-boot.mjs",
+          "hash": "3d96a7f664d907bc5a155e7495749d1d94f808286423c994591b63a95c434582"
+        },
+        {
+          "path": "rr/runtime/9d9e0e08350536b4/contest-client.mjs",
+          "hash": "455aee04f96503e2123d4ff83af825fde72a770da4f410c0f4e8b231f086ecd8"
+        },
+        {
+          "path": "rr/runtime/9d9e0e08350536b4/rich-text.mjs",
+          "hash": "2a2a349dd798f90a64bc7908813817fbc6e31ed7fd5816da48c6bd2ecc95d004"
+        },
+        {
+          "path": "rr/frozen/5a1a959d5955f6ea/access-gate.js",
+          "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+        }
+      ]
     }
   ]
 }

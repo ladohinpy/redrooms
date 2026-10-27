@@ -1,0 +1,46 @@
+{
+  "note": "Sizing uses synthetic player data, two attempts each, one set. Not the user live database. No images/base64 in backup. App limit 40 MiB.",
+  "measurements": [
+    {
+      "scenario": "actual initial format with supplied 201-film seed, no real database",
+      "bytes": 47504,
+      "KiB": 46.4
+    },
+    {
+      "scenario": "synthetic",
+      "filmsPerSet": 20,
+      "players": 100,
+      "completedAttemptsPerPlayer": 2,
+      "bytes": 618873,
+      "MiB": 0.59,
+      "includes": "raw answers/actions, reservations, idempotency keys, players, catalog, audit; no images"
+    },
+    {
+      "scenario": "synthetic",
+      "filmsPerSet": 20,
+      "players": 1000,
+      "completedAttemptsPerPlayer": 2,
+      "bytes": 6119673,
+      "MiB": 5.84,
+      "includes": "raw answers/actions, reservations, idempotency keys, players, catalog, audit; no images"
+    },
+    {
+      "scenario": "synthetic",
+      "filmsPerSet": 201,
+      "players": 100,
+      "completedAttemptsPerPlayer": 2,
+      "bytes": 4011179,
+      "MiB": 3.83,
+      "includes": "raw answers/actions, reservations, idempotency keys, players, catalog, audit; no images"
+    },
+    {
+      "scenario": "synthetic",
+      "filmsPerSet": 201,
+      "players": 1000,
+      "completedAttemptsPerPlayer": 2,
+      "bytes": 39683579,
+      "MiB": 37.85,
+      "includes": "raw answers/actions, reservations, idempotency keys, players, catalog, audit; no images"
+    }
+  ]
+}

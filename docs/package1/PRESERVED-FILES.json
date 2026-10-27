@@ -1,0 +1,65 @@
+{
+  "sourceCommit": "99897cfa7a69b42b944e0ef14caedac983d95052",
+  "files": [
+    {
+      "path": "public/access-gate.js",
+      "sha256": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+    },
+    {
+      "path": "public/games/v06/05ac2cca6a93c5b2/index.html",
+      "sha256": "05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749"
+    },
+    {
+      "path": "public/games/v07-tables/4c7b0fb7cf2d4da8/index.html",
+      "sha256": "4c7b0fb7cf2d4da84737bd3673b8c2caa5edc293883d46b46fa6abca42281530"
+    },
+    {
+      "path": "public/games/v08-player-ui/e646963e07411913/index.html",
+      "sha256": "e646963e07411913b92698b7ca200ea86ec2832cd0aafa4fb127be59a4f24d84"
+    },
+    {
+      "path": "public/rr/frozen/5a1a959d5955f6ea/access-gate.js",
+      "sha256": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+    },
+    {
+      "path": "public/rr/runtime/187ac543cc87c08d/client.mjs",
+      "sha256": "ba376f2a3391139406c85618da6480cb29609a136b61780897994bfd8df5c4bd"
+    },
+    {
+      "path": "public/rr/runtime/187ac543cc87c08d/engine-boot.mjs",
+      "sha256": "4be4be204bc7c953c5c92b404defe22b5bb37e9476058266480fdfe51f0bfb1b"
+    },
+    {
+      "path": "public/rr/runtime/187ac543cc87c08d/routes.mjs",
+      "sha256": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+    },
+    {
+      "path": "public/rr/runtime/32bb4b76e60a8e7f/client.mjs",
+      "sha256": "a748424fc8e6d690a9a94a3f702e5df51a976dea5cd722fca2dcff7f1aaa1e9c"
+    },
+    {
+      "path": "public/rr/runtime/32bb4b76e60a8e7f/engine-boot.mjs",
+      "sha256": "070e2aa61c8ad5ee11e5ed98158fd76426f44984f3ebdf2d07aeb740a5a5f90a"
+    },
+    {
+      "path": "public/rr/runtime/e0251ae250ce3446/client.mjs",
+      "sha256": "66121d612ec73b7bb9ca89a5fdbae7ebdea9489bc7726133645ccb770e29482c"
+    },
+    {
+      "path": "public/rr/runtime/e0251ae250ce3446/engine-boot.mjs",
+      "sha256": "3c8361364af8be783c0f759cf00783252a979e199981ba36a731691dc3211462"
+    },
+    {
+      "path": "public/rr/runtime/e0251ae250ce3446/routes.mjs",
+      "sha256": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+    },
+    {
+      "path": "tgcloud/endpoints/checkAccess.js",
+      "sha256": "261bc72d2e3774b1ef873de656e4bacd3087d7f30d5e4a589f27ade1b0dc08e0"
+    },
+    {
+      "path": "tgcloud/lib/subscription.js",
+      "sha256": "eaa1b4b14e536dc070a7c042f6dd278206fe71b7bc38cfce335531a4a6acc2ee"
+    }
+  ]
+}

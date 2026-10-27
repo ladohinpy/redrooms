@@ -1,0 +1,33 @@
+PASS existing administrator workspace includes contest package without new login
+PASS intro, success text and article saved by actual server service to SQLite
+PASS second administrator sees shared saved content
+PASS contest activation from existing admin UI persists separately from publishing set
+PASS non-admin redirected without ID or controls
+PASS real 3D scene starts with author intro and exact-set share controls
+PASS internal notes and locked article absent from game DOM
+PASS share URL targets this exact set, without personal tracking
+PASS actual successful placement records action and progress
+PASS new contest does not import an earlier local practice save
+PASS reload restores same game progress before consuming new attempt
+PASS only one reserved contest attempt after reload
+PASS lost finish acknowledgement keeps local result and offers retry
+PASS server confirms score and author final; retry produces no duplicate
+PASS confirmed game progress removed, outbox receipt retained
+PASS worse second attempt leaves first score in leaderboard
+PASS both attempts are acknowledged completed by server
+PASS third attempt button not offered
+PASS per-set statistics show actual server-calculated best result
+PASS player history and moderation available only inside admin
+PASS finalize from UI freezes official standings
+PASS post template uses fixed results and concrete-set link
+PASS backup UI produces full JSON addressed to two configured admins
+PASS actual uploaded backup validated before restore
+PASS admin upload/preview/confirm restores generation; final standings preserved
+PASS archive remains playable and article unlocks after deadline
+PASS author article opens according to contest closure; archive cannot change official score
+PASS mobile result has no horizontal overflow
+PASS private draft preview plays and computes result without storing attempt
+PASS original 201-cassette catalog loads in v09 without rewriting v06 assets
+PASS original classic set retains real placement and new local save integration
+PASS no uncaught JavaScript errors
+BROWSER CHECKS PASSED: 32
