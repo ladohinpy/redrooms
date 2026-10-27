@@ -66,3 +66,16 @@ Read README.md and docs/RELEASE-DEPLOY.md. Preserve src/rr-legacy-v06.html, conf
 
 ## TABLES ADMIN 2
 Simple four-table UI is separate from legacy in-game JSON tools. Nullable years must never be replaced with fabricated dates. New code uses v07-tables. Preserve known-v06 compatibility runtime mapping and logical save namespace. Never edit published frozen assets in place. No public auth bypass or fake Telegram ctx outside tests. Run JS syntax, unit, integrity and offline WebGL tests; report that live Telegram still needs manual testing.
+
+## Contest package 1 — обязательные ограничения
+- Исходная база перенесена в versioned rr_records. rr_admin_state после перехода —
+  исторический источник, не актуальная копия. Не откатывать backend на legacy-store.
+- Никакого удаления official final snapshots. Поздняя модерация = finalNote, не новая таблица мест.
+- Raw SDK: db.run для записи, db.get/all(sql-tag) для чтения. Не придумывать transaction API.
+- Любой деплой: проверка бота, JSON обоим админам, add-only migration, cloud SQL probe,
+  backend smoke, frontend. Не обходить backup gate для «быстрого исправления».
+- Новая игровая сборка v09-contests неизменяема после публикации. Следующие изменения
+  runtime требуют нового game ID/hash; сохранить старые runtime/frozen файлы.
+- Не доверять client score, identity, elapsed timestamps, attempt count или flags.
+- Тестировать восстановление заполненной базы и редактирование после restore, не только пустой seed.
+- Сервер/ключи не менялись в чате; опубликованность и live-проверки подтверждает пользователь.

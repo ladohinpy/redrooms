@@ -1,0 +1,2 @@
+import {getPackage1,boundary} from '../lib/rr/package1-runtime.js';
+export default async function(input,ctx){const serverReceivedAt=new Date().toISOString();return boundary(async()=>{const p=await getPackage1();const action=input?.action;if(!['preview','lobby','start','finish','abandon','leaderboard','adminRead','adminCommand'].includes(action))throw new Error('Unknown contest operation');return p.contest[action](input,ctx,serverReceivedAt);});}
