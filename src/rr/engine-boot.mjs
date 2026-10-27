@@ -32,12 +32,14 @@ export async function prepareEngine(engineId) {
     }
     if(runtime.contestEngine===true)window.RRContest=await createContestClient(data);
     try {sessionStorage.removeItem('rr:navigation-guard');}catch{}
-    const tools=el('nav',{id:'rr-game-tools','aria-label':'Набор кассет'});
-    Object.assign(tools.style,{position:'fixed',top:'calc(var(--rr-safe-top,0px) + 8px)',left:'calc(var(--rr-safe-left,0px) + 12px)',right:'calc(var(--rr-safe-right,0px) + 12px)',zIndex:'6000',display:'flex',justifyContent:'space-between',gap:'8px',fontFamily:'system-ui',pointerEvents:'none'});
-    const button=(text,handler)=>{const b=el('button',{text,onclick:handler});Object.assign(b.style,{fontSize:'12px',padding:'9px 12px',borderRadius:'10px',background:'#261018ed',color:'#fff1e8',border:'1px solid #975c66',pointerEvents:'auto',maxWidth:'48%',minWidth:'0',textOverflow:'ellipsis',overflow:'hidden',whiteSpace:'nowrap',minHeight:'38px'});return b;};
-    tools.append(button(data.release.name,()=>{if(confirm('Открыть основной набор? Прогресс текущего набора сохранится.'))navigate('/',{rr_default:1});}));
-    if(data.isAdmin === true)tools.append(button('Управление наборами',()=>navigate('/admin.html')));
-    document.body.append(tools);
+    if (data.isAdmin === true) {
+      const pauseCard=document.getElementById('pause')?.querySelector?.('.start-card');
+      if(pauseCard && !document.getElementById('rr-game-tools')) {
+        const tools=el('nav',{id:'rr-game-tools','aria-label':'Управление игрой'});
+        tools.append(el('button',{type:'button',class:'secondary',text:'Управление наборами',onclick:()=>navigate('/admin.html')}));
+        pauseCard.append(tools);
+      }
+    }
     update('Создаём 3D-комнату…');overlay.remove();return data;
   } catch(e) {launchFailure(overlay,e,()=>location.reload());throw e;}
 }

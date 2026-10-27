@@ -40,6 +40,17 @@
       ],
       "optionalYear": true,
       "contestEngine": true
+    },
+    {
+      "id": "v10-clean-start",
+      "name": "Комната: чистый стартовый экран v10",
+      "source": "src/rr-game-v10.html",
+      "adapter": "v06",
+      "aliases": [
+        "clean-start"
+      ],
+      "optionalYear": true,
+      "contestEngine": true
     }
   ]
 }

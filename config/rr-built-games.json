@@ -128,6 +128,46 @@
           "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
         }
       ]
+    },
+    {
+      "id": "v10-clean-start",
+      "name": "Комната: чистый стартовый экран v10",
+      "entry": "/games/v10-clean-start/9fe3373af2f0d407/index.html",
+      "codeHash": "9fe3373af2f0d407b86760748604ca373f82195e262dfebc0a1d3dfd92cc8337",
+      "catalogSchemaVersion": 1,
+      "aliases": [
+        "clean-start"
+      ],
+      "optionalYear": true,
+      "contestEngine": true,
+      "source": "src/rr-game-v10.html",
+      "sourceHash": "51819c64791b336df8c31fdc03869ed0827ba4470b7260b89af2dc2ba7635ddf",
+      "runtimeAssets": [
+        {
+          "path": "rr/runtime/2c0cc4cd97f531dd/client.mjs",
+          "hash": "0b6b58c9348bbec58c5f0b9c0f6b81f08f721b8da54eeb627242d4fddca1bff3"
+        },
+        {
+          "path": "rr/runtime/2c0cc4cd97f531dd/routes.mjs",
+          "hash": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+        },
+        {
+          "path": "rr/runtime/2c0cc4cd97f531dd/engine-boot.mjs",
+          "hash": "f115327c8c627c5a419ce70909094c4d003b9ff546064d514d34bbdd8735d5fa"
+        },
+        {
+          "path": "rr/runtime/2c0cc4cd97f531dd/contest-client.mjs",
+          "hash": "0714e13457e04f77258510932a46cc945b1a0f70e1e575d842999e7d36d4f05f"
+        },
+        {
+          "path": "rr/runtime/2c0cc4cd97f531dd/rich-text.mjs",
+          "hash": "2a2a349dd798f90a64bc7908813817fbc6e31ed7fd5816da48c6bd2ecc95d004"
+        },
+        {
+          "path": "rr/frozen/5a1a959d5955f6ea/access-gate.js",
+          "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+        }
+      ]
     }
   ]
 }
