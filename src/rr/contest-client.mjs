@@ -3,7 +3,7 @@
 import {el,call,telegram,copy,navigate,notify} from './client.mjs';
 import {contentBlock,shareSet} from './rich-text.mjs';
 const clone=x=>JSON.parse(JSON.stringify(x));
-const reqid=()=>globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
+const reqid=()=>{try{const id=globalThis.crypto?.randomUUID?.();if(id)return id;}catch{}return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);};
 /** Entry copy is editorial content, never a fallback release name or contest mode. */
 export function renderPlayerIntro(container, block = {}) {
  if (!container) return;
@@ -48,6 +48,11 @@ export async function createContestClient(data) {
   if(startButton&&!lobby.active&&lobby.phase==='active'&&lobby.remaining===0&&!lobby.isAdmin){startButton.textContent='Обе попытки использованы';startButton.disabled=true;}
   if(ledger?.pending){win=document.getElementById('win');if(win){win.hidden=false;renderFinish();void send().catch(()=>{});}}
  }
+ function entryStatus(text,error=false){
+  let box=document.getElementById('rr-start-status');
+  if(!box){const start=document.getElementById('startButton');if(!start)return;box=el('p',{id:'rr-start-status',role:'status','aria-live':'polite'});start.before(box);}
+  box.textContent=text;box.hidden=!text;box.classList.toggle('error',error);
+ }
  async function ensureStart(){
   if(running)return true;if(starting)return starting;
   starting=(async()=>{
@@ -61,7 +66,7 @@ export async function createContestClient(data) {
    if(ledger.attemptId&&ledger.attemptId!==reply.attempt.id)throw localError('Состояние попытки изменилось. Откройте игру заново.');
    ledger.attemptId=reply.attempt.id;ledger.mode=reply.attempt.mode;ledger.startedAt=reply.attempt.startedAt;persist();window.RR_SAVE_PREFIX=prefix(reply.attempt);running=true;return true;
   })();
-  try{return await starting;}finally{starting=null;}
+  try{return await starting;}catch(error){window.RR_ENTRY_FAILURE={stage:'start',code:/^[A-Z_]{1,50}$/.test(error?.code||'')?error.code:'START_FAILED'};throw error;}finally{starting=null;}
  }
  function record(filmId,tableId){if(!running||!ledger?.attemptId)throw localError('Попытка ещё не зарегистрирована.');if(ledger.actions.length>=10000)throw localError('Слишком много действий. Приостановите игру и обратитесь к администратору.');ledger.actions.push({seq:ledger.actions.length+1,filmId,tableId});try{persist();}catch(e){ledger.actions.pop();throw e;}}
  function localState(gameKey){if(ledger){ledger.gameKey=gameKey;persist();}return ledger?{attemptId:ledger.attemptId,actions:clone(ledger.actions)}:null;}
@@ -92,5 +97,5 @@ export async function createContestClient(data) {
  async function restart(){if(ledger?.pending){await send();if(ledger.pending)return;}if(ledger?.attemptId&&!ledger.receipt){if(!confirm('Прервать текущую попытку? Она останется использованной.'))return;if(!preview)await call('rrContest',{action:'abandon',attemptId:ledger.attemptId});}if(ledger?.gameKey)localStorage.removeItem(ledger.gameKey);localStorage.removeItem(key);reload();}
  addEventListener('online',()=>{if(ledger?.pending)void send().catch(()=>{});});
  let retryTimer=setInterval(()=>{if(ledger?.pending&&navigator.onLine)void send().catch(()=>{});},20000);addEventListener('pagehide',()=>clearInterval(retryTimer),{once:true});
- return {get running(){return running;},attach,ensureStart,record,localState,restoreLocal,queueFinish,finish,restart,publicError:playerError};
+ return {get running(){return running;},entryStatus,attach,ensureStart,record,localState,restoreLocal,queueFinish,finish,restart,publicError:playerError};
 }

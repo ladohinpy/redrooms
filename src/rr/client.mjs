@@ -46,7 +46,7 @@ export async function call(name, input = {}) {
     const timer = setTimeout(() => { if (done) return; done = true; const e = new Error('Ответ не получен. Запрос мог сохраниться: сначала обновите данные, не повторяйте публикацию вслепую.'); e.code = 'TIMEOUT'; reject(e); }, 15000);
     const callback = (err, result) => {
       if (done) return; done = true; clearTimeout(timer);
-      if (err) { const e = new Error(err.message || 'Не удалось выполнить запрос.'); e.code = err.parameters?.code || err.type; e.parameters = err.parameters || {}; reject(e); }
+      if (err) { const e = new Error(err.message || 'Не удалось выполнить запрос.'); e.code = err.parameters?.code || err.type; e.parameters = err.parameters || {}; if(['FORBIDDEN','AUTH_REQUIRED'].includes(e.code))window.dispatchEvent(new Event('rr-access-denied')); reject(e); }
       else resolve(result);
     };
     try { const r=t.Serverless.call(name, input, callback); if(r && typeof r.then==='function') r.then(v=>callback(null,v),callback); } catch (e) { callback(e); }
@@ -111,7 +111,7 @@ export function launchFailure(container, error, retry) {
 }
 /** Neutral shell until a fresh server response explicitly grants access. */
 export function adminChrome(identity = null, heading = 'Наборы кассет') {
-  const allowed = identity?.isAdmin === true;
+  const allowed = identity?.isAdmin === true && Number.isSafeInteger(identity.userId) && identity.userId>0;
   document.title = allowed ? 'Красная комната — наборы' : 'Красная комната';
   const title = document.querySelector('.topbar h1');
   if (title) title.textContent = allowed ? heading : 'Красная комната';
@@ -151,4 +151,24 @@ export function configureViewport(t, mode='game') {
 export async function navigationWait() {
   // Successful navigation destroys this document. A blocked navigation must not wait forever.
   await new Promise((_,reject)=>setTimeout(()=>{const e=new Error('Переход к странице заблокирован. Закройте Mini App и откройте заново.');e.code='NAVIGATION_BLOCKED';reject(e);},5000));
+}
+
+/** Require both a fresh role response and a successful protected read before showing editor. */
+export async function authorizeEditor() {
+  const identity=await call('rrAdminStatus');
+  if(identity?.isAdmin!==true || !Number.isSafeInteger(identity.userId)||identity.userId<=0)
+    throw Object.assign(new Error('Недоступно.'),{code:'FORBIDDEN'});
+  const model=await call('rrAdminRead');
+  if(model?.access?.isAdmin!==true || model.access.userId!==identity.userId || !model.state)
+    throw Object.assign(new Error('Откройте приложение заново.'),{code:'FORBIDDEN'});
+  return {identity,model};
+}
+export async function confirmAdminEntry(userId) {
+  const status=await call('rrAdminStatus');
+  return status?.isAdmin===true&&Number.isSafeInteger(userId)&&status.userId===userId;
+}
+export async function openAdminInPlace(userId) {
+  if(!await confirmAdminEntry(userId))throw Object.assign(new Error('Недоступно.'),{code:'FORBIDDEN'});
+  // Same webview/document: no window.open, external browser or openTelegramLink.
+  navigate('/admin.html');
 }

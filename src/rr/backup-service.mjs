@@ -1,10 +1,10 @@
 import {fail} from './domain.mjs';
-import {verifiedUser} from './service.mjs';
+import {verifiedUser,createAdminPolicy} from './admin-access.mjs';
 import {packBackup,parseBackup,backupFileName,MAX_BACKUP_BYTES} from './backup.mjs';
 import {utf8,digest} from './digest.mjs';
 export const BACKUP_CHUNK_CHARS=100000;
 export function createBackupService({store,adminIds,availableGames,sendDocument,now=()=>new Date().toISOString(),newId=()=>Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}){
- const admin=ctx=>{const uid=verifiedUser(ctx);if(!adminIds.includes(uid))fail('Доступ только администраторам.','FORBIDDEN');return uid;};
+ const policy=createAdminPolicy(adminIds),admin=policy.requireAdmin;
  const metadata=async(token,uid)=>{const m=await store.readTransfer(token,'meta');if(!m||m.owner!==uid||Date.parse(m.expiresAt)<Date.parse(now()))fail('Передача не найдена или истекла. Загрузите файл снова.','NOT_FOUND');return m;};
  async function snapshot(){const h=await store.head();if(!h)fail('База пока не инициализирована.');const records=await store.view(h).list();return packBackup(records,h,{at:now(),environment:store.environment,botId:store.botId});}
  async function send(b,tag='Резервная копия'){

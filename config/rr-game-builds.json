@@ -51,6 +51,17 @@
       ],
       "optionalYear": true,
       "contestEngine": true
+    },
+    {
+      "id": "v11-access-entry",
+      "name": "Комната: вход и доступ v11",
+      "source": "src/rr-game-v11.html",
+      "adapter": "v06",
+      "aliases": [
+        "access-entry"
+      ],
+      "optionalYear": true,
+      "contestEngine": true
     }
   ]
 }

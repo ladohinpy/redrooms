@@ -44,7 +44,7 @@ def setup_admin(page,uid=101,mobile=False):
  page.set_content(html);page.evaluate(sdk(uid,mobile));page.evaluate('url=>import(url)',module('admin.mjs'))
 def setup_game(page,uid=303,release='eight',storage=None,mobile=False,preview=None):
  page.expose_function('testRPC',rpc)
- manifest=json.loads((R/'config/rr-built-games.json').read_text());g=next(g for g in manifest['games'] if g['id']=='v10-clean-start')
+ manifest=json.loads((R/'config/rr-built-games.json').read_text());g=next(g for g in manifest['games'] if g['id']==os.environ.get('RR_TEST_GAME','v11-access-entry'))
  html=(R/('public'+g['entry'])).read_text();boot=re.search(r'import\(("/rr/runtime/[^\"]+/engine-boot.mjs")\)',html);assert boot
  html=html.replace(boot[1],json.dumps(module('engine-boot.mjs')))
  def external(m):

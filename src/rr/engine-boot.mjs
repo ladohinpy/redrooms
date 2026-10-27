@@ -1,4 +1,4 @@
-import {call,telegram,launchInput,navigate,el,launchFailure,stage,navigationWait} from './client.mjs';
+import {call,telegram,launchInput,navigate,el,launchFailure,stage,navigationWait,confirmAdminEntry,openAdminInPlace} from './client.mjs';
 import {samePage,transportPath} from './routes.mjs';
 import {createContestClient} from './contest-client.mjs';
 export async function prepareEngine(engineId) {
@@ -32,13 +32,24 @@ export async function prepareEngine(engineId) {
     }
     if(runtime.contestEngine===true)window.RRContest=await createContestClient(data);
     try {sessionStorage.removeItem('rr:navigation-guard');}catch{}
+    // Non-blocking private navigation. Do not let a failed role lookup break a player launch.
     if (data.isAdmin === true) {
-      const pauseCard=document.getElementById('pause')?.querySelector?.('.start-card');
-      if(pauseCard && !document.getElementById('rr-game-tools')) {
-        const tools=el('nav',{id:'rr-game-tools','aria-label':'Управление игрой'});
-        tools.append(el('button',{type:'button',class:'secondary',text:'Управление наборами',onclick:()=>navigate('/admin.html')}));
-        pauseCard.append(tools);
-      }
+      void confirmAdminEntry(data.userId).then(allowed=>{
+        if(!allowed)return;
+        for(const [section,id] of [['start','rr-start-admin'],['pause','rr-pause-admin']]){
+          const card=document.getElementById(section)?.querySelector?.('.start-card');
+          if(!card||document.getElementById(id))continue;
+          const button=el('button',{id,type:'button',class:'secondary',text:'Админка',onclick:async()=>{
+            button.disabled=true;
+            try{await openAdminInPlace(data.userId);}catch(error){
+              if(['FORBIDDEN','AUTH_REQUIRED'].includes(error?.code))button.remove();
+              else {let hint=card.querySelector('.rr-admin-entry-error');if(!hint){hint=el('p',{class:'rr-admin-entry-error',role:'status'});card.append(hint);}hint.textContent='Не удалось открыть управление. Проверьте соединение и нажмите «Админка» снова.';}
+            }finally{button.disabled=false;}
+          }});
+          card.append(button);
+        }
+      }).catch(()=>{});
+      addEventListener('rr-access-denied',()=>{document.getElementById('rr-start-admin')?.remove();document.getElementById('rr-pause-admin')?.remove();});
     }
     update('Создаём 3D-комнату…');overlay.remove();return data;
   } catch(e) {launchFailure(overlay,e,()=>location.reload());throw e;}

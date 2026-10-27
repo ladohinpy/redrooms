@@ -1,5 +1,5 @@
 import {downloadFullBackup} from './admin-contest.mjs';
-import { el, call, notify, navigate, saveFile, copy, telegram, adminChrome, launchFailure, navigationWait, configureViewport } from './client.mjs';
+import { el, call, notify, navigate, saveFile, copy, telegram, adminChrome, launchFailure, navigationWait, configureViewport, authorizeEditor } from './client.mjs';
 import { clone, normalizeCatalog, catalogWarnings, playableCatalog, totals, LIMITS } from './domain.mjs';
 import { importCatalog, exportCSV } from './import.mjs';
 
@@ -207,12 +207,21 @@ function audit() {
     el('ul',{class:'audit'},...[...model.state.audit].reverse().map(a=>el('li',{},el('strong',{text:a.summary}),el('div',{class:'muted',text:`${a.at} · ${a.actor} · ${a.action} · ${a.target}`})))));
 }
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+let starting=null;
 async function start() {
-  adminChrome();
-  try {
-    const t=await telegram();configureViewport(t,'admin');identity=await call('rrAdminStatus');
-    if(identity?.isAdmin !== true){navigate('/',{rr_default:1},true);await navigationWait();return;}
-    adminChrome(identity,'Управление комнатой');model=await call('rrAdminRead');render();
-  }catch(e){adminChrome();const box=el('section',{class:'panel'});root.replaceChildren(box);launchFailure(box,e,start);}
+ if(starting)return starting;
+ root.hidden=true;identity=null;model=null;adminChrome();
+ starting=(async()=>{try {
+    const t=await telegram();configureViewport(t,'admin');
+    const access=await authorizeEditor();identity=access.identity;model=access.model;
+    adminChrome(identity,'Управление комнатой');render();root.hidden=false;
+  }catch(e){
+    identity=null;model=null;root.replaceChildren();adminChrome();
+    if(['FORBIDDEN','AUTH_REQUIRED'].includes(e?.code)){try{navigate('/',{rr_default:1},true);await navigationWait();}catch{}}
+    const box=el('section',{class:'panel'});root.replaceChildren(box);root.hidden=false;launchFailure(box,e,start);
+  }finally{starting=null;}})();return starting;
 }
+function lockEditor(){identity=null;model=null;root.hidden=true;root.replaceChildren();adminChrome();}
+addEventListener('rr-access-denied',lockEditor);addEventListener('pagehide',lockEditor);
+addEventListener('pageshow',event=>{if(event.persisted)void start();});
 start();
