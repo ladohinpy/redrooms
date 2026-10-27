@@ -1,3 +1,4 @@
+import {downloadFullBackup} from './admin-contest.mjs';
 import { el, call, notify, navigate, saveFile, copy, telegram, adminChrome, launchFailure, navigationWait, configureViewport } from './client.mjs';
 import { clone, normalizeCatalog, catalogWarnings, playableCatalog, totals, LIMITS } from './domain.mjs';
 import { importCatalog, exportCSV } from './import.mjs';
@@ -66,7 +67,7 @@ function overview() {
     el('section',{class:'panel grid three'},...[['Каталогов',s.catalog_versions.length],['Релизов',s.game_releases.length],['Версия данных',model.revision]].map(([l,v])=>el('div',{},el('div',{class:'kpi',text:v}),el('div',{class:'kpi-label',text:l})))),
     el('section',{class:'panel'},el('h3',{text:'Рабочий порядок'}),el('p',{text:'Создать копию каталога → загрузить или отредактировать фильмы → проверить → сохранить → опубликовать каталог → создать и проверить релиз → опубликовать → сделать основным.'}),
       el('p',{class:'muted',text:'У обоих администраторов одинаковые права. Изменения сохраняются явно, без автосохранения. При конфликте чужие правки не перезаписываются.'}),
-      el('div',{class:'actions'},button('Каталоги',()=>{tab='catalogs';render();}),button('Экспорт резервной копии',()=>saveFile(`red-room-backup-rev-${model.revision}.json`,JSON.stringify(model,null,2))))));
+      el('div',{class:'actions'},button('Каталоги',()=>{tab='catalogs';render();}),button('Экспорт резервной копии',()=>downloadFullBackup()))));
 }
 function newCatalog(from) {
   if(!dropAllowed()) return;
@@ -201,7 +202,7 @@ function releases() {
   return list;
 }
 function audit() {
-  return el('section',{class:'panel'},el('div',{class:'row end'},el('h2',{text:'История изменений'}),button('Экспорт резервной копии',()=>saveFile(`red-room-backup-rev-${model.revision}.json`,JSON.stringify(model,null,2)))),
+  return el('section',{class:'panel'},el('div',{class:'row end'},el('h2',{text:'История изменений'}),button('Экспорт резервной копии',()=>downloadFullBackup())),
     el('p',{class:'muted',text:'Последние 200 действий. Идентификаторы авторов берутся из проверенных Telegram-данных. Экспорт содержит каталоги, релизы и историю; автоматического восстановления всей базы в этой версии нет.'}),
     el('ul',{class:'audit'},...[...model.state.audit].reverse().map(a=>el('li',{},el('strong',{text:a.summary}),el('div',{class:'muted',text:`${a.at} · ${a.actor} · ${a.action} · ${a.target}`})))));
 }

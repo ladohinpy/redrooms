@@ -1,5 +1,6 @@
 import {call,telegram,launchInput,navigate,el,launchFailure,stage,navigationWait} from './client.mjs';
 import {samePage,transportPath} from './routes.mjs';
+import {createContestClient} from './contest-client.mjs';
 export async function prepareEngine(engineId) {
   const overlay=el('section',{id:'rr-engine-overlay',role:'status'});
   Object.assign(overlay.style,{position:'fixed',inset:'0',zIndex:'2147483000',background:'#170a10',color:'#f8eee7',display:'grid',alignContent:'center',justifyItems:'center',padding:'calc(var(--rr-safe-top,0px) + 24px) 24px 24px',fontFamily:'system-ui',textAlign:'center',overflow:'auto'});
@@ -18,7 +19,7 @@ export async function prepareEngine(engineId) {
     update('Проверяем адрес комнаты…');
     transportPath(runtime?.entry);
     if(runtime.id!==engineId || !samePage(runtime.entry,location.pathname)) {
-      navigate(runtime.entry,{release:data.release.id},true);await navigationWait();return;
+      navigate(runtime.entry,data.previewCatalogId?{previewCatalogId:data.previewCatalogId}:{release:data.release.id},true);await navigationWait();return;
     }
     const embedded=document.getElementById('default-dataset');
     if(!embedded) throw new Error('В сборке нет места для набора кассет.');
@@ -29,6 +30,7 @@ export async function prepareEngine(engineId) {
     if(data.release.id==='classic-1' && data.release.catalogVersionId==='original-201-v1') {
       try {for(const k of Object.keys(localStorage))if(k.startsWith(`red-room-v06-pack:${data.catalog.id}:`) && localStorage.getItem(window.RR_SAVE_PREFIX+k)===null)localStorage.setItem(window.RR_SAVE_PREFIX+k,localStorage.getItem(k));}catch{}
     }
+    if(runtime.contestEngine===true)window.RRContest=await createContestClient(data);
     try {sessionStorage.removeItem('rr:navigation-guard');}catch{}
     const tools=el('nav',{id:'rr-game-tools','aria-label':'Набор кассет'});
     Object.assign(tools.style,{position:'fixed',top:'calc(var(--rr-safe-top,0px) + 8px)',left:'calc(var(--rr-safe-left,0px) + 12px)',right:'calc(var(--rr-safe-right,0px) + 12px)',zIndex:'6000',display:'flex',justifyContent:'space-between',gap:'8px',fontFamily:'system-ui',pointerEvents:'none'});

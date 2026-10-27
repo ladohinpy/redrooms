@@ -1,3 +1,4 @@
+import {mountAdminTools,extraHasChanges,cloneWholeSet,downloadFullBackup} from './admin-contest.mjs';
 import {el,call,telegram,configureViewport,navigate,notify,saveFile,copy,stage,launchFailure,adminChrome,navigationWait} from './client.mjs';
 import {catalogToRows,splitTitles,simpleCatalog,setLink,SIMPLE_VERSION} from './simple.mjs';
 import {normalizeCatalog,LIMITS} from './domain.mjs';
@@ -12,10 +13,10 @@ const current=()=>model?.state.catalog_versions.find(c=>c.id===selectedId);
 const linked=()=>model?.state.game_releases.find(r=>r.catalogVersionId===selectedId && r.status==='published');
 const freshId=()=>`set-${Date.now().toString(36)}-${Math.random().toString(36).slice(2,6)}`;
 function mark(){dirty=true;document.getElementById('dirty')?.replaceChildren('Есть несохранённые изменения.');try{window.Telegram.WebApp.enableClosingConfirmation?.();}catch{}updateReview();}
-function leave(){return !dirty || confirm('Есть несохранённый текст. Перед выходом можно скачать его кнопкой «Скачать черновик». Продолжить без сохранения?');}
-addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+function leave(){return !(dirty||extraHasChanges()) || confirm('Есть несохранённый текст. Перед выходом можно скачать его кнопкой «Скачать черновик». Продолжить без сохранения?');}
+addEventListener('beforeunload',e=>{if(dirty||extraHasChanges()){e.preventDefault();e.returnValue='';}});
 function choose(id){selectedId=id;const c=current();form=c?{id:c.id,name:c.name,tables:catalogToRows(c.catalog)}:null;dirty=false;try{window.Telegram.WebApp.disableClosingConfirmation?.();}catch{}render();}
-function newSet(from){if(!leave())return;selectedId=null;form={id:freshId(),name:from?`${from.name} — копия`.slice(0,100):'',tables:from?catalogToRows(from.catalog):Array.from({length:4},()=>({name:'',titles:'',delimiter:'auto'}))};dirty=false;render();}
+function newSet(from){if(!leave())return;if(from){return cloneWholeSet(from,async id=>{selectedId=id;await fetchData();});}selectedId=null;form={id:freshId(),name:from?`${from.name} — копия`.slice(0,100):'',tables:from?catalogToRows(from.catalog):Array.from({length:4},()=>({name:'',titles:'',delimiter:'auto'}))};dirty=false;render();}
 function setBusy(value){busy=value;app.classList.toggle('busy',value);for(const x of app.querySelectorAll('fieldset'))x.disabled=value;}
 async function refresh(){if(!leave())return;await fetchData();}
 async function fetchData(){setBusy(true);try{model=await call('rrAdminRead');const id=selectedId || model.state.catalog_versions[0]?.id;if(id)choose(id);else render();}finally{setBusy(false);}}
@@ -56,9 +57,9 @@ function editor(){if(!form)return el('section',{class:'panel empty',text:'Соз
 }
 function render(){if(!model)return;const s=model.state,def=s.game_releases.find(r=>r.id===s.app_settings.defaultReleaseId);
  const top=el('section',{class:'panel current'},el('div',{},el('span',{class:'badge default-badge',text:'ЗАПУСКАЕТСЯ ПО УМОЛЧАНИЮ'}),el('strong',{id:'default-name',text:def?.name||'Не выбран'}),el('p',{class:'help',text:def?`Код: ${def.id}`:''})),el('div',{class:'actions'},button('Открыть основную игру',()=>{if(leave())navigate('/',{rr_default:1});}),button('Обновить',refresh)));
- const sidebar=el('aside',{class:'panel sidebar'},button('+ Новый набор',()=>newSet(),'primary'),el('p',{class:'help',text:'Сохранённые версии'}),el('div',{class:'list'},...s.catalog_versions.map(c=>{const release=s.game_releases.find(r=>r.catalogVersionId===c.id && r.status==='published');const b=button('',()=>{if(!leave())return;try{choose(c.id);}catch(e){notify(e.message,true);}},selectedId===c.id?'selected':'');b.append(el('strong',{text:c.name}),el('small',{text:release?.id===s.app_settings.defaultReleaseId?'Основной набор':names[c.status]||c.status}));return b;})),button('Резервная копия базы',()=>saveFile(`red-room-backup-${model.revision}.json`,JSON.stringify(model,null,2))));
+ const sidebar=el('aside',{class:'panel sidebar'},button('+ Новый набор',()=>newSet(),'primary'),el('p',{class:'help',text:'Сохранённые версии'}),el('div',{class:'list'},...s.catalog_versions.map(c=>{const release=s.game_releases.find(r=>r.catalogVersionId===c.id && r.status==='published');const b=button('',()=>{if(!leave())return;try{choose(c.id);}catch(e){notify(e.message,true);}},selectedId===c.id?'selected':'');b.append(el('strong',{text:c.name}),el('small',{text:release?.id===s.app_settings.defaultReleaseId?'Основной набор':names[c.status]||c.status}));return b;})),button('Резервная копия базы',downloadFullBackup));
  const history=el('details',{class:'panel'},el('summary',{text:'История действий'}),...s.audit.slice(-15).reverse().map(a=>el('div',{class:'history-row',text:`${a.at} · ID ${a.actor} · ${a.summary} (${a.target})`})));
- app.replaceChildren(top,el('div',{class:'layout'},sidebar,el('div',{},editor(),history)));updateReview();
+ app.replaceChildren(top,el('div',{class:'layout'},sidebar,el('div',{},editor(),history)));mountAdminTools(app,{model,current,identity,choose,onReload:fetchData});updateReview();
 }
 async function boot(){
  adminChrome();stage('вход в управление');

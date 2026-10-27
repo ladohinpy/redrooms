@@ -71,7 +71,7 @@ export function gameBuild(game) {
   if (!/^[a-f0-9]{64}$/.test(game.codeHash)) fail('У сборки отсутствует SHA-256.');
   if (game.catalogSchemaVersion !== 1) fail('Сборка должна поддерживать схему каталога 1.');
   const aliases = game.aliases || []; if (!Array.isArray(aliases)) fail('aliases должен быть массивом.'); aliases.forEach(a => id(a, 'Псевдоним сборки'));
-  return { id: game.id, name: label(game.name, 'Название сборки', 100), entry: game.entry, codeHash: game.codeHash, catalogSchemaVersion: 1, aliases, ...(game.optionalYear === true ? {optionalYear:true} : {}) };
+  return { id: game.id, name: label(game.name, 'Название сборки', 100), entry: game.entry, codeHash: game.codeHash, catalogSchemaVersion: 1, aliases, ...(game.optionalYear === true ? {optionalYear:true} : {}), ...(game.contestEngine===true?{contestEngine:true}:{}) };
 }
 export function createInitialState(seed, games, now) {
   const builds = games.map(gameBuild); unique(builds.flatMap(g => [g.id, ...g.aliases]), 'версии / псевдонимы сборок'); if (!builds.length) fail('Нет сборок.');
@@ -121,7 +121,7 @@ export function applyCommand(original, command, actor, availableGames, now = new
       if (publish) {
         if (typeof input.makeDefault !== 'boolean') fail('Подтвердите, делать ли набор основным.');
         if (s.game_releases.length >= LIMITS.releases) fail('Достигнут предел релизов.', 'CAPACITY');
-        const game = available.find(g => g.id === SIMPLE_BUILD && g.optionalYear === true);
+        const game = available.find(g => g.id === 'v09-contests' && g.contestEngine===true) || available.find(g => g.id === SIMPLE_BUILD && g.optionalYear === true);
         if (!game) fail('Сначала опубликуйте сборку v07-tables.', 'BUILD_UNAVAILABLE');
         const registered = s.game_versions.find(g => g.id === game.id);
         if (registered && (registered.codeHash !== game.codeHash || registered.entry !== game.entry)) fail('Сборка изменилась под прежним ID.', 'IMMUTABLE');
