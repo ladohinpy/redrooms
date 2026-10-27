@@ -4,6 +4,15 @@ import {el,call,telegram,copy,navigate,notify} from './client.mjs';
 import {contentBlock,shareSet} from './rich-text.mjs';
 const clone=x=>JSON.parse(JSON.stringify(x));
 const reqid=()=>globalThis.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
+/** Entry copy is editorial content, never a fallback release name or contest mode. */
+export function renderPlayerIntro(container, block = {}) {
+ if (!container) return;
+ const value=block && typeof block==='object' ? block : {};
+ const authored=['title','text','url'].some(key=>typeof value[key]==='string' && value[key].trim());
+ container.replaceChildren();
+ container.hidden=!authored;
+ if (authored) container.append(contentBlock(value));
+}
 export async function createContestClient(data) {
  const rid=data.release.id,base=window.RR_SAVE_PREFIX,key=`rr:contest:1:${data.userId}:${rid}`;
  const preview=!!data.previewCatalogId;
@@ -21,23 +30,21 @@ export async function createContestClient(data) {
  function localError(message){return Object.assign(new Error(message),{localMessage:true});}
  function linkActions(text){if(preview)return el('p',{class:'small-note',text:'Предпросмотр черновика: публикации и общедоступной ссылки ещё нет.'});const row=el('div',{class:'win-actions rr-share-actions'});try{const l=shareSet(lobby.botUsername,rid,text);row.append(button('Поделиться этой игрой',async()=>{const t=await telegram();t.openTelegramLink(l.shareUrl);}),button('Копировать ссылку',()=>copy(l.url)));}catch{}return row;}
  const reload=()=>navigate(location.pathname,preview?{previewCatalogId:data.previewCatalogId}:{release:rid},true);
- function summary(){
-  if(lobby.isAdmin)return 'Тестовый режим администратора. Прохождение не попадёт в конкурсную статистику.';
-  if(lobby.phase==='active')return `Две конкурсные попытки. Осталось: ${lobby.remaining}. В зачёт идёт лучший результат. +100 за верный стол, −75 за ошибку.`;
-  if(lobby.phase==='review')return 'Конкурс завершён, идёт подведение итогов. Сейчас можно играть вне зачёта.';
-  if(lobby.phase==='archive')return 'Архивный выпуск. Можно играть снова, опубликованные итоги не изменятся.';
-  return 'Свободное прохождение. Конкурс для этого набора ещё не начат.';
- }
  async function rankings(){const result=preview?{rows:[],finalized:false}:await call('rrContest',{action:'leaderboard',releaseId:rid});const dialog=el('dialog',{class:'rr-results-dialog'},el('h2',{text:result.finalized?'Окончательные итоги':'Предварительные результаты'}));dialog.append(...result.rows.map(r=>el('p',{text:`${r.place}. ${r.name} — ${r.score} очков · ${r.accuracy}%${r.isMe?' · вы':''}`})));if(!result.rows.length)dialog.append(el('p',{text:'Пока нет зачётных результатов.'}));dialog.append(button('Закрыть',()=>{dialog.close();dialog.remove();}));document.body.append(dialog);dialog.showModal();}
- function intro(){const box=el('section',{id:'rr-contest-intro'},el('h2',{text:lobby.name}),contentBlock(lobby.content.intro),el('p',{class:'small-note',text:summary()}),linkActions(`Попробуй набор «${lobby.name}» в «Красной комнате».`));box.append(button('Посмотреть рейтинг',rankings));
-  const active=lobby.active;
-  if(active&&(!ledger||ledger.attemptId!==active.id)){box.append(el('p',{class:'rr-warning',text:'На сервере есть начатая попытка, но её прогресс на этом устройстве не найден. Бесплатная новая попытка не выдаётся.'}),button('Завершить потерянную попытку без результата',async()=>{if(!confirm('Эта попытка останется использованной. Продолжить?'))return;await call('rrContest',{action:'abandon',attemptId:active.id});reload();}));}
-  if(ledger?.pending)box.append(el('p',{text:'Есть завершённый результат, который ещё не подтверждён сервером.'}),button('Отправить сохранённый результат',async()=>{await send();reload();}));
+ // Show recovery controls only for an actual interrupted attempt, not as a permanent lobby.
+ function recovery(){
+  const box=el('section',{id:'rr-attempt-recovery',role:'status'}),active=lobby.active;
+  if(active&&(!ledger||ledger.attemptId!==active.id)){
+   box.append(el('p',{class:'rr-warning',text:'Начатая игра не сохранилась на этом устройстве. Можно завершить её без результата; использованная попытка не возвращается.'}),button('Завершить потерянную попытку без результата',async()=>{if(!confirm('Эта попытка останется использованной. Продолжить?'))return;await call('rrContest',{action:'abandon',attemptId:active.id});reload();}));
+  }
   return box;
  }
  function attach(){
   const card=document.querySelector('#start .start-card'),startButton=document.getElementById('startButton');
-  if(card&&!document.getElementById('rr-contest-intro'))card.insertBefore(intro(),card.querySelector('.controls'));
+  renderPlayerIntro(document.getElementById('rr-player-intro'),lobby.content?.intro);
+  document.getElementById('rr-attempt-recovery')?.remove();
+  const help=recovery();
+  if(card && startButton && help.childNodes.length)card.insertBefore(help,startButton);
   if(startButton&&!lobby.active&&lobby.phase==='active'&&lobby.remaining===0&&!lobby.isAdmin){startButton.textContent='Обе попытки использованы';startButton.disabled=true;}
   if(ledger?.pending){win=document.getElementById('win');if(win){win.hidden=false;renderFinish();void send().catch(()=>{});}}
  }

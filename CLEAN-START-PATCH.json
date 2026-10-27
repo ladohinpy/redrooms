@@ -1,0 +1,155 @@
+{
+  "patch": "clean-start-1",
+  "base": "redrooms-contest-package1 + package1-workflows-fix",
+  "newBuildId": "v10-clean-start",
+  "databaseSchemaChanged": false,
+  "deploymentPerformed": false,
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "beforeSHA256": "edce4e3f0f31aa3b8c4c906949e64e094515cfb32f306b40f7d0383e2f6a13fa",
+      "sha256": "5ae35aff18cb6ec5f1a4bda55daca60d8c9894852551337944accddc190aa31c"
+    },
+    {
+      "path": "README.md",
+      "beforeSHA256": "bfa895f69120eb12ca87cb19263ffd71faad6ae2a8a09dc9c89aea23670cd9f9",
+      "sha256": "91dff0307a6cf9d934eee805ba758881bfe656bcdab1cb68b908547af058a8c5"
+    },
+    {
+      "path": "config/rr-built-games.json",
+      "beforeSHA256": "7e8f56bb3c378418fd3b5e7e73b0a9b7db9e4ed52d6c6f7c9102408e666bd1ac",
+      "sha256": "3e51c3f959d66e926223a8a3b1ccaca362c49c5d0a3ac6d6e54b26c07a7e2270"
+    },
+    {
+      "path": "config/rr-game-builds.json",
+      "beforeSHA256": "ddd7e00da3072613ffd15a9eef583a4bf2fa02641af493c2cc1fdf978a2fa775",
+      "sha256": "2b06810977b763573eda5bb8b6d89bbe068242e42bd10e036439d13834ea0a8d"
+    },
+    {
+      "path": "docs/FIX-CLEAN-START.md",
+      "beforeSHA256": null,
+      "sha256": "ac011bb43e5af46822b22eef554c42e580764a8bb25c7c637ed790882e92863d"
+    },
+    {
+      "path": "public/games/v10-clean-start/9fe3373af2f0d407/index.html",
+      "beforeSHA256": null,
+      "sha256": "9fe3373af2f0d407b86760748604ca373f82195e262dfebc0a1d3dfd92cc8337"
+    },
+    {
+      "path": "public/rr/admin-contest.mjs",
+      "beforeSHA256": "fc17a5f35fac61bab6eed77284b31600cf3313b14c5d1df436b3f6853e197d2e",
+      "sha256": "472ba9989ab62bd431847ea7613e871d577fdd857cc4e4eb47aaa908789a86cc"
+    },
+    {
+      "path": "public/rr/contest-client.mjs",
+      "beforeSHA256": "455aee04f96503e2123d4ff83af825fde72a770da4f410c0f4e8b231f086ecd8",
+      "sha256": "0714e13457e04f77258510932a46cc945b1a0f70e1e575d842999e7d36d4f05f"
+    },
+    {
+      "path": "public/rr/domain.mjs",
+      "beforeSHA256": "0edb49e8dd4a01b799cf8e5ebf6fb42e5b2d326396267607c0aa51d7cf2737f6",
+      "sha256": "6e23b7653fbf69f28d8919a400f69d5de1a95e565aa0398fcc17294bb1b7bbfd"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/client.mjs",
+      "beforeSHA256": null,
+      "sha256": "0b6b58c9348bbec58c5f0b9c0f6b81f08f721b8da54eeb627242d4fddca1bff3"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/contest-client.mjs",
+      "beforeSHA256": null,
+      "sha256": "0714e13457e04f77258510932a46cc945b1a0f70e1e575d842999e7d36d4f05f"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/engine-boot.mjs",
+      "beforeSHA256": null,
+      "sha256": "f115327c8c627c5a419ce70909094c4d003b9ff546064d514d34bbdd8735d5fa"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/rich-text.mjs",
+      "beforeSHA256": null,
+      "sha256": "2a2a349dd798f90a64bc7908813817fbc6e31ed7fd5816da48c6bd2ecc95d004"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/routes.mjs",
+      "beforeSHA256": null,
+      "sha256": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+    },
+    {
+      "path": "src/rr/admin-contest.mjs",
+      "beforeSHA256": "fc17a5f35fac61bab6eed77284b31600cf3313b14c5d1df436b3f6853e197d2e",
+      "sha256": "472ba9989ab62bd431847ea7613e871d577fdd857cc4e4eb47aaa908789a86cc"
+    },
+    {
+      "path": "src/rr/contest-client.mjs",
+      "beforeSHA256": "455aee04f96503e2123d4ff83af825fde72a770da4f410c0f4e8b231f086ecd8",
+      "sha256": "0714e13457e04f77258510932a46cc945b1a0f70e1e575d842999e7d36d4f05f"
+    },
+    {
+      "path": "src/rr/domain.mjs",
+      "beforeSHA256": "0edb49e8dd4a01b799cf8e5ebf6fb42e5b2d326396267607c0aa51d7cf2737f6",
+      "sha256": "6e23b7653fbf69f28d8919a400f69d5de1a95e565aa0398fcc17294bb1b7bbfd"
+    },
+    {
+      "path": "src/rr/engine-boot.mjs",
+      "beforeSHA256": "3d96a7f664d907bc5a155e7495749d1d94f808286423c994591b63a95c434582",
+      "sha256": "f115327c8c627c5a419ce70909094c4d003b9ff546064d514d34bbdd8735d5fa"
+    },
+    {
+      "path": "src/rr/service.mjs",
+      "beforeSHA256": "dc8caecc10f25d204467bda889042b07f8fac7dc5fff7a93bdbace9a4adb8135",
+      "sha256": "12d4146966bdcc5b16c33dec0622299cfb37d9380cfecde01fac7ef76b6669d0"
+    },
+    {
+      "path": "src/rr-game-v10.html",
+      "beforeSHA256": null,
+      "sha256": "51819c64791b336df8c31fdc03869ed0827ba4470b7260b89af2dc2ba7635ddf"
+    },
+    {
+      "path": "tests/rr/browser-clean-start.py",
+      "beforeSHA256": null,
+      "sha256": "8525183dade46032aa58c4b15c852c971a624b95d5047e15a4e576dd855f5aed"
+    },
+    {
+      "path": "tests/rr/browser-package1.py",
+      "beforeSHA256": "bdae9b0b364c54a35b2b259b5d96a082efcac45f59565ad29e8e27f344cc78b1",
+      "sha256": "973a3a445d16a502a5002752746731977c4c224b237f61a9fd2b004a3032b3ec"
+    },
+    {
+      "path": "tests/rr/clean-start.test.mjs",
+      "beforeSHA256": null,
+      "sha256": "10772e1d3254594c9b6b36ede5c89768eb289e46ea4a838c91a588151873897b"
+    },
+    {
+      "path": "tests/rr/package1-browser-server.mjs",
+      "beforeSHA256": "cfac7e839d68696d0a0356c2ffd9f7bb767518f1f93a8ad8524a817e45a2c575",
+      "sha256": "cea216a65030216c28379c022118f5b8c41930502ff5efeff6985d1af28ec3f1"
+    },
+    {
+      "path": "tests/rr/transport.test.mjs",
+      "beforeSHA256": "28665abb90f51e367e395b8a9be38fdbe317e5225429d5e320384e09ac95206e",
+      "sha256": "414d5a1033607eeabace88ab1b6837ddb9a8c262cfdf1ac55cec3f3a595b158d"
+    },
+    {
+      "path": "tgcloud/lib/rr/domain.js",
+      "beforeSHA256": "32662918d23da2d824d31287009962ad47a7bcff4261a0604dbaa21985d87f6c",
+      "sha256": "2b591bb67bf222a559f346fb7dc24a0dcab501e97880901fe7ddadfb8ac8924a"
+    },
+    {
+      "path": "tgcloud/lib/rr/generated.js",
+      "beforeSHA256": "b1ae6cbeb2fd9c5fc5b5426435ac088cd738482a41e9899bf4dd1a1161a8c6b5",
+      "sha256": "e03a51b57d55b56ffa7236422bc9336fd397d619152b917c3d2f413ac316b1b1"
+    },
+    {
+      "path": "tgcloud/lib/rr/runtime.js",
+      "beforeSHA256": "5873df4e6b10678e6e4c8d8d2e78d2bc57c4d058fe05b9330fa46f3af430b337",
+      "sha256": "6b11769ab961c721edc417be0d02c1a366652c9bb11f6d4df963a31a8ab3fbc7"
+    },
+    {
+      "path": "tgcloud/lib/rr/service.js",
+      "beforeSHA256": "49857824e770ab2d3f827e095fc1535366fb3fc11f1c2545f08dd5e6d75e9cf3",
+      "sha256": "ad69dca3630080fdd7b47df43861290969d08d3efa8c6cfa8bd0682c3034fa8f"
+    }
+  ],
+  "protectedUnchangedFiles": 41
+}

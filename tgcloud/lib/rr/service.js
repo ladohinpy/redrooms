@@ -55,7 +55,15 @@ export function createService({ repository, adminIds, games, seed, checkSubscrip
       const contestRuntime=games.find(g=>g.id==='v09-contests'&&g.contestEngine===true);
       // Existing logical release IDs/save namespaces stay intact. A new immutable renderer
       // adds the server attempt protocol; no published game artifact is rewritten.
-      const compatibleRuntime=contestRuntime && ['v06','v07-tables','v08-player-ui','v09-contests'].includes(selected.game.id)
+      const cleanRuntime=games.find(g=>g.id==='v10-clean-start'&&g.contestEngine===true);
+      const cleanSources={
+        'v06':'05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749',
+        'v07-tables':'4c7b0fb7cf2d4da84737bd3673b8c2caa5edc293883d46b46fa6abca42281530',
+        'v08-player-ui':'e646963e07411913b92698b7ca200ea86ec2832cd0aafa4fb127be59a4f24d84',
+        'v09-contests':'69026d9e0f0512e3d86565e5026e967db36814734485a002ef129be802c6f4d1'
+      };
+      const compatibleRuntime=cleanRuntime && cleanSources[selected.game.id]===selected.game.codeHash
+        ? cleanRuntime : contestRuntime && ['v06','v07-tables','v08-player-ui','v09-contests'].includes(selected.game.id)
         ? contestRuntime : repairable ? (publicRuntime || previousRepair) : null;
       return { ...selected, runtime: compatibleRuntime || selected.game, userId: uid, isAdmin: isAdmin(uid) };
     }
