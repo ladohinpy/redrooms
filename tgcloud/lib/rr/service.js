@@ -52,7 +52,11 @@ export function createService({ repository, adminIds, games, seed, checkSubscrip
       const publicRuntime = games.find(g => g.id === 'v08-player-ui' && g.optionalYear === true);
       const previousRepair = selected.game.id === 'v06'
         ? games.find(g => g.id === 'v07-tables' && g.optionalYear === true) : null;
-      const compatibleRuntime = repairable ? (publicRuntime || previousRepair) : null;
+      const contestRuntime=games.find(g=>g.id==='v09-contests'&&g.contestEngine===true);
+      // Existing logical release IDs/save namespaces stay intact. A new immutable renderer
+      // adds the server attempt protocol; no published game artifact is rewritten.
+      const compatibleRuntime=contestRuntime && ['v06','v07-tables','v08-player-ui','v09-contests'].includes(selected.game.id)
+        ? contestRuntime : repairable ? (publicRuntime || previousRepair) : null;
       return { ...selected, runtime: compatibleRuntime || selected.game, userId: uid, isAdmin: isAdmin(uid) };
     }
   };

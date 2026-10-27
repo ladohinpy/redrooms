@@ -1,19 +1,21 @@
 {
   "name": "redrooms-telegram",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Красная комната v06 — Telegram Serverless Mini App с проверкой подписки @redrooms_stage",
+  "description": "Красная комната — наборы, конкурсы, контент, JSON-бэкапы",
   "scripts": {
     "check": "node scripts/rr-check.cjs",
     "status": "tgcloud status",
     "test:access": "node tests/access.test.mjs",
-    "deploy:access": "npm run check && tgcloud push tgcloud/lib/subscription.js tgcloud/endpoints/checkAccess.js public/",
+    "deploy:access": "node scripts/rr-deploy.cjs",
     "check:legacy": "node scripts/check-app.mjs && node tests/access.test.mjs",
     "rr:prepare": "node scripts/rr-prepare.cjs",
-    "rr:test": "node scripts/rr-check.cjs --tests-only"
+    "rr:test": "node scripts/rr-check.cjs --tests-only",
+    "rr:deploy": "node scripts/rr-deploy.cjs --confirm",
+    "rr:backup": "node scripts/rr-backup.cjs --confirm"
   },
   "devDependencies": {
-    "@tgcloud/cli": "^0.2.0"
+    "@tgcloud/cli": "0.2.0"
   },
   "type": "module"
 }
