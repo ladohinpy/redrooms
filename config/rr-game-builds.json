@@ -62,6 +62,17 @@
       ],
       "optionalYear": true,
       "contestEngine": true
+    },
+    {
+      "id": "v12-attempt-state",
+      "name": "Комната: восстановление попыток v12",
+      "source": "src/rr-game-v12.html",
+      "adapter": "v06",
+      "aliases": [
+        "attempt-state"
+      ],
+      "optionalYear": true,
+      "contestEngine": true
     }
   ]
 }

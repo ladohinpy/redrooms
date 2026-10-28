@@ -1,0 +1,2509 @@
+RedRooms MAIN4 ASSEMBLY REPAIR — проверка на предоставленном архиве
+Дата: 2026-10-28
+Основа: redrooms-main (4).zip
+Коммит: 1566f8c7ff0f89b8902340d7a25d555574282ed0
+
+До исправления: 398 тестов; 384 pass; 14 fail; check exit 1.
+После согласования файлов: 398 тестов; 398 pass; 0 fail; check exit 0.
+Проверка синтаксиса: 112 файлов. Проверка хешей сборок успешна.
+Все 18 исходных *.test.mjs сохранены без изменения.
+Все 6 прежних записей реестра игровых сборок сохранены без изменения.
+77 проверенных файлов (авторизация, подписка, схема, хранение, backup,
+workflow, последние изменения изоляции админов, тесты и старые игровые ресурсы)
+совпадают побайтно с исходным main.
+
+Браузер: Chromium + настоящие построенные HTML/JS/WebGL, серверные функции
+и локальная SQLite; синтетические Telegram-ID, транспорт, navigation и storage.
+Изоляция админов: 28 проверок, exit 0.
+Восстановление попыток: 15 проверок, exit 0.
+Живой Telegram, нативные iOS/Android и доставка бэкапов не проверялись.
+Деплой, миграции, сообщения и любые записи в облако не выполнялись.
+
+=== ИСХОДНЫЕ ПАДЕНИЯ ===
+not ok 57 - attempt state: reproduce old false-completed loop and zero-preview counter
+not ok 58 - attempt state: closed admin preview becomes new preview only on explicit start, old row unchanged
+not ok 59 - attempt state: lost completed receipt restored from server without creating or rewriting result
+not ok 60 - attempt state: terminal response to unconfirmed request reloads once, next start uses fresh ID
+not ok 61 - attempt state: closing in another tab does not start the room with stale cassette positions
+not ok 62 - attempt state: two exhausted competitive slots stay exhausted after stale local ledger and retries
+not ok 63 - attempt state: archived games remain playable after two used contest slots
+not ok 65 - attempt state: lost start ACK and page reopen recover the SAME server attempt
+not ok 66 - attempt state: invalid start status is NOT labelled completed undefined
+not ok 67 - attempt state: invalid start status is NOT labelled completed unexpected
+not ok 68 - attempt state: invalid start status is NOT labelled completed false
+not ok 71 - attempt state: moderator void replacement retains old attempt and does not affect another player
+not ok 76 - attempt state: latest renderer preserves all known logical release IDs, catalogs and save identity
+not ok 77 - attempt state: false entry result cannot hide menus or start the world
+# tests 398
+# pass 384
+# fail 14
+
+=== СБОРКА ПОСЛЕ ВОССТАНОВЛЕНИЯ ===
+Prepared 7 game build(s); initial catalog 201 films / 4 directors. Admins: 0. No deployment performed.
+
+
+=== ПОЛНЫЙ ПРОГОН 398 ТЕСТОВ ===
+JAVASCRIPT SYNTAX OK (112 files).
+STATIC HEADER PREFLIGHT OK (known X-Content-Type-Options restriction).
+TAP version 13
+# (node:3304) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: access: malformed allowlist closes access undefined
+ok 1 - access: malformed allowlist closes access undefined
+  ---
+  duration_ms: 1.58362
+  type: 'test'
+  ...
+# Subtest: access: malformed allowlist closes access []
+ok 2 - access: malformed allowlist closes access []
+  ---
+  duration_ms: 0.1911
+  type: 'test'
+  ...
+# Subtest: access: malformed allowlist closes access [101]
+ok 3 - access: malformed allowlist closes access [101]
+  ---
+  duration_ms: 0.16339
+  type: 'test'
+  ...
+# Subtest: access: malformed allowlist closes access [101,202,303]
+ok 4 - access: malformed allowlist closes access [101,202,303]
+  ---
+  duration_ms: 0.139254
+  type: 'test'
+  ...
+# Subtest: access: malformed allowlist closes access [101,101]
+ok 5 - access: malformed allowlist closes access [101,101]
+  ---
+  duration_ms: 0.218981
+  type: 'test'
+  ...
+# Subtest: access: malformed allowlist closes access ["101",202]
+ok 6 - access: malformed allowlist closes access ["101",202]
+  ---
+  duration_ms: 0.207083
+  type: 'test'
+  ...
+# Subtest: access: malformed allowlist closes access [0,202]
+ok 7 - access: malformed allowlist closes access [0,202]
+  ---
+  duration_ms: 0.085555
+  type: 'test'
+  ...
+# Subtest: access: malformed allowlist closes access [101,-202]
+ok 8 - access: malformed allowlist closes access [101,-202]
+  ---
+  duration_ms: 0.086958
+  type: 'test'
+  ...
+# Subtest: access: malformed allowlist closes access [101,1.5]
+ok 9 - access: malformed allowlist closes access [101,1.5]
+  ---
+  duration_ms: 0.250246
+  type: 'test'
+  ...
+# Subtest: access: exactly two immutable numeric admin IDs
+ok 10 - access: exactly two immutable numeric admin IDs
+  ---
+  duration_ms: 1.041856
+  type: 'test'
+  ...
+# Subtest: access: outsider cannot read, write, moderate or export even with forged input 303
+ok 11 - access: outsider cannot read, write, moderate or export even with forged input 303
+  ---
+  duration_ms: 5.279925
+  type: 'test'
+  ...
+# Subtest: access: outsider cannot read, write, moderate or export even with forged input 404
+ok 12 - access: outsider cannot read, write, moderate or export even with forged input 404
+  ---
+  duration_ms: 1.251483
+  type: 'test'
+  ...
+# Subtest: access: protected read binds the response to the verified administrator 101
+ok 13 - access: protected read binds the response to the verified administrator 101
+  ---
+  duration_ms: 1.199517
+  type: 'test'
+  ...
+# Subtest: access: protected read binds the response to the verified administrator 202
+ok 14 - access: protected read binds the response to the verified administrator 202
+  ---
+  duration_ms: 1.042047
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrContest/adminRead denies before loading storage
+ok 15 - endpoint boundary: rrContest/adminRead denies before loading storage
+  ---
+  duration_ms: 1.348335
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrContest/adminCommand denies before loading storage
+ok 16 - endpoint boundary: rrContest/adminCommand denies before loading storage
+  ---
+  duration_ms: 0.588722
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrContest/preview denies before loading storage
+ok 17 - endpoint boundary: rrContest/preview denies before loading storage
+  ---
+  duration_ms: 0.641079
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrBackup/export denies before loading storage
+ok 18 - endpoint boundary: rrBackup/export denies before loading storage
+  ---
+  duration_ms: 0.720746
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrBackup/send denies before loading storage
+ok 19 - endpoint boundary: rrBackup/send denies before loading storage
+  ---
+  duration_ms: 0.602032
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrBackup/prepareExport denies before loading storage
+ok 20 - endpoint boundary: rrBackup/prepareExport denies before loading storage
+  ---
+  duration_ms: 0.623334
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrBackup/exportPart denies before loading storage
+ok 21 - endpoint boundary: rrBackup/exportPart denies before loading storage
+  ---
+  duration_ms: 0.717071
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrBackup/uploadBegin denies before loading storage
+ok 22 - endpoint boundary: rrBackup/uploadBegin denies before loading storage
+  ---
+  duration_ms: 0.598997
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrBackup/uploadPart denies before loading storage
+ok 23 - endpoint boundary: rrBackup/uploadPart denies before loading storage
+  ---
+  duration_ms: 0.643102
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrBackup/preview denies before loading storage
+ok 24 - endpoint boundary: rrBackup/preview denies before loading storage
+  ---
+  duration_ms: 0.625537
+  type: 'test'
+  ...
+# Subtest: endpoint boundary: rrBackup/restore denies before loading storage
+ok 25 - endpoint boundary: rrBackup/restore denies before loading storage
+  ---
+  duration_ms: 0.813502
+  type: 'test'
+  ...
+# Subtest: entry: normal admin/player start + archive start + idempotent retries 101
+ok 26 - entry: normal admin/player start + archive start + idempotent retries 101
+  ---
+  duration_ms: 7.233055
+  type: 'test'
+  ...
+# Subtest: entry: normal admin/player start + archive start + idempotent retries 202
+ok 27 - entry: normal admin/player start + archive start + idempotent retries 202
+  ---
+  duration_ms: 3.821819
+  type: 'test'
+  ...
+# Subtest: entry: normal admin/player start + archive start + idempotent retries 303
+ok 28 - entry: normal admin/player start + archive start + idempotent retries 303
+  ---
+  duration_ms: 5.896148
+  type: 'test'
+  ...
+# Subtest: entry: real raw start handler exposes errors outside hidden HUD and uses one start request
+ok 29 - entry: real raw start handler exposes errors outside hidden HUD and uses one start request
+  ---
+  duration_ms: 5.384217
+  type: 'test'
+  ...
+# Subtest: entry: old subscription gate and scoring are retained exactly
+ok 30 - entry: old subscription gate and scoring are retained exactly
+  ---
+  duration_ms: 8.123611
+  type: 'test'
+  ...
+# Subtest: access: both editor documents have no data and hide editor before JS
+ok 31 - access: both editor documents have no data and hide editor before JS
+  ---
+  duration_ms: 0.446264
+  type: 'test'
+  ...
+# Subtest: access: editor needs protected read as well as status; navigation stays in same webview
+ok 32 - access: editor needs protected read as well as status; navigation stays in same webview
+  ---
+  duration_ms: 0.354729
+  type: 'test'
+  ...
+# Subtest: entry: known v10 uses v11 while preserving catalog/release/save identity
+ok 33 - entry: known v10 uses v11 while preserving catalog/release/save identity
+  ---
+  duration_ms: 1.702263
+  type: 'test'
+  ...
+# (node:3305) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: admin tests isolation: configured admin 101 can complete six tests without spending any contest slot
+ok 34 - admin tests isolation: configured admin 101 can complete six tests without spending any contest slot
+  ---
+  duration_ms: 32.671325
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: configured admin 202 can complete six tests without spending any contest slot
+ok 35 - admin tests isolation: configured admin 202 can complete six tests without spending any contest slot
+  ---
+  duration_ms: 20.271495
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: preview remains unlimited before, during and after competition
+ok 36 - admin tests isolation: preview remains unlimited before, during and after competition
+  ---
+  duration_ms: 77.693966
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: ordinary player still has exactly two contest attempts and cannot forge preview
+ok 37 - admin tests isolation: ordinary player still has exactly two contest attempts and cannot forge preview
+  ---
+  duration_ms: 8.028781
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: admin lost or abandoned test does not require manual exclusion or void
+ok 38 - admin tests isolation: admin lost or abandoned test does not require manual exclusion or void
+  ---
+  duration_ms: 8.41066
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: concurrent admin starts and duplicate finishes retain idempotency
+ok 39 - admin tests isolation: concurrent admin starts and duplicate finishes retain idempotency
+  ---
+  duration_ms: 5.708162
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: admin tests do not change existing ordinary-player statistics or leaderboard
+ok 40 - admin tests isolation: admin tests do not change existing ordinary-player statistics or leaderboard
+  ---
+  duration_ms: 18.31567
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: include-tests filter cannot contaminate aggregate counts
+ok 41 - admin tests isolation: include-tests filter cannot contaminate aggregate counts
+  ---
+  duration_ms: 7.269528
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: test history remains inspectable without changing source records
+ok 42 - admin tests isolation: test history remains inspectable without changing source records
+  ---
+  duration_ms: 3.535449
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: current allowlist filters old non-preview admin records without rewriting them
+ok 43 - admin tests isolation: current allowlist filters old non-preview admin records without rewriting them
+  ---
+  duration_ms: 5.116264
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: promoted admin ignores pre-existing two-slot quota
+ok 44 - admin tests isolation: promoted admin ignores pre-existing two-slot quota
+  ---
+  duration_ms: 8.910643
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: finishing an old competitive attempt after promotion never enters current standings
+ok 45 - admin tests isolation: finishing an old competitive attempt after promotion never enters current standings
+  ---
+  duration_ms: 2.966266
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: removing admin role never upgrades stored previews into competitive attempts
+ok 46 - admin tests isolation: removing admin role never upgrades stored previews into competitive attempts
+  ---
+  duration_ms: 3.941464
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: existing official final is byte-for-byte unchanged when its winner becomes admin
+ok 47 - admin tests isolation: existing official final is byte-for-byte unchanged when its winner becomes admin
+  ---
+  duration_ms: 5.979248
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: future finalization ignores legacy admin results and their pending-review flags
+ok 48 - admin tests isolation: future finalization ignores legacy admin results and their pending-review flags
+  ---
+  duration_ms: 8.58728
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: admin observations add no player acquisition events; old observations excluded non-destructively
+ok 49 - admin tests isolation: admin observations add no player acquisition events; old observations excluded non-destructively
+  ---
+  duration_ms: 4.031246
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: ordinary zero-attempt visitor is still visible
+ok 50 - admin tests isolation: ordinary zero-attempt visitor is still visible
+  ---
+  duration_ms: 1.988412
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: test history and old visit records remain in existing backup format
+ok 51 - admin tests isolation: test history and old visit records remain in existing backup format
+  ---
+  duration_ms: 7.057168
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: non-admin cannot enable private test-history filter or read records
+ok 52 - admin tests isolation: non-admin cannot enable private test-history filter or read records
+  ---
+  duration_ms: 1.186899
+  type: 'test'
+  ...
+# Subtest: admin tests isolation: malformed server allowlist fails closed and never grants an unlimited role
+ok 53 - admin tests isolation: malformed server allowlist fails closed and never grants an unlimited role
+  ---
+  duration_ms: 2.452162
+  type: 'test'
+  ...
+# (node:3306) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: attempt state: first start still works for 101
+ok 54 - attempt state: first start still works for 101
+  ---
+  duration_ms: 11.758485
+  type: 'test'
+  ...
+# Subtest: attempt state: first start still works for 202
+ok 55 - attempt state: first start still works for 202
+  ---
+  duration_ms: 3.520738
+  type: 'test'
+  ...
+# Subtest: attempt state: first start still works for 303
+ok 56 - attempt state: first start still works for 303
+  ---
+  duration_ms: 3.533166
+  type: 'test'
+  ...
+# Subtest: attempt state: reproduce old false-completed loop and zero-preview counter
+ok 57 - attempt state: reproduce old false-completed loop and zero-preview counter
+  ---
+  duration_ms: 8.536054
+  type: 'test'
+  ...
+# Subtest: attempt state: closed admin preview becomes new preview only on explicit start, old row unchanged
+ok 58 - attempt state: closed admin preview becomes new preview only on explicit start, old row unchanged
+  ---
+  duration_ms: 5.482831
+  type: 'test'
+  ...
+# Subtest: attempt state: lost completed receipt restored from server without creating or rewriting result
+ok 59 - attempt state: lost completed receipt restored from server without creating or rewriting result
+  ---
+  duration_ms: 6.610754
+  type: 'test'
+  ...
+# Subtest: attempt state: terminal response to unconfirmed request reloads once, next start uses fresh ID
+ok 60 - attempt state: terminal response to unconfirmed request reloads once, next start uses fresh ID
+  ---
+  duration_ms: 7.508689
+  type: 'test'
+  ...
+# Subtest: attempt state: closing in another tab does not start the room with stale cassette positions
+ok 61 - attempt state: closing in another tab does not start the room with stale cassette positions
+  ---
+  duration_ms: 4.17774
+  type: 'test'
+  ...
+# Subtest: attempt state: two exhausted competitive slots stay exhausted after stale local ledger and retries
+ok 62 - attempt state: two exhausted competitive slots stay exhausted after stale local ledger and retries
+  ---
+  duration_ms: 13.138426
+  type: 'test'
+  ...
+# Subtest: attempt state: archived games remain playable after two used contest slots
+ok 63 - attempt state: archived games remain playable after two used contest slots
+  ---
+  duration_ms: 9.87107
+  type: 'test'
+  ...
+# Subtest: attempt state: pending result survives failed entry and receives idempotent confirmation
+ok 64 - attempt state: pending result survives failed entry and receives idempotent confirmation
+  ---
+  duration_ms: 8.167024
+  type: 'test'
+  ...
+# Subtest: attempt state: lost start ACK and page reopen recover the SAME server attempt
+ok 65 - attempt state: lost start ACK and page reopen recover the SAME server attempt
+  ---
+  duration_ms: 7.000134
+  type: 'test'
+  ...
+# Subtest: attempt state: invalid start status is NOT labelled completed undefined
+ok 66 - attempt state: invalid start status is NOT labelled completed undefined
+  ---
+  duration_ms: 4.165903
+  type: 'test'
+  ...
+# Subtest: attempt state: invalid start status is NOT labelled completed unexpected
+ok 67 - attempt state: invalid start status is NOT labelled completed unexpected
+  ---
+  duration_ms: 4.395059
+  type: 'test'
+  ...
+# Subtest: attempt state: invalid start status is NOT labelled completed false
+ok 68 - attempt state: invalid start status is NOT labelled completed false
+  ---
+  duration_ms: 3.65289
+  type: 'test'
+  ...
+# Subtest: attempt state: random request cannot turn missing progress into a fresh or replayable attempt
+ok 69 - attempt state: random request cannot turn missing progress into a fresh or replayable attempt
+  ---
+  duration_ms: 5.705819
+  type: 'test'
+  ...
+# Subtest: attempt state: missing active local game save is not healed by resetting the quota
+ok 70 - attempt state: missing active local game save is not healed by resetting the quota
+  ---
+  duration_ms: 3.789782
+  type: 'test'
+  ...
+# Subtest: attempt state: moderator void replacement retains old attempt and does not affect another player
+ok 71 - attempt state: moderator void replacement retains old attempt and does not affect another player
+  ---
+  duration_ms: 5.089505
+  type: 'test'
+  ...
+# Subtest: attempt state: player counters show actual records and separate preview without leaderboard pollution
+ok 72 - attempt state: player counters show actual records and separate preview without leaderboard pollution
+  ---
+  duration_ms: 7.482341
+  type: 'test'
+  ...
+# Subtest: attempt state: older request records without created metadata remain resumable with exact attempt ID
+ok 73 - attempt state: older request records without created metadata remain resumable with exact attempt ID
+  ---
+  duration_ms: 3.394833
+  type: 'test'
+  ...
+# Subtest: attempt state: backup still validates the new optional request metadata and frozen final
+ok 74 - attempt state: backup still validates the new optional request metadata and frozen final
+  ---
+  duration_ms: 28.850682
+  type: 'test'
+  ...
+# Subtest: attempt state: invalid request pointer fails closed instead of serializing a fake attempt
+ok 75 - attempt state: invalid request pointer fails closed instead of serializing a fake attempt
+  ---
+  duration_ms: 6.364884
+  type: 'test'
+  ...
+# Subtest: attempt state: latest renderer preserves all known logical release IDs, catalogs and save identity
+ok 76 - attempt state: latest renderer preserves all known logical release IDs, catalogs and save identity
+  ---
+  duration_ms: 2.185792
+  type: 'test'
+  ...
+# Subtest: attempt state: false entry result cannot hide menus or start the world
+ok 77 - attempt state: false entry result cannot hide menus or start the world
+  ---
+  duration_ms: 6.063682
+  type: 'test'
+  ...
+# Subtest: instrument inserts catalog gate before game starts and namespaces saves
+ok 78 - instrument inserts catalog gate before game starts and namespaces saves
+  ---
+  duration_ms: 2.378665
+  type: 'test'
+  ...
+# Subtest: instrument refuses ambiguous/missing marker, no regex guessing
+ok 79 - instrument refuses ambiguous/missing marker, no regex guessing
+  ---
+  duration_ms: 0.350844
+  type: 'test'
+  ...
+# Subtest: instrument refuses duplicate entry markers
+ok 80 - instrument refuses duplicate entry markers
+  ---
+  duration_ms: 0.196588
+  type: 'test'
+  ...
+# Subtest: extract actual embedded JSON
+ok 81 - extract actual embedded JSON
+  ---
+  duration_ms: 1.177155
+  type: 'test'
+  ...
+# Subtest: JSONC preserves URL and quoted comma text
+ok 82 - JSONC preserves URL and quoted comma text
+  ---
+  duration_ms: 0.330805
+  type: 'test'
+  ...
+# Subtest: preparation preserves source and existing modules, produces pinned code
+ok 83 - preparation preserves source and existing modules, produces pinned code
+  ---
+  duration_ms: 120.247992
+  type: 'test'
+  ...
+# Subtest: build is repeatable; old content hashes and save namespaces stay stable
+ok 84 - build is repeatable; old content hashes and save namespaces stay stable
+  ---
+  duration_ms: 165.849142
+  type: 'test'
+  ...
+# Subtest: production refuses missing IDs without touching original game
+ok 85 - production refuses missing IDs without touching original game
+  ---
+  duration_ms: 61.799398
+  type: 'test'
+  ...
+# Subtest: production accepts exactly two numeric IDs and keeps them out of public files
+ok 86 - production accepts exactly two numeric IDs and keeps them out of public files
+  ---
+  duration_ms: 82.946776
+  type: 'test'
+  ...
+# Subtest: source change under old game ID is rejected; root launcher remains intact
+ok 87 - source change under old game ID is rejected; root launcher remains intact
+  ---
+  duration_ms: 169.97753
+  type: 'test'
+  ...
+# Subtest: existing CLI gate dependency is snapshotted, not silently replaced
+ok 88 - existing CLI gate dependency is snapshotted, not silently replaced
+  ---
+  duration_ms: 149.266611
+  type: 'test'
+  ...
+# Subtest: separately identified second build can coexist without deleting the first
+ok 89 - separately identified second build can coexist without deleting the first
+  ---
+  duration_ms: 132.601068
+  type: 'test'
+  ...
+# Subtest: clean start: empty or unrelated editorial fields produce no fallback undefined
+ok 90 - clean start: empty or unrelated editorial fields produce no fallback undefined
+  ---
+  duration_ms: 1.458957
+  type: 'test'
+  ...
+# Subtest: clean start: empty or unrelated editorial fields produce no fallback null
+ok 91 - clean start: empty or unrelated editorial fields produce no fallback null
+  ---
+  duration_ms: 0.11647
+  type: 'test'
+  ...
+# Subtest: clean start: empty or unrelated editorial fields produce no fallback {}
+ok 92 - clean start: empty or unrelated editorial fields produce no fallback {}
+  ---
+  duration_ms: 0.233492
+  type: 'test'
+  ...
+# Subtest: clean start: empty or unrelated editorial fields produce no fallback {"title":"","text":"","url":""}
+ok 93 - clean start: empty or unrelated editorial fields produce no fallback {"title":"","text":"","url":""}
+  ---
+  duration_ms: 0.088169
+  type: 'test'
+  ...
+# Subtest: clean start: empty or unrelated editorial fields produce no fallback {"title":"  ","text":"\\n\\t"}
+ok 94 - clean start: empty or unrelated editorial fields produce no fallback {"title":"  ","text":"\\n\\t"}
+  ---
+  duration_ms: 0.071625
+  type: 'test'
+  ...
+# Subtest: clean start: empty or unrelated editorial fields produce no fallback {"linkLabel":"unused"}
+ok 95 - clean start: empty or unrelated editorial fields produce no fallback {"linkLabel":"unused"}
+  ---
+  duration_ms: 0.068029
+  type: 'test'
+  ...
+# Subtest: clean start: empty or unrelated editorial fields produce no fallback {"name":"тест1","mode":"preview"}
+ok 96 - clean start: empty or unrelated editorial fields produce no fallback {"name":"тест1","mode":"preview"}
+  ---
+  duration_ms: 0.178191
+  type: 'test'
+  ...
+# Subtest: clean start: explicit intro renders with formatting and no inferred release/mode/buttons
+ok 97 - clean start: explicit intro renders with formatting and no inferred release/mode/buttons
+  ---
+  duration_ms: 1.302288
+  type: 'test'
+  ...
+# Subtest: clean start: authored text remains text, not executable markup
+ok 98 - clean start: authored text remains text, not executable markup
+  ---
+  duration_ms: 0.472011
+  type: 'test'
+  ...
+# Subtest: clean start: explicit link works; repeated rendering replaces old copy and removes emptied content
+ok 99 - clean start: explicit link works; repeated rendering replaces old copy and removes emptied content
+  ---
+  duration_ms: 2.806631
+  type: 'test'
+  ...
+# Subtest: clean start: new HTML has a blank inline author slot and one independent cassette count
+ok 100 - clean start: new HTML has a blank inline author slot and one independent cassette count
+  ---
+  duration_ms: 3.307544
+  type: 'test'
+  ...
+# Subtest: clean start: v06 gets compatible renderer without rewriting logical IDs or catalog
+ok 101 - clean start: v06 gets compatible renderer without rewriting logical IDs or catalog
+  ---
+  duration_ms: 3.499296
+  type: 'test'
+  ...
+# Subtest: clean start: v07-tables gets compatible renderer without rewriting logical IDs or catalog
+ok 102 - clean start: v07-tables gets compatible renderer without rewriting logical IDs or catalog
+  ---
+  duration_ms: 1.741511
+  type: 'test'
+  ...
+# Subtest: clean start: v08-player-ui gets compatible renderer without rewriting logical IDs or catalog
+ok 103 - clean start: v08-player-ui gets compatible renderer without rewriting logical IDs or catalog
+  ---
+  duration_ms: 0.51843
+  type: 'test'
+  ...
+# Subtest: clean start: v09-contests gets compatible renderer without rewriting logical IDs or catalog
+ok 104 - clean start: v09-contests gets compatible renderer without rewriting logical IDs or catalog
+  ---
+  duration_ms: 0.664553
+  type: 'test'
+  ...
+# Subtest: clean start: an unrecognized custom v09 hash is not upgraded to the hotfix renderer
+ok 105 - clean start: an unrecognized custom v09 hash is not upgraded to the hotfix renderer
+  ---
+  duration_ms: 0.611325
+  type: 'test'
+  ...
+# Subtest: clean start: original four frozen builds and source files retain their declared hashes
+ok 106 - clean start: original four frozen builds and source files retain their declared hashes
+  ---
+  duration_ms: 55.701155
+  type: 'test'
+  ...
+# Subtest: clean start: wrong-table feedback is neutral and scoring and action recording stay unchanged
+ok 107 - clean start: wrong-table feedback is neutral and scoring and action recording stay unchanged
+  ---
+  duration_ms: 12.603953
+  type: 'test'
+  ...
+# Subtest: clean start: entry is not a competition dashboard, recovery remains and final sharing remains
+ok 108 - clean start: entry is not a competition dashboard, recovery remains and final sharing remains
+  ---
+  duration_ms: 0.554482
+  type: 'test'
+  ...
+# Subtest: entry repair: start and pause admin buttons need fresh matching server authorization; no release badge
+ok 109 - entry repair: start and pause admin buttons need fresh matching server authorization; no release badge
+  ---
+  duration_ms: 0.387677
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: undefined
+ok 110 - CLI guard: no modules section is preserved: undefined
+  ---
+  duration_ms: 1.409495
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: null
+ok 111 - CLI guard: no modules section is preserved: null
+  ---
+  duration_ms: 0.17064
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: {}
+ok 112 - CLI guard: no modules section is preserved: {}
+  ---
+  duration_ms: 0.075811
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: {"revision":3}
+ok 113 - CLI guard: no modules section is preserved: {"revision":3}
+  ---
+  duration_ms: 0.117332
+  type: 'test'
+  ...
+# Subtest: CLI guard: no modules section is preserved: {"canonical_modules":null}
+ok 114 - CLI guard: no modules section is preserved: {"canonical_modules":null}
+  ---
+  duration_ms: 0.207735
+  type: 'test'
+  ...
+# Subtest: CLI guard: ordinary string map and response identity stay unchanged
+ok 115 - CLI guard: ordinary string map and response identity stay unchanged
+  ---
+  duration_ms: 0.166724
+  type: 'test'
+  ...
+# Subtest: CLI guard: false triggers ONE read, same revision, full module set; no mutation
+ok 116 - CLI guard: false triggers ONE read, same revision, full module set; no mutation
+  ---
+  duration_ms: 1.220928
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: true
+ok 117 - CLI guard: unknown source type fails closed: true
+  ---
+  duration_ms: 0.628161
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: 7
+ok 118 - CLI guard: unknown source type fails closed: 7
+  ---
+  duration_ms: 0.909893
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: {}
+ok 119 - CLI guard: unknown source type fails closed: {}
+  ---
+  duration_ms: 0.331856
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: []
+ok 120 - CLI guard: unknown source type fails closed: []
+  ---
+  duration_ms: 0.147426
+  type: 'test'
+  ...
+# Subtest: CLI guard: unknown source type fails closed: null
+ok 121 - CLI guard: unknown source type fails closed: null
+  ---
+  duration_ms: 0.085435
+  type: 'test'
+  ...
+# Subtest: CLI guard: invalid map rejected: false
+ok 122 - CLI guard: invalid map rejected: false
+  ---
+  duration_ms: 0.116751
+  type: 'test'
+  ...
+# Subtest: CLI guard: invalid map rejected: []
+ok 123 - CLI guard: invalid map rejected: []
+  ---
+  duration_ms: 0.362672
+  type: 'test'
+  ...
+# Subtest: CLI guard: invalid map rejected: "text"
+ok 124 - CLI guard: invalid map rejected: "text"
+  ---
+  duration_ms: 0.164982
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: undefined
+ok 125 - CLI guard: no unversioned recovery: undefined
+  ---
+  duration_ms: 0.192392
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: null
+ok 126 - CLI guard: no unversioned recovery: null
+  ---
+  duration_ms: 0.212641
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: "3"
+ok 127 - CLI guard: no unversioned recovery: "3"
+  ---
+  duration_ms: 0.084614
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: -1
+ok 128 - CLI guard: no unversioned recovery: -1
+  ---
+  duration_ms: 0.079827
+  type: 'test'
+  ...
+# Subtest: CLI guard: no unversioned recovery: 3.5
+ok 129 - CLI guard: no unversioned recovery: 3.5
+  ---
+  duration_ms: 0.058926
+  type: 'test'
+  ...
+# Subtest: CLI guard: concurrent or unknown revision stops: 2
+ok 130 - CLI guard: concurrent or unknown revision stops: 2
+  ---
+  duration_ms: 0.316704
+  type: 'test'
+  ...
+# Subtest: CLI guard: concurrent or unknown revision stops: 4
+ok 131 - CLI guard: concurrent or unknown revision stops: 4
+  ---
+  duration_ms: 0.089601
+  type: 'test'
+  ...
+# Subtest: CLI guard: concurrent or unknown revision stops: undefined
+ok 132 - CLI guard: concurrent or unknown revision stops: undefined
+  ---
+  duration_ms: 0.069773
+  type: 'test'
+  ...
+# Subtest: CLI guard: concurrent or unknown revision stops: "3"
+ok 133 - CLI guard: concurrent or unknown revision stops: "3"
+  ---
+  duration_ms: 0.105825
+  type: 'test'
+  ...
+# Subtest: CLI guard: GET failure cannot become success; raw token/error is not leaked
+ok 134 - CLI guard: GET failure cannot become success; raw token/error is not leaked
+  ---
+  duration_ms: 0.249235
+  type: 'test'
+  ...
+# Subtest: CLI guard: a second false is not stringified or silently ignored
+ok 135 - CLI guard: a second false is not stringified or silently ignored
+  ---
+  duration_ms: 0.127066
+  type: 'test'
+  ...
+# Subtest: CLI guard: missing remote module stops
+ok 136 - CLI guard: missing remote module stops
+  ---
+  duration_ms: 0.147536
+  type: 'test'
+  ...
+# Subtest: CLI guard: extra remote module stops
+ok 137 - CLI guard: extra remote module stops
+  ---
+  duration_ms: 0.128809
+  type: 'test'
+  ...
+# Subtest: CLI guard: invalid manifest stops
+ok 138 - CLI guard: invalid manifest stops
+  ---
+  duration_ms: 0.148047
+  type: 'test'
+  ...
+# Subtest: CLI guard: empty source is legitimate text
+ok 139 - CLI guard: empty source is legitimate text
+  ---
+  duration_ms: 1.031662
+  type: 'test'
+  ...
+# Subtest: CLI guard: static-only response recovery preserves named modules
+ok 140 - CLI guard: static-only response recovery preserves named modules
+  ---
+  duration_ms: 0.185521
+  type: 'test'
+  ...
+# Subtest: CLI patch: precise anchor, no effect outside response handling, idempotent
+ok 141 - CLI patch: precise anchor, no effect outside response handling, idempotent
+  ---
+  duration_ms: 0.316193
+  type: 'test'
+  ...
+# Subtest: CLI patch: refuses changed or repeated contract, no guessing
+ok 142 - CLI patch: refuses changed or repeated contract, no guessing
+  ---
+  duration_ms: 0.167545
+  type: 'test'
+  ...
+# Subtest: CLI patch: CRLF source and path with spaces are supported
+ok 143 - CLI patch: CRLF source and path with spaces are supported
+  ---
+  duration_ms: 0.091373
+  type: 'test'
+  ...
+# Subtest: CLI patch: installed dependency gets a syntax-checked fix, rejects other version
+ok 144 - CLI patch: installed dependency gets a syntax-checked fix, rejects other version
+  ---
+  duration_ms: 36.677703
+  type: 'test'
+  ...
+# Subtest: CLI fixture: reproduce false/writeFileSync error, then repair without redeploy
+ok 145 - CLI fixture: reproduce false/writeFileSync error, then repair without redeploy
+  ---
+  duration_ms: 109.97191
+  type: 'test'
+  ...
+# Subtest: CLI fixture: revision mismatch cannot overwrite any snapshot file
+ok 146 - CLI fixture: revision mismatch cannot overwrite any snapshot file
+  ---
+  duration_ms: 73.788585
+  type: 'test'
+  ...
+# Subtest: Deployment still uses fetch, dry-run, safe migration and health before frontend
+ok 147 - Deployment still uses fetch, dry-run, safe migration and health before frontend
+  ---
+  duration_ms: 0.370993
+  type: 'test'
+  ...
+# Subtest: initial catalog and game survive without changing seed
+ok 148 - initial catalog and game survive without changing seed
+  ---
+  duration_ms: 4.289334
+  type: 'test'
+  ...
+# Subtest: imports default to pending, not approved
+ok 149 - imports default to pending, not approved
+  ---
+  duration_ms: 0.346037
+  type: 'test'
+  ...
+# Subtest: unreviewed catalog cannot be published
+ok 150 - unreviewed catalog cannot be published
+  ---
+  duration_ms: 0.66202
+  type: 'test'
+  ...
+# Subtest: excluded films and disabled directors are not playable
+ok 151 - excluded films and disabled directors are not playable
+  ---
+  duration_ms: 0.312557
+  type: 'test'
+  ...
+# Subtest: empty catalog allowed only in draft
+ok 152 - empty catalog allowed only in draft
+  ---
+  duration_ms: 0.282224
+  type: 'test'
+  ...
+# Subtest: reject duplicate director ID
+ok 153 - reject duplicate director ID
+  ---
+  duration_ms: 0.273771
+  type: 'test'
+  ...
+# Subtest: reject duplicate film ID globally
+ok 154 - reject duplicate film ID globally
+  ---
+  duration_ms: 0.195226
+  type: 'test'
+  ...
+# Subtest: reject invalid ID
+ok 155 - reject invalid ID
+  ---
+  duration_ms: 0.176879
+  type: 'test'
+  ...
+# Subtest: reject string year
+ok 156 - reject string year
+  ---
+  duration_ms: 0.523126
+  type: 'test'
+  ...
+# Subtest: reject fractional year
+ok 157 - reject fractional year
+  ---
+  duration_ms: 0.556635
+  type: 'test'
+  ...
+# Subtest: reject too old year
+ok 158 - reject too old year
+  ---
+  duration_ms: 0.373196
+  type: 'test'
+  ...
+# Subtest: reject far future year
+ok 159 - reject far future year
+  ---
+  duration_ms: 0.210007
+  type: 'test'
+  ...
+# Subtest: reject empty title
+ok 160 - reject empty title
+  ---
+  duration_ms: 0.231088
+  type: 'test'
+  ...
+# Subtest: reject long title
+ok 161 - reject long title
+  ---
+  duration_ms: 3.887895
+  type: 'test'
+  ...
+# Subtest: reject bad film state
+ok 162 - reject bad film state
+  ---
+  duration_ms: 2.597274
+  type: 'test'
+  ...
+# Subtest: reject schema mismatch
+ok 163 - reject schema mismatch
+  ---
+  duration_ms: 0.296544
+  type: 'test'
+  ...
+# Subtest: reject nonboolean director
+ok 164 - reject nonboolean director
+  ---
+  duration_ms: 0.268253
+  type: 'test'
+  ...
+# Subtest: reject too many directors
+ok 165 - reject too many directors
+  ---
+  duration_ms: 0.464671
+  type: 'test'
+  ...
+# Subtest: reject too many films per director
+ok 166 - reject too many films per director
+  ---
+  duration_ms: 0.851187
+  type: 'test'
+  ...
+# Subtest: 500 films maximum across directors
+ok 167 - 500 films maximum across directors
+  ---
+  duration_ms: 2.457139
+  type: 'test'
+  ...
+# Subtest: unknown fields are stripped; hostile text stays data
+ok 168 - unknown fields are stripped; hostile text stays data
+  ---
+  duration_ms: 0.169058
+  type: 'test'
+  ...
+# Subtest: title/year possible duplicates produce warnings, not silent deletion
+ok 169 - title/year possible duplicates produce warnings, not silent deletion
+  ---
+  duration_ms: 0.280701
+  type: 'test'
+  ...
+# Subtest: UTF-8 counting equals Node for Cyrillic and emoji
+ok 170 - UTF-8 counting equals Node for Cyrillic and emoji
+  ---
+  duration_ms: 0.214735
+  type: 'test'
+  ...
+# Subtest: reject oversized file even in unused fields
+ok 171 - reject oversized file even in unused fields
+  ---
+  duration_ms: 24.208462
+  type: 'test'
+  ...
+# Subtest: reject arbitrary game URL
+ok 172 - reject arbitrary game URL
+  ---
+  duration_ms: 0.372856
+  type: 'test'
+  ...
+# Subtest: reject initial alias collisions
+ok 173 - reject initial alias collisions
+  ---
+  duration_ms: 0.183348
+  type: 'test'
+  ...
+# Subtest: published catalog is immutable
+ok 174 - published catalog is immutable
+  ---
+  duration_ms: 1.256391
+  type: 'test'
+  ...
+# Subtest: clone edits never mutate original
+ok 175 - clone edits never mutate original
+  ---
+  duration_ms: 0.406535
+  type: 'test'
+  ...
+# Subtest: publish catalog and release do not switch global default
+ok 176 - publish catalog and release do not switch global default
+  ---
+  duration_ms: 0.721817
+  type: 'test'
+  ...
+# Subtest: explicit default switch updates game pointer and audit together
+ok 177 - explicit default switch updates game pointer and audit together
+  ---
+  duration_ms: 1.265864
+  type: 'test'
+  ...
+# Subtest: published release cannot be recreated under same ID
+ok 178 - published release cannot be recreated under same ID
+  ---
+  duration_ms: 0.725773
+  type: 'test'
+  ...
+# Subtest: draft catalog cannot be bound to a release
+ok 179 - draft catalog cannot be bound to a release
+  ---
+  duration_ms: 0.23209
+  type: 'test'
+  ...
+# Subtest: draft release hidden from players and previewable by admin
+ok 180 - draft release hidden from players and previewable by admin
+  ---
+  duration_ms: 0.892387
+  type: 'test'
+  ...
+# Subtest: default release cannot be archived
+ok 181 - default release cannot be archived
+  ---
+  duration_ms: 0.297916
+  type: 'test'
+  ...
+# Subtest: old release can be archived after both pointers switch
+ok 182 - old release can be archived after both pointers switch
+  ---
+  duration_ms: 0.608452
+  type: 'test'
+  ...
+# Subtest: old release still resolves after new default chosen
+ok 183 - old release still resolves after new default chosen
+  ---
+  duration_ms: 0.408718
+  type: 'test'
+  ...
+# Subtest: game override uses selected published release; v1 aliases v06
+ok 184 - game override uses selected published release; v1 aliases v06
+  ---
+  duration_ms: 0.464541
+  type: 'test'
+  ...
+# Subtest: missing release errors instead of falling back
+ok 185 - missing release errors instead of falling back
+  ---
+  duration_ms: 0.116461
+  type: 'test'
+  ...
+# Subtest: missing code hash does not load another build
+ok 186 - missing code hash does not load another build
+  ---
+  duration_ms: 0.244719
+  type: 'test'
+  ...
+# Subtest: sync refuses replacing deployed code under existing ID
+ok 187 - sync refuses replacing deployed code under existing ID
+  ---
+  duration_ms: 0.657954
+  type: 'test'
+  ...
+# Subtest: audit keeps latest 200 actions
+ok 188 - audit keeps latest 200 actions
+  ---
+  duration_ms: 68.466475
+  type: 'test'
+  ...
+# Subtest: selector {}
+ok 189 - selector {}
+  ---
+  duration_ms: 0.394718
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"admin"}
+ok 190 - selector {"startParam":"admin"}
+  ---
+  duration_ms: 0.117973
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"release_classic-1"}
+ok 191 - selector {"startParam":"release_classic-1"}
+  ---
+  duration_ms: 0.124833
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"game_v06"}
+ok 192 - selector {"startParam":"game_v06"}
+  ---
+  duration_ms: 0.097112
+  type: 'test'
+  ...
+# Subtest: selector {"startParam":"campaign42"}
+ok 193 - selector {"startParam":"campaign42"}
+  ---
+  duration_ms: 0.245399
+  type: 'test'
+  ...
+# Subtest: selector {"game":"v1","startParam":"release_other"}
+ok 194 - selector {"game":"v1","startParam":"release_other"}
+  ---
+  duration_ms: 0.097844
+  type: 'test'
+  ...
+# Subtest: selector {"release":"a","game":"b","startParam":"admin"}
+ok 195 - selector {"release":"a","game":"b","startParam":"admin"}
+  ---
+  duration_ms: 0.099085
+  type: 'test'
+  ...
+# Subtest: invalid selector {"release":""}
+ok 196 - invalid selector {"release":""}
+  ---
+  duration_ms: 0.168957
+  type: 'test'
+  ...
+# Subtest: invalid selector {"release":"../x"}
+ok 197 - invalid selector {"release":"../x"}
+  ---
+  duration_ms: 0.12324
+  type: 'test'
+  ...
+# Subtest: invalid selector {"game":"<script>"}
+ok 198 - invalid selector {"game":"<script>"}
+  ---
+  duration_ms: 0.103261
+  type: 'test'
+  ...
+# Subtest: invalid selector {"startParam":"release_"}
+ok 199 - invalid selector {"startParam":"release_"}
+  ---
+  duration_ms: 0.093427
+  type: 'test'
+  ...
+# Subtest: invalid selector {"startParam":"game_"}
+ok 200 - invalid selector {"startParam":"game_"}
+  ---
+  duration_ms: 0.12252
+  type: 'test'
+  ...
+# Subtest: JSON import always requires moderation
+ok 201 - JSON import always requires moderation
+  ---
+  duration_ms: 2.208035
+  type: 'test'
+  ...
+# Subtest: CSV with BOM/Cyrillic/CRLF/quoted separator
+ok 202 - CSV with BOM/Cyrillic/CRLF/quoted separator
+  ---
+  duration_ms: 0.893639
+  type: 'test'
+  ...
+# Subtest: CSV comma separator
+ok 203 - CSV comma separator
+  ---
+  duration_ms: 0.438773
+  type: 'test'
+  ...
+# Subtest: CSV escaped quote and embedded newline
+ok 204 - CSV escaped quote and embedded newline
+  ---
+  duration_ms: 0.441026
+  type: 'test'
+  ...
+# Subtest: reject CSV missing columns
+ok 205 - reject CSV missing columns
+  ---
+  duration_ms: 0.510488
+  type: 'test'
+  ...
+# Subtest: reject CSV bad year
+ok 206 - reject CSV bad year
+  ---
+  duration_ms: 1.394693
+  type: 'test'
+  ...
+# Subtest: reject CSV unclosed quote
+ok 207 - reject CSV unclosed quote
+  ---
+  duration_ms: 0.364614
+  type: 'test'
+  ...
+# Subtest: reject CSV duplicate headers
+ok 208 - reject CSV duplicate headers
+  ---
+  duration_ms: 0.161617
+  type: 'test'
+  ...
+# Subtest: reject CSV duplicate IDs
+ok 209 - reject CSV duplicate IDs
+  ---
+  duration_ms: 0.670152
+  type: 'test'
+  ...
+# Subtest: export CSV guards spreadsheet formulas and remains quoted UTF-8
+ok 210 - export CSV guards spreadsheet formulas and remains quoted UTF-8
+  ---
+  duration_ms: 0.803306
+  type: 'test'
+  ...
+# Subtest: JSON syntax error is readable
+ok 211 - JSON syntax error is readable
+  ---
+  duration_ms: 0.30028
+  type: 'test'
+  ...
+# Subtest: export also neutralizes formula prefixes after whitespace
+ok 212 - export also neutralizes formula prefixes after whitespace
+  ---
+  duration_ms: 0.195787
+  type: 'test'
+  ...
+# (node:3493) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: package1 SDK reads: sql-tag adapter binds user values and repeats named parameters
+ok 213 - package1 SDK reads: sql-tag adapter binds user values and repeats named parameters
+  ---
+  duration_ms: 2.45793
+  type: 'test'
+  ...
+# Subtest: package1 SDK reads: quoted/commented placeholders are never replaced
+ok 214 - package1 SDK reads: quoted/commented placeholders are never replaced
+  ---
+  duration_ms: 0.979825
+  type: 'test'
+  ...
+# Subtest: package1 SDK reads: missing or structured binding fails before query
+ok 215 - package1 SDK reads: missing or structured binding fails before query
+  ---
+  duration_ms: 0.529615
+  type: 'test'
+  ...
+# Subtest: package1 SDK probe: real SQLite verifies insert/read/cleanup without changing current head
+ok 216 - package1 SDK probe: real SQLite verifies insert/read/cleanup without changing current head
+  ---
+  duration_ms: 4.634228
+  type: 'test'
+  ...
+# Subtest: package1 legacy restore: normalization is deterministic across preview and apply
+ok 217 - package1 legacy restore: normalization is deterministic across preview and apply
+  ---
+  duration_ms: 34.866345
+  type: 'test'
+  ...
+# Subtest: package1 backup: reject rehashed invalid relation attemptMode
+ok 218 - package1 backup: reject rehashed invalid relation attemptMode
+  ---
+  duration_ms: 14.569662
+  type: 'test'
+  ...
+# Subtest: package1 backup: reject rehashed invalid relation reservationOwner
+ok 219 - package1 backup: reject rehashed invalid relation reservationOwner
+  ---
+  duration_ms: 7.733078
+  type: 'test'
+  ...
+# Subtest: package1 backup: reject rehashed invalid relation requestOwner
+ok 220 - package1 backup: reject rehashed invalid relation requestOwner
+  ---
+  duration_ms: 4.023094
+  type: 'test'
+  ...
+# Subtest: package1 backup: reject rehashed invalid relation contestRules
+ok 221 - package1 backup: reject rehashed invalid relation contestRules
+  ---
+  duration_ms: 7.309046
+  type: 'test'
+  ...
+# Subtest: package1 release pipeline: backup before mutation, migration and live SDK probe before backend switch
+ok 222 - package1 release pipeline: backup before mutation, migration and live SDK probe before backend switch
+  ---
+  duration_ms: 0.878527
+  type: 'test'
+  ...
+# Subtest: package1 environments: code and workflow use same environment variable; production has separate credential
+ok 223 - package1 environments: code and workflow use same environment variable; production has separate credential
+  ---
+  duration_ms: 0.362481
+  type: 'test'
+  ...
+# Subtest: package1 restore: existing catalog API can edit after generation switch
+ok 224 - package1 restore: existing catalog API can edit after generation switch
+  ---
+  duration_ms: 6.08245
+  type: 'test'
+  ...
+# (node:3516) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: package1: SHA-256 known input ""
+ok 225 - package1: SHA-256 known input ""
+  ---
+  duration_ms: 3.771544
+  type: 'test'
+  ...
+# Subtest: package1: SHA-256 known input "abc"
+ok 226 - package1: SHA-256 known input "abc"
+  ---
+  duration_ms: 0.316404
+  type: 'test'
+  ...
+# Subtest: package1: SHA-256 known input "aaaaaaaaaaaaaaaaaaaa"
+ok 227 - package1: SHA-256 known input "aaaaaaaaaaaaaaaaaaaa"
+  ---
+  duration_ms: 0.704983
+  type: 'test'
+  ...
+# Subtest: package1: SHA-256 known input "Кино 🎥 café"
+ok 228 - package1: SHA-256 known input "Кино 🎥 café"
+  ---
+  duration_ms: 1.872853
+  type: 'test'
+  ...
+# Subtest: package1: SHA-256 known input "\\u0000\\n"
+ok 229 - package1: SHA-256 known input "\\u0000\\n"
+  ---
+  duration_ms: 0.177019
+  type: 'test'
+  ...
+# Subtest: package1: existing catalog survives initialization and subsequent publication
+ok 230 - package1: existing catalog survives initialization and subsequent publication
+  ---
+  duration_ms: 7.497312
+  type: 'test'
+  ...
+# Subtest: package1: detects writes made by old backend after migration, never silently hides them
+ok 231 - package1: detects writes made by old backend after migration, never silently hides them
+  ---
+  duration_ms: 2.733715
+  type: 'test'
+  ...
+# Subtest: package1: concurrent CAS allows exactly one stale commit
+ok 232 - package1: concurrent CAS allows exactly one stale commit
+  ---
+  duration_ms: 1.753819
+  type: 'test'
+  ...
+# Subtest: package1: pinned reader sees a coherent older revision
+ok 233 - package1: pinned reader sees a coherent older revision
+  ---
+  duration_ms: 1.698628
+  type: 'test'
+  ...
+# Subtest: package1: two parallel devices reserve one active attempt only
+ok 234 - package1: two parallel devices reserve one active attempt only
+  ---
+  duration_ms: 7.554546
+  type: 'test'
+  ...
+# Subtest: package1: same request creates one attempt and is repeatable after finish
+ok 235 - package1: same request creates one attempt and is repeatable after finish
+  ---
+  duration_ms: 6.255033
+  type: 'test'
+  ...
+# Subtest: package1: server ignores claimed score, identity and percent
+ok 236 - package1: server ignores claimed score, identity and percent
+  ---
+  duration_ms: 5.921003
+  type: 'test'
+  ...
+# Subtest: package1: two attempts 1/0 errors: best 200; third blocked
+ok 237 - package1: two attempts 1/0 errors: best 200; third blocked
+  ---
+  duration_ms: 7.651118
+  type: 'test'
+  ...
+# Subtest: package1: two attempts 0/1 errors: best 200; third blocked
+ok 238 - package1: two attempts 0/1 errors: best 200; third blocked
+  ---
+  duration_ms: 6.811728
+  type: 'test'
+  ...
+# Subtest: package1: two attempts 2/1 errors: best 125; third blocked
+ok 239 - package1: two attempts 2/1 errors: best 125; third blocked
+  ---
+  duration_ms: 10.459782
+  type: 'test'
+  ...
+# Subtest: package1: active attempt persists without relying on client localStorage
+ok 240 - package1: active attempt persists without relying on client localStorage
+  ---
+  duration_ms: 3.961934
+  type: 'test'
+  ...
+# Subtest: package1: abandon uses slot; administrative void retains record and permits replacement
+ok 241 - package1: abandon uses slot; administrative void retains record and permits replacement
+  ---
+  duration_ms: 10.436588
+  type: 'test'
+  ...
+# Subtest: package1: deadline uses server receipt, late saved but not ranked
+ok 242 - package1: deadline uses server receipt, late saved but not ranked
+  ---
+  duration_ms: 4.153414
+  type: 'test'
+  ...
+# Subtest: package1: lost acknowledgement retry after deadline returns same saved result
+ok 243 - package1: lost acknowledgement retry after deadline returns same saved result
+  ---
+  duration_ms: 3.944878
+  type: 'test'
+  ...
+# Subtest: package1: receipt at endpoint entry is respected despite access-check latency
+ok 244 - package1: receipt at endpoint entry is respected despite access-check latency
+  ---
+  duration_ms: 4.340939
+  type: 'test'
+  ...
+# Subtest: package1: cannot finish another player attempt or forge administrator identity
+ok 245 - package1: cannot finish another player attempt or forge administrator identity
+  ---
+  duration_ms: 3.048586
+  type: 'test'
+  ...
+# Subtest: package1: suspicious actions saved for review, not auto-banned or exposed
+ok 246 - package1: suspicious actions saved for review, not auto-banned or exposed
+  ---
+  duration_ms: 3.004491
+  type: 'test'
+  ...
+# Subtest: package1: invalid oversized submission cannot exhaust another slot or crash state
+ok 247 - package1: invalid oversized submission cannot exhaust another slot or crash state
+  ---
+  duration_ms: 15.488087
+  type: 'test'
+  ...
+# Subtest: package1: equal score shares place without speed tiebreaker
+ok 248 - package1: equal score shares place without speed tiebreaker
+  ---
+  duration_ms: 21.209579
+  type: 'test'
+  ...
+# Subtest: package1: admins preview without consuming player contest statistics
+ok 249 - package1: admins preview without consuming player contest statistics
+  ---
+  duration_ms: 4.918695
+  type: 'test'
+  ...
+# Subtest: package1: editor content strips internal notes and locked article from player API
+ok 250 - package1: editor content strips internal notes and locked article from player API
+  ---
+  duration_ms: 1.851963
+  type: 'test'
+  ...
+# Subtest: package1: article afterAttempts opens only after two consumed non-active attempts
+ok 251 - package1: article afterAttempts opens only after two consumed non-active attempts
+  ---
+  duration_ms: 4.876243
+  type: 'test'
+  ...
+# Subtest: package1: article hidden remains hidden after contest, unless private preview
+ok 252 - package1: article hidden remains hidden after contest, unless private preview
+  ---
+  duration_ms: 2.219411
+  type: 'test'
+  ...
+# Subtest: package1: full clone preserves years, original, metadata, notes and texts, no history
+ok 253 - package1: full clone preserves years, original, metadata, notes and texts, no history
+  ---
+  duration_ms: 4.673807
+  type: 'test'
+  ...
+# Subtest: package1: private draft preview does not write attempts, identities or data
+ok 254 - package1: private draft preview does not write attempts, identities or data
+  ---
+  duration_ms: 2.291477
+  type: 'test'
+  ...
+# Subtest: package1: exclusion applies live; finalized ranking and Telegram names remain byte-identical
+ok 255 - package1: exclusion applies live; finalized ranking and Telegram names remain byte-identical
+  ---
+  duration_ms: 7.189021
+  type: 'test'
+  ...
+# Subtest: package1: ongoing exclusion/restoration never deletes original attempts
+ok 256 - package1: ongoing exclusion/restoration never deletes original attempts
+  ---
+  duration_ms: 4.454015
+  type: 'test'
+  ...
+# Subtest: package1: manual score correction writes adjustment and audit, never rewrites calculation
+ok 257 - package1: manual score correction writes adjustment and audit, never rewrites calculation
+  ---
+  duration_ms: 5.506406
+  type: 'test'
+  ...
+# Subtest: package1: archive attempts unlimited, final unchanged
+ok 258 - package1: archive attempts unlimited, final unchanged
+  ---
+  duration_ms: 9.015116
+  type: 'test'
+  ...
+# Subtest: package1: signed launch observations distinguish seen denied-to-allowed, not real share or bot start
+ok 259 - package1: signed launch observations distinguish seen denied-to-allowed, not real share or bot start
+  ---
+  duration_ms: 2.630504
+  type: 'test'
+  ...
+# Subtest: package1: backup JSON private recipients are exactly configured admins; no arbitrary target
+ok 260 - package1: backup JSON private recipients are exactly configured admins; no arbitrary target
+  ---
+  duration_ms: 2.952665
+  type: 'test'
+  ...
+# Subtest: package1: backup fresh read includes data written after admin page was opened
+ok 261 - package1: backup fresh read includes data written after admin page was opened
+  ---
+  duration_ms: 1.947072
+  type: 'test'
+  ...
+# Subtest: package1: backup checksum corruption and unknown schema are rejected
+ok 262 - package1: backup checksum corruption and unknown schema are rejected
+  ---
+  duration_ms: 2.783277
+  type: 'test'
+  ...
+# Subtest: package1: backup missing frozen game refuses restoration
+ok 263 - package1: backup missing frozen game refuses restoration
+  ---
+  duration_ms: 2.264888
+  type: 'test'
+  ...
+# Subtest: package1: legacy backups recognized, not treated as user sessions
+ok 264 - package1: legacy backups recognized, not treated as user sessions
+  ---
+  duration_ms: 1.479447
+  type: 'test'
+  ...
+# Subtest: package1: restore roundtrip stages and switches all logical records atomically
+ok 265 - package1: restore roundtrip stages and switches all logical records atomically
+  ---
+  duration_ms: 11.159537
+  type: 'test'
+  ...
+# Subtest: package1: restore rejects stale preview without discarding concurrent data
+ok 266 - package1: restore rejects stale preview without discarding concurrent data
+  ---
+  duration_ms: 3.158447
+  type: 'test'
+  ...
+# Subtest: package1: restore cannot replace or erase official historical final
+ok 267 - package1: restore cannot replace or erase official historical final
+  ---
+  duration_ms: 5.039322
+  type: 'test'
+  ...
+# Subtest: package1: partial backup delivery aborts restore; existing head unchanged
+ok 268 - package1: partial backup delivery aborts restore; existing head unchanged
+  ---
+  duration_ms: 4.785079
+  type: 'test'
+  ...
+# Subtest: package1: restore commit CAS refuses data arriving during staging
+ok 269 - package1: restore commit CAS refuses data arriving during staging
+  ---
+  duration_ms: 2.694256
+  type: 'test'
+  ...
+# Subtest: package1: export chunks private to initiating admin and expire
+ok 270 - package1: export chunks private to initiating admin and expire
+  ---
+  duration_ms: 2.418953
+  type: 'test'
+  ...
+# Subtest: package1: cross-environment restore needs additional explicit confirmation
+ok 271 - package1: cross-environment restore needs additional explicit confirmation
+  ---
+  duration_ms: 3.866143
+  type: 'test'
+  ...
+# Subtest: package1: content rejects unsafe link javascript:alert(1)
+ok 272 - package1: content rejects unsafe link javascript:alert(1)
+  ---
+  duration_ms: 0.165732
+  type: 'test'
+  ...
+# Subtest: package1: content rejects unsafe link data:image/png;base64,abc
+ok 273 - package1: content rejects unsafe link data:image/png;base64,abc
+  ---
+  duration_ms: 0.119185
+  type: 'test'
+  ...
+# Subtest: package1: content rejects unsafe link //evil.test
+ok 274 - package1: content rejects unsafe link //evil.test
+  ---
+  duration_ms: 0.073197
+  type: 'test'
+  ...
+# Subtest: package1: content rejects unsafe link https://evil.test/"
+ok 275 - package1: content rejects unsafe link https://evil.test/"
+  ---
+  duration_ms: 0.066247
+  type: 'test'
+  ...
+# Subtest: player subscription screen has named channel, exactly two buttons, no administrative controls
+ok 276 - player subscription screen has named channel, exactly two buttons, no administrative controls
+  ---
+  duration_ms: 2.594581
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: TIMEOUT
+ok 277 - player error copy never echoes backend details: TIMEOUT
+  ---
+  duration_ms: 3.785145
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: CHECK_UNAVAILABLE
+ok 278 - player error copy never echoes backend details: CHECK_UNAVAILABLE
+  ---
+  duration_ms: 0.113476
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: INTERNAL_ERROR
+ok 279 - player error copy never echoes backend details: INTERNAL_ERROR
+  ---
+  duration_ms: 0.088931
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: FORBIDDEN
+ok 280 - player error copy never echoes backend details: FORBIDDEN
+  ---
+  duration_ms: 0.092396
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: NOT_FOUND
+ok 281 - player error copy never echoes backend details: NOT_FOUND
+  ---
+  duration_ms: 0.074449
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: NAVIGATION_LOOP
+ok 282 - player error copy never echoes backend details: NAVIGATION_LOOP
+  ---
+  duration_ms: 0.118814
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: NAVIGATION_BLOCKED
+ok 283 - player error copy never echoes backend details: NAVIGATION_BLOCKED
+  ---
+  duration_ms: 0.103382
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: AUTH_REQUIRED
+ok 284 - player error copy never echoes backend details: AUTH_REQUIRED
+  ---
+  duration_ms: 0.271638
+  type: 'test'
+  ...
+# Subtest: player error copy never echoes backend details: undefined
+ok 285 - player error copy never echoes backend details: undefined
+  ---
+  duration_ms: 0.318757
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: javascript:alert(1)
+ok 286 - untrusted join URL is not a public link: javascript:alert(1)
+  ---
+  duration_ms: 0.256376
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: https://evil.test
+ok 287 - untrusted join URL is not a public link: https://evil.test
+  ---
+  duration_ms: 0.066498
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: https://t.me/okay?token=secret
+ok 288 - untrusted join URL is not a public link: https://t.me/okay?token=secret
+  ---
+  duration_ms: 0.045317
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: //evil.test
+ok 289 - untrusted join URL is not a public link: //evil.test
+  ---
+  duration_ms: 0.038667
+  type: 'test'
+  ...
+# Subtest: untrusted join URL is not a public link: https://t.me/okay/../else
+ok 290 - untrusted join URL is not a public link: https://t.me/okay/../else
+  ---
+  duration_ms: 0.041571
+  type: 'test'
+  ...
+# Subtest: public retry does not navigate to management
+ok 291 - public retry does not navigate to management
+  ---
+  duration_ms: 0.367929
+  type: 'test'
+  ...
+# Subtest: admin initial HTML is neutral even before JS and on script failure
+ok 292 - admin initial HTML is neutral even before JS and on script failure
+  ---
+  duration_ms: 0.403361
+  type: 'test'
+  ...
+# Subtest: admin-advanced initial HTML is neutral even before JS and on script failure
+ok 293 - admin-advanced initial HTML is neutral even before JS and on script failure
+  ---
+  duration_ms: 0.093027
+  type: 'test'
+  ...
+# Subtest: launcher HTML has no management link, version banner or debug fallback
+ok 294 - launcher HTML has no management link, version banner or debug fallback
+  ---
+  duration_ms: 0.135309
+  type: 'test'
+  ...
+# Subtest: default launch overrides retained unsigned admin hint
+ok 295 - default launch overrides retained unsigned admin hint
+  ---
+  duration_ms: 0.240753
+  type: 'test'
+  ...
+# Subtest: outsider admin deep-link is ordinary subscribed game, not an admin refusal page
+ok 296 - outsider admin deep-link is ordinary subscribed game, not an admin refusal page
+  ---
+  duration_ms: 5.669876
+  type: 'test'
+  ...
+# Subtest: outsider admin deep-link still requires subscription
+ok 297 - outsider admin deep-link still requires subscription
+  ---
+  duration_ms: 7.196261
+  type: 'test'
+  ...
+# Subtest: actual allowed admin retains private direct entry: 101
+ok 298 - actual allowed admin retains private direct entry: 101
+  ---
+  duration_ms: 0.800723
+  type: 'test'
+  ...
+# Subtest: actual allowed admin retains private direct entry: 202
+ok 299 - actual allowed admin retains private direct entry: 202
+  ---
+  duration_ms: 0.084574
+  type: 'test'
+  ...
+# Subtest: private data are not read on denied administrative request
+ok 300 - private data are not read on denied administrative request
+  ---
+  duration_ms: 0.230458
+  type: 'test'
+  ...
+# Subtest: public UI runtime preserves release/game identity for v06
+ok 301 - public UI runtime preserves release/game identity for v06
+  ---
+  duration_ms: 0.676221
+  type: 'test'
+  ...
+# Subtest: public UI runtime preserves release/game identity for v07-tables
+ok 302 - public UI runtime preserves release/game identity for v07-tables
+  ---
+  duration_ms: 0.241374
+  type: 'test'
+  ...
+# Subtest: runtime repair never swaps an unknown user build
+ok 303 - runtime repair never swaps an unknown user build
+  ---
+  duration_ms: 0.414317
+  type: 'test'
+  ...
+# Subtest: public source and prepared assets match; next preparation cannot restore debug widgets
+ok 304 - public source and prepared assets match; next preparation cannot restore debug widgets
+  ---
+  duration_ms: 0.775767
+  type: 'test'
+  ...
+# Subtest: schema fix: empty schema gets a direct table declaration, not a project import
+ok 305 - schema fix: empty schema gets a direct table declaration, not a project import
+  ---
+  duration_ms: 3.188
+  type: 'test'
+  ...
+# Subtest: schema fix: removes the exact legacy generated export and preserves owner content
+ok 306 - schema fix: removes the exact legacy generated export and preserves owner content
+  ---
+  duration_ms: 0.207464
+  type: 'test'
+  ...
+# Subtest: schema fix: repeated preparation is byte-for-byte stable
+ok 307 - schema fix: repeated preparation is byte-for-byte stable
+  ---
+  duration_ms: 0.345116
+  type: 'test'
+  ...
+# Subtest: schema fix: CRLF and double-quoted legacy export are supported
+ok 308 - schema fix: CRLF and double-quoted legacy export are supported
+  ---
+  duration_ms: 0.137332
+  type: 'test'
+  ...
+# Subtest: schema fix: a custom rrAdminState declaration is not overwritten
+ok 309 - schema fix: a custom rrAdminState declaration is not overwritten
+  ---
+  duration_ms: 0.34137
+  type: 'test'
+  ...
+# Subtest: schema fix: duplicate legacy exports fail closed
+ok 310 - schema fix: duplicate legacy exports fail closed
+  ---
+  duration_ms: 0.111092
+  type: 'test'
+  ...
+# Subtest: schema fix: partial and duplicate managed markers fail closed
+ok 311 - schema fix: partial and duplicate managed markers fail closed
+  ---
+  duration_ms: 0.187304
+  type: 'test'
+  ...
+# Subtest: schema fix: hand-edited managed columns are never silently reset
+ok 312 - schema fix: hand-edited managed columns are never silently reset
+  ---
+  duration_ms: 0.289133
+  type: 'test'
+  ...
+# Subtest: schema fix: mixed old and new forms fail closed
+ok 313 - schema fix: mixed old and new forms fail closed
+  ---
+  duration_ms: 0.280581
+  type: 'test'
+  ...
+# Subtest: schema fix: isolated local evaluation rejects the old dependency and accepts the new table
+ok 314 - schema fix: isolated local evaluation rejects the old dependency and accepts the new table
+  ---
+  duration_ms: 3.258633
+  type: 'test'
+  ...
+# Subtest: schema fix: unrelated SDK table uses its own names without collisions
+ok 315 - schema fix: unrelated SDK table uses its own names without collisions
+  ---
+  duration_ms: 0.681938
+  type: 'test'
+  ...
+# Subtest: schema fix: runtime compatibility module points TO root schema, not vice versa
+ok 316 - schema fix: runtime compatibility module points TO root schema, not vice versa
+  ---
+  duration_ms: 0.325426
+  type: 'test'
+  ...
+# Subtest: schema fix: actual prepare repairs the legacy root and cannot reintroduce it on next build
+ok 317 - schema fix: actual prepare repairs the legacy root and cannot reintroduce it on next build
+  ---
+  duration_ms: 156.125894
+  type: 'test'
+  ...
+# Subtest: actual send-link endpoint takes recipient ONLY from verified context
+ok 318 - actual send-link endpoint takes recipient ONLY from verified context
+  ---
+  duration_ms: 2.671624
+  type: 'test'
+  ...
+# Subtest: actual send-link endpoint checks admin before Bot API write
+ok 319 - actual send-link endpoint checks admin before Bot API write
+  ---
+  duration_ms: 0.997251
+  type: 'test'
+  ...
+# Subtest: actual send-link endpoint refuses unpublished release
+ok 320 - actual send-link endpoint refuses unpublished release
+  ---
+  duration_ms: 0.699905
+  type: 'test'
+  ...
+# Subtest: actual send-link endpoint hides underlying Bot API error
+ok 321 - actual send-link endpoint hides underlying Bot API error
+  ---
+  duration_ms: 0.850226
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects null
+ok 322 - verified ctx rejects null
+  ---
+  duration_ms: 1.710516
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects undefined
+ok 323 - verified ctx rejects undefined
+  ---
+  duration_ms: 0.107658
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 101
+ok 324 - verified ctx rejects 101
+  ---
+  duration_ms: 0.108369
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects -1
+ok 325 - verified ctx rejects -1
+  ---
+  duration_ms: 0.087418
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 0
+ok 326 - verified ctx rejects 0
+  ---
+  duration_ms: 0.074449
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 1.1
+ok 327 - verified ctx rejects 1.1
+  ---
+  duration_ms: 0.0617
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects Infinity
+ok 328 - verified ctx rejects Infinity
+  ---
+  duration_ms: 0.11563
+  type: 'test'
+  ...
+# Subtest: verified ctx rejects 9007199254740992
+ok 329 - verified ctx rejects 9007199254740992
+  ---
+  duration_ms: 0.094668
+  type: 'test'
+  ...
+# Subtest: status exposes only caller identity, not entire allowlist
+ok 330 - status exposes only caller identity, not entire allowlist
+  ---
+  duration_ms: 0.893819
+  type: 'test'
+  ...
+# Subtest: forged user ID in input cannot read admin data
+ok 331 - forged user ID in input cannot read admin data
+  ---
+  duration_ms: 0.686586
+  type: 'test'
+  ...
+# Subtest: forged ctx field inside input cannot issue command
+ok 332 - forged ctx field inside input cannot issue command
+  ---
+  duration_ms: 0.257877
+  type: 'test'
+  ...
+# Subtest: both explicit admins have access
+ok 333 - both explicit admins have access
+  ---
+  duration_ms: 1.246086
+  type: 'test'
+  ...
+# Subtest: subscriber false fails closed with trusted join URL
+ok 334 - subscriber false fails closed with trusted join URL
+  ---
+  duration_ms: 0.507263
+  type: 'test'
+  ...
+# Subtest: subscription network error does not become access
+ok 335 - subscription network error does not become access
+  ---
+  duration_ms: 0.162528
+  type: 'test'
+  ...
+# Subtest: verified start_param selects requested release
+ok 336 - verified start_param selects requested release
+  ---
+  duration_ms: 0.664864
+  type: 'test'
+  ...
+# Subtest: input start_param cannot bypass selector source
+ok 337 - input start_param cannot bypass selector source
+  ---
+  duration_ms: 0.257137
+  type: 'test'
+  ...
+# Subtest: admin deep-link is not an admin grant
+ok 338 - admin deep-link is not an admin grant
+  ---
+  duration_ms: 0.290676
+  type: 'test'
+  ...
+# Subtest: two admins saving same revision: exactly one atomic success
+ok 339 - two admins saving same revision: exactly one atomic success
+  ---
+  duration_ms: 1.790143
+  type: 'test'
+  ...
+# Subtest: missing revision rejected, no mutation
+ok 340 - missing revision rejected, no mutation
+  ---
+  duration_ms: 0.356272
+  type: 'test'
+  ...
+# Subtest: invalid command leaves revision and data unchanged
+ok 341 - invalid command leaves revision and data unchanged
+  ---
+  duration_ms: 0.55978
+  type: 'test'
+  ...
+# Subtest: initialization race never resets earlier writes
+ok 342 - initialization race never resets earlier writes
+  ---
+  duration_ms: 0.251648
+  type: 'test'
+  ...
+# Subtest: four tables: new cassettes have null year, no fabricated values
+ok 343 - four tables: new cassettes have null year, no fabricated values
+  ---
+  duration_ms: 3.383877
+  type: 'test'
+  ...
+# Subtest: four tables: separate lines support CRLF and BOM
+ok 344 - four tables: separate lines support CRLF and BOM
+  ---
+  duration_ms: 1.130576
+  type: 'test'
+  ...
+# Subtest: four tables: automatic semicolon parsing
+ok 345 - four tables: automatic semicolon parsing
+  ---
+  duration_ms: 0.337124
+  type: 'test'
+  ...
+# Subtest: four tables: commas inside titles are never guessed
+ok 346 - four tables: commas inside titles are never guessed
+  ---
+  duration_ms: 0.224629
+  type: 'test'
+  ...
+# Subtest: four tables: comma mode explicitly supported
+ok 347 - four tables: comma mode explicitly supported
+  ---
+  duration_ms: 0.160205
+  type: 'test'
+  ...
+# Subtest: four tables: duplicate answer across tables rejected
+ok 348 - four tables: duplicate answer across tables rejected
+  ---
+  duration_ms: 0.881651
+  type: 'test'
+  ...
+# Subtest: four tables: duplicate within a table rejected
+ok 349 - four tables: duplicate within a table rejected
+  ---
+  duration_ms: 0.237588
+  type: 'test'
+  ...
+# Subtest: four tables: NFC duplicate rejected
+ok 350 - four tables: NFC duplicate rejected
+  ---
+  duration_ms: 0.340519
+  type: 'test'
+  ...
+# Subtest: four tables: empty or repeated table labels rejected on publication
+ok 351 - four tables: empty or repeated table labels rejected on publication
+  ---
+  duration_ms: 0.475557
+  type: 'test'
+  ...
+# Subtest: four tables: no empty published table
+ok 352 - four tables: no empty published table
+  ---
+  duration_ms: 0.495306
+  type: 'test'
+  ...
+# Subtest: four tables: drafts can be incomplete
+ok 353 - four tables: drafts can be incomplete
+  ---
+  duration_ms: 0.352276
+  type: 'test'
+  ...
+# Subtest: four tables: too few or too many rows refused
+ok 354 - four tables: too few or too many rows refused
+  ---
+  duration_ms: 0.182467
+  type: 'test'
+  ...
+# Subtest: four tables: metadata and film IDs are kept when re-editing a draft
+ok 355 - four tables: metadata and film IDs are kept when re-editing a draft
+  ---
+  duration_ms: 0.426705
+  type: 'test'
+  ...
+# Subtest: four tables: deterministic IDs and round-trip titles
+ok 356 - four tables: deterministic IDs and round-trip titles
+  ---
+  duration_ms: 0.459673
+  type: 'test'
+  ...
+# Subtest: simple command: save is atomic and leaves default alone
+ok 357 - simple command: save is atomic and leaves default alone
+  ---
+  duration_ms: 2.465692
+  type: 'test'
+  ...
+# Subtest: simple command: publish by link creates catalogue and release together
+ok 358 - simple command: publish by link creates catalogue and release together
+  ---
+  duration_ms: 1.190023
+  type: 'test'
+  ...
+# Subtest: simple command: publish and make default switches in same state mutation
+ok 359 - simple command: publish and make default switches in same state mutation
+  ---
+  duration_ms: 0.840251
+  type: 'test'
+  ...
+# Subtest: simple command: publishes existing draft without duplicating
+ok 360 - simple command: publishes existing draft without duplicating
+  ---
+  duration_ms: 1.115894
+  type: 'test'
+  ...
+# Subtest: simple command: published sets immutable
+ok 361 - simple command: published sets immutable
+  ---
+  duration_ms: 1.09189
+  type: 'test'
+  ...
+# Subtest: simple command: long link code refused
+ok 362 - simple command: long link code refused
+  ---
+  duration_ms: 0.199532
+  type: 'test'
+  ...
+# Subtest: simple command: no runtime means no partial publication
+ok 363 - simple command: no runtime means no partial publication
+  ---
+  duration_ms: 0.657302
+  type: 'test'
+  ...
+# Subtest: simple command: default must be explicitly boolean
+ok 364 - simple command: default must be explicitly boolean
+  ---
+  duration_ms: 0.332117
+  type: 'test'
+  ...
+# Subtest: simple command: registers uploaded v07 without resetting prior defaults or audit
+ok 365 - simple command: registers uploaded v07 without resetting prior defaults or audit
+  ---
+  duration_ms: 0.881932
+  type: 'test'
+  ...
+# Subtest: nullable years incompatible with unpatched v06
+ok 366 - nullable years incompatible with unpatched v06
+  ---
+  duration_ms: 0.533091
+  type: 'test'
+  ...
+# Subtest: set_ link selects explicit set, normal launch retains default
+ok 367 - set_ link selects explicit set, normal launch retains default
+  ---
+  duration_ms: 0.640068
+  type: 'test'
+  ...
+# Subtest: set_ link cannot become administrator grant
+ok 368 - set_ link cannot become administrator grant
+  ---
+  duration_ms: 0.164731
+  type: 'test'
+  ...
+# Subtest: link formatter bounded, correct Main Mini App parameter
+ok 369 - link formatter bounded, correct Main Mini App parameter
+  ---
+  duration_ms: 0.317194
+  type: 'test'
+  ...
+# Subtest: canonical path: index file and directory are same page
+ok 370 - canonical path: index file and directory are same page
+  ---
+  duration_ms: 0.209517
+  type: 'test'
+  ...
+# Subtest: canonical path: different build stays different
+ok 371 - canonical path: different build stays different
+  ---
+  duration_ms: 0.07471
+  type: 'test'
+  ...
+# Subtest: simple service: ordinary user cannot publish
+ok 372 - simple service: ordinary user cannot publish
+  ---
+  duration_ms: 0.901861
+  type: 'test'
+  ...
+# Subtest: simple service: both admins, stale write rejected without wiping text/state
+ok 373 - simple service: both admins, stale write rejected without wiping text/state
+  ---
+  duration_ms: 0.731281
+  type: 'test'
+  ...
+# Subtest: legacy runtime repair: exact known v06 gets new runtime but unchanged release and save identity
+ok 374 - legacy runtime repair: exact known v06 gets new runtime but unchanged release and save identity
+  ---
+  duration_ms: 0.524849
+  type: 'test'
+  ...
+# Subtest: legacy runtime repair: unknown builds are not silently replaced
+ok 375 - legacy runtime repair: unknown builds are not silently replaced
+  ---
+  duration_ms: 0.25954
+  type: 'test'
+  ...
+# (node:3647) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual repository: SQLite JSON insert/read and non-resetting initialization
+ok 376 - actual repository: SQLite JSON insert/read and non-resetting initialization
+  ---
+  duration_ms: 5.792565
+  type: 'test'
+  ...
+# Subtest: actual repository: conditional update fails on stale revision without data loss
+ok 377 - actual repository: conditional update fails on stale revision without data loss
+  ---
+  duration_ms: 2.391914
+  type: 'test'
+  ...
+# Subtest: static headers: known bad config from the cloud log is rejected locally
+ok 378 - static headers: known bad config from the cloud log is rejected locally
+  ---
+  duration_ms: 1.789502
+  type: 'test'
+  ...
+# Subtest: static headers: the corrected managed rule passes the local guard without mutation
+ok 379 - static headers: the corrected managed rule passes the local guard without mutation
+  ---
+  duration_ms: 0.728958
+  type: 'test'
+  ...
+# Subtest: static headers: case-insensitive check for x-content-type-options
+ok 380 - static headers: case-insensitive check for x-content-type-options
+  ---
+  duration_ms: 0.357974
+  type: 'test'
+  ...
+# Subtest: static headers: case-insensitive check for X-CONTENT-TYPE-OPTIONS
+ok 381 - static headers: case-insensitive check for X-CONTENT-TYPE-OPTIONS
+  ---
+  duration_ms: 0.267882
+  type: 'test'
+  ...
+# Subtest: static headers: case-insensitive check for X-Content-Type-Options
+ok 382 - static headers: case-insensitive check for X-Content-Type-Options
+  ---
+  duration_ms: 0.180174
+  type: 'test'
+  ...
+# Subtest: static headers: setting the forbidden name to null is not a workaround
+ok 383 - static headers: setting the forbidden name to null is not a workaround
+  ---
+  duration_ms: 0.118543
+  type: 'test'
+  ...
+# Subtest: static headers: any retained path is checked, not just the catch-all
+ok 384 - static headers: any retained path is checked, not just the catch-all
+  ---
+  duration_ms: 0.187364
+  type: 'test'
+  ...
+# Subtest: static headers: omitted headers and an empty array are supported
+ok 385 - static headers: omitted headers and an empty array are supported
+  ---
+  duration_ms: 0.082962
+  type: 'test'
+  ...
+# Subtest: static headers: malformed header arrays/rules fail locally
+ok 386 - static headers: malformed header arrays/rules fail locally
+  ---
+  duration_ms: 0.443439
+  type: 'test'
+  ...
+# Subtest: static headers: unrelated header values are not silently deleted or rewritten
+ok 387 - static headers: unrelated header values are not silently deleted or rewritten
+  ---
+  duration_ms: 0.66897
+  type: 'test'
+  ...
+# Subtest: static headers: actual prepare removes old managed header and preserves code/settings
+ok 388 - static headers: actual prepare removes old managed header and preserves code/settings
+  ---
+  duration_ms: 83.057814
+  type: 'test'
+  ...
+# Subtest: static headers: repeated prepare cannot reintroduce the blocked header or change game hashes
+ok 389 - static headers: repeated prepare cannot reintroduce the blocked header or change game hashes
+  ---
+  duration_ms: 104.258365
+  type: 'test'
+  ...
+# Subtest: static headers: retained incompatible path stops preparation BEFORE any writes
+ok 390 - static headers: retained incompatible path stops preparation BEFORE any writes
+  ---
+  duration_ms: 60.727271
+  type: 'test'
+  ...
+# Subtest: static headers: the standalone check stops early on forbidden project config
+ok 391 - static headers: the standalone check stops early on forbidden project config
+  ---
+  duration_ms: 1605.861274
+  type: 'test'
+  ...
+# Subtest: static headers: deploy still checks the prepared project before the first cloud call
+ok 392 - static headers: deploy still checks the prepared project before the first cloud call
+  ---
+  duration_ms: 0.273985
+  type: 'test'
+  ...
+# Subtest: reproduce old index.html/directory bug: valid reply navigates again and never resolves
+ok 393 - reproduce old index.html/directory bug: valid reply navigates again and never resolves
+  ---
+  duration_ms: 11.585301
+  type: 'test'
+  ...
+# Subtest: fixed real boot accepts canonical directory, returns catalog and removes loading overlay
+ok 394 - fixed real boot accepts canonical directory, returns catalog and removes loading overlay
+  ---
+  duration_ms: 1.815419
+  type: 'test'
+  ...
+# Subtest: blocked redirect does not leave an unresolved promise
+ok 395 - blocked redirect does not leave an unresolved promise
+  ---
+  duration_ms: 1.415563
+  type: 'test'
+  ...
+# Subtest: syntax preflight rejects a browser syntax error before deployment
+ok 396 - syntax preflight rejects a browser syntax error before deployment
+  ---
+  duration_ms: 35.566821
+  type: 'test'
+  ...
+# Subtest: static verifier checks exact file contents and Javascript MIME without touching APIs
+ok 397 - static verifier checks exact file contents and Javascript MIME without touching APIs
+  ---
+  duration_ms: 8.18534
+  type: 'test'
+  ...
+# Subtest: static verifier refuses a stale document
+ok 398 - static verifier refuses a stale document
+  ---
+  duration_ms: 0.654129
+  type: 'test'
+  ...
+1..398
+# tests 398
+# suites 0
+# pass 398
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3153.571947
+BUILD INTEGRITY OK. Tests use local adapters; Telegram cloud integration is checked separately by rrHealth during deployment.
+
+
+=== БРАУЗЕР: ИЗОЛЯЦИЯ АДМИНИСТРАТОРОВ ===
+PASS admin 101: real game completion and restart 1/4
+PASS admin 101: real game completion and restart 2/4
+PASS admin 101: real game completion and restart 3/4
+PASS admin 101: real game completion and restart 4/4
+PASS admin 101: zero player attempts, four retained test records
+PASS admin 202: real game completion and restart 1/4
+PASS admin 202: real game completion and restart 2/4
+PASS admin 202: real game completion and restart 3/4
+PASS admin 202: real game completion and restart 4/4
+PASS admin 202: zero player attempts, four retained test records
+PASS zero participants/attempts/rankings after eight admin tests
+PASS ordinary game 1: no administrator button
+PASS ordinary completion 1: saved in server statistics
+PASS ordinary game 2: no administrator button
+PASS ordinary completion 2: saved in server statistics
+PASS ordinary client offers no third contest attempt
+PASS ordinary third request also denied by server
+PASS desktop players: both admins hidden initially
+PASS desktop opt-in history displays admin test records
+PASS desktop raw test history still accessible
+PASS desktop whole page has no horizontal overflow
+PASS mobile players: both admins hidden initially
+PASS mobile opt-in history displays admin test records
+PASS mobile raw test history still accessible
+PASS mobile whole page has no horizontal overflow
+PASS two real attempts / one participant, eight tests excluded
+PASS test-history filter cannot grant administrative access
+PASS no uncaught browser errors
+CHECKS PASSED 28
+
+
+=== БРАУЗЕР: ВОССТАНОВЛЕНИЕ ПОПЫТОК ===
+PASS closed preview is recognized from server on entry
+PASS admin button remains on clean first screen
+PASS stale closed preview enters actual room
+PASS real cassette placement works
+PASS server keeps both admin records separate from player counts
+PASS ordinary player has no admin entry
+PASS ordinary mobile practice finishes and saves server score
+PASS closed practice cannot restore cassette positions into the next attempt
+PASS closed practice starts fresh while old attempt remains recorded
+PASS lost receipt restored as a result rather than an entry error
+PASS administrator can play again without changing prior result
+PASS players table shows test history only with the explicit filter
+PASS two-used-slot player cannot start third competitive game
+PASS same user can enter archive after contest closes
+PASS no uncaught browser errors
+CHECKS PASSED 15
