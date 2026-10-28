@@ -22,7 +22,7 @@ export async function invoke(method, input, ctx) {
       const status=await service.status({},ctx);
       if(status.isAdmin!==true)throw new EndpointError('Набор недоступен.',{code:'NOT_FOUND'});
       const preview=await package1.contest.preview({catalogId:input.previewCatalogId},ctx);
-      const game=GAMES.find(g=>g.id==='v11-access-entry'&&g.contestEngine) || GAMES.find(g=>g.id==='v10-clean-start'&&g.contestEngine) || GAMES.find(g=>g.id==='v09-contests'&&g.contestEngine);
+      const game=GAMES.find(g=>g.id==='v12-attempt-state'&&g.contestEngine) || GAMES.find(g=>g.id==='v11-access-entry'&&g.contestEngine) || GAMES.find(g=>g.id==='v10-clean-start'&&g.contestEngine) || GAMES.find(g=>g.id==='v09-contests'&&g.contestEngine);
       if(!game)throw new EndpointError('Нужна обновлённая сборка игры.',{code:'NOT_READY'});
       return {game,runtime:game,catalog:preview.catalog,previewCatalogId:preview.previewCatalogId,previewLobby:preview,userId:status.userId,isAdmin:true,release:{id:preview.releaseId,name:preview.name,catalogVersionId:preview.catalogVersionId}};
     }

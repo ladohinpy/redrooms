@@ -208,6 +208,46 @@
           "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
         }
       ]
+    },
+    {
+      "id": "v12-attempt-state",
+      "name": "Комната: восстановление попыток v12",
+      "entry": "/games/v12-attempt-state/37b9302c5ffc5a0b/index.html",
+      "codeHash": "37b9302c5ffc5a0b3fe0a0b4386f7f0041f94f69302fb854ff4d8846e692ce31",
+      "catalogSchemaVersion": 1,
+      "aliases": [
+        "attempt-state"
+      ],
+      "optionalYear": true,
+      "contestEngine": true,
+      "source": "src/rr-game-v12.html",
+      "sourceHash": "a48ce3c29e49184bd32c6b08d95b736ce880180548a8fd2417ac4c9b937d880f",
+      "runtimeAssets": [
+        {
+          "path": "rr/runtime/9421c987412827b3/client.mjs",
+          "hash": "35f647c73955e903d11349a4ad21951a5e734dddb5cd0912095bfd842af35a64"
+        },
+        {
+          "path": "rr/runtime/9421c987412827b3/routes.mjs",
+          "hash": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+        },
+        {
+          "path": "rr/runtime/9421c987412827b3/engine-boot.mjs",
+          "hash": "94d31f43a499c0d4abe513f1b6184d9498b592085b37153bf38fdd6f45efac6f"
+        },
+        {
+          "path": "rr/runtime/9421c987412827b3/contest-client.mjs",
+          "hash": "eea4b27c3eb564ea87836f8c7621af69184002dd0ae042d3cf5c329a30dca4b2"
+        },
+        {
+          "path": "rr/runtime/9421c987412827b3/rich-text.mjs",
+          "hash": "2a2a349dd798f90a64bc7908813817fbc6e31ed7fd5816da48c6bd2ecc95d004"
+        },
+        {
+          "path": "rr/frozen/5a1a959d5955f6ea/access-gate.js",
+          "hash": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+        }
+      ]
     }
   ]
 }

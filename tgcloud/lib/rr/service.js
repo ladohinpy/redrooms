@@ -63,7 +63,9 @@ export function createService({ repository, adminIds, games, seed, checkSubscrip
         ? contestRuntime : repairable ? (publicRuntime || previousRepair) : null;
       const entryFix=games.find(g=>g.id==='v11-access-entry'&&g.contestEngine===true);
       const entrySources={"v06":"05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749","v07-tables":"4c7b0fb7cf2d4da84737bd3673b8c2caa5edc293883d46b46fa6abca42281530","v08-player-ui":"e646963e07411913b92698b7ca200ea86ec2832cd0aafa4fb127be59a4f24d84","v09-contests":"69026d9e0f0512e3d86565e5026e967db36814734485a002ef129be802c6f4d1","v10-clean-start":"9fe3373af2f0d407b86760748604ca373f82195e262dfebc0a1d3dfd92cc8337"};
-      const runtime=entryFix&&entrySources[selected.game.id]===selected.game.codeHash ? entryFix : compatibleRuntime||selected.game;
+      const attemptFix=games.find(g=>g.id==='v12-attempt-state'&&g.contestEngine===true);
+      const attemptSources={"v06":"05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749","v07-tables":"4c7b0fb7cf2d4da84737bd3673b8c2caa5edc293883d46b46fa6abca42281530","v08-player-ui":"e646963e07411913b92698b7ca200ea86ec2832cd0aafa4fb127be59a4f24d84","v09-contests":"69026d9e0f0512e3d86565e5026e967db36814734485a002ef129be802c6f4d1","v10-clean-start":"9fe3373af2f0d407b86760748604ca373f82195e262dfebc0a1d3dfd92cc8337","v11-access-entry":"6e136d185b8ef78f7db42d9f3c7c3adc155b97f71f4aece21c8d363274e22942"};
+      const runtime=attemptFix&&attemptSources[selected.game.id]===selected.game.codeHash ? attemptFix : entryFix&&entrySources[selected.game.id]===selected.game.codeHash ? entryFix : compatibleRuntime||selected.game;
       return { ...selected, runtime, userId: uid, isAdmin: isAdmin(uid) };
     }
   };

@@ -121,7 +121,7 @@ export function applyCommand(original, command, actor, availableGames, now = new
       if (publish) {
         if (typeof input.makeDefault !== 'boolean') fail('Подтвердите, делать ли набор основным.');
         if (s.game_releases.length >= LIMITS.releases) fail('Достигнут предел релизов.', 'CAPACITY');
-        const game = available.find(g => g.id === 'v11-access-entry' && g.contestEngine===true) || available.find(g => g.id === 'v10-clean-start' && g.contestEngine===true) || available.find(g => g.id === 'v09-contests' && g.contestEngine===true) || available.find(g => g.id === SIMPLE_BUILD && g.optionalYear === true);
+        const game = available.find(g => g.id === 'v12-attempt-state' && g.contestEngine===true) || available.find(g => g.id === 'v11-access-entry' && g.contestEngine===true) || available.find(g => g.id === 'v10-clean-start' && g.contestEngine===true) || available.find(g => g.id === 'v09-contests' && g.contestEngine===true) || available.find(g => g.id === SIMPLE_BUILD && g.optionalYear === true);
         if (!game) fail('Сначала опубликуйте сборку v07-tables.', 'BUILD_UNAVAILABLE');
         const registered = s.game_versions.find(g => g.id === game.id);
         if (registered && (registered.codeHash !== game.codeHash || registered.entry !== game.entry)) fail('Сборка изменилась под прежним ID.', 'IMMUTABLE');

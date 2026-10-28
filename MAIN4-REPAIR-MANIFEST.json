@@ -1,0 +1,462 @@
+{
+  "patch": "main4-assembly-repair-1",
+  "basedOnArchive": "redrooms-main (4).zip",
+  "baseArchiveSha256": "5f339950cc2e052a1b6b5baca4d150888a55a860d3609844652165ce8d2b4ce5",
+  "baseCommit": "1566f8c7ff0f89b8902340d7a25d555574282ed0",
+  "newMechanics": false,
+  "schemaChanged": false,
+  "workflowChanged": false,
+  "testAssertionsChanged": false,
+  "preservedAdminTestIsolation": true,
+  "oldBuildsUnchanged": 6,
+  "localTests": {
+    "before": {
+      "total": 398,
+      "passed": 384,
+      "failed": 14
+    },
+    "after": {
+      "total": 398,
+      "passed": 398,
+      "failed": 0
+    }
+  },
+  "browserChecks": {
+    "adminIsolation": 28,
+    "attemptState": 15,
+    "transport": "synthetic Telegram, real browser/game/local SQLite"
+  },
+  "noDeployment": true,
+  "files": [
+    {
+      "path": ".gitignore",
+      "baseSha256": "aba6cf124640b82e071cd8d63be59e523038d7f0c97005f19d6b3a26e2ec1ecd",
+      "sha256": "db0ae9fa920f3d0c5e84d638c0d37c8a4c58097ca47cd90c3dd011b1939d75d0"
+    },
+    {
+      "path": "config/rr-built-games.json",
+      "baseSha256": "221a5161707f801f789f1ba85007b93b4a367e42d5b5d39d14202eadeb5eeb8c",
+      "sha256": "9a71db78a72a0abd989a36c20494f74ee8babb062f957b89623e7dcafd0d4643"
+    },
+    {
+      "path": "config/rr-game-builds.json",
+      "baseSha256": "d60267a13eaba79d77b60fd3221a33c0b3eb21f19ef0c90583deecae8219b7e9",
+      "sha256": "6a6adf50cde08b8b373cd4415a5a79db917d5ad9b7993c916f272ec05bd358e9"
+    },
+    {
+      "path": "public/games/v12-attempt-state/37b9302c5ffc5a0b/index.html",
+      "baseSha256": null,
+      "sha256": "37b9302c5ffc5a0b3fe0a0b4386f7f0041f94f69302fb854ff4d8846e692ce31"
+    },
+    {
+      "path": "public/rr/contest-client.mjs",
+      "baseSha256": "0e644af64283e887d4c9aeafc1606333e5314bca172990e476cb15102e5bab87",
+      "sha256": "eea4b27c3eb564ea87836f8c7621af69184002dd0ae042d3cf5c329a30dca4b2"
+    },
+    {
+      "path": "public/rr/domain.mjs",
+      "baseSha256": "509da092abaa28c4daab724a96bff16b40fe0e43a3c0eacc9b2cb14fc401faee",
+      "sha256": "3222dbe78dda812e146c6d3c829dcdb2199b347e8c5e467ff1ca7b2e2a9df9d9"
+    },
+    {
+      "path": "public/rr/runtime/9421c987412827b3/client.mjs",
+      "baseSha256": null,
+      "sha256": "35f647c73955e903d11349a4ad21951a5e734dddb5cd0912095bfd842af35a64"
+    },
+    {
+      "path": "public/rr/runtime/9421c987412827b3/contest-client.mjs",
+      "baseSha256": null,
+      "sha256": "eea4b27c3eb564ea87836f8c7621af69184002dd0ae042d3cf5c329a30dca4b2"
+    },
+    {
+      "path": "public/rr/runtime/9421c987412827b3/engine-boot.mjs",
+      "baseSha256": null,
+      "sha256": "94d31f43a499c0d4abe513f1b6184d9498b592085b37153bf38fdd6f45efac6f"
+    },
+    {
+      "path": "public/rr/runtime/9421c987412827b3/rich-text.mjs",
+      "baseSha256": null,
+      "sha256": "2a2a349dd798f90a64bc7908813817fbc6e31ed7fd5816da48c6bd2ecc95d004"
+    },
+    {
+      "path": "public/rr/runtime/9421c987412827b3/routes.mjs",
+      "baseSha256": null,
+      "sha256": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+    },
+    {
+      "path": "src/rr/contest-client.mjs",
+      "baseSha256": "0e644af64283e887d4c9aeafc1606333e5314bca172990e476cb15102e5bab87",
+      "sha256": "eea4b27c3eb564ea87836f8c7621af69184002dd0ae042d3cf5c329a30dca4b2"
+    },
+    {
+      "path": "src/rr/domain.mjs",
+      "baseSha256": "509da092abaa28c4daab724a96bff16b40fe0e43a3c0eacc9b2cb14fc401faee",
+      "sha256": "3222dbe78dda812e146c6d3c829dcdb2199b347e8c5e467ff1ca7b2e2a9df9d9"
+    },
+    {
+      "path": "src/rr/service.mjs",
+      "baseSha256": "9fb1db723bbf90034785195865aa562a933647e7167f9f15eb8a3778d37ee522",
+      "sha256": "648783f4cc0376e029f4cb6327b9cbc41e25a485a067dcb23ab263bfe7bcab5a"
+    },
+    {
+      "path": "src/rr-game-v12.html",
+      "baseSha256": null,
+      "sha256": "a48ce3c29e49184bd32c6b08d95b736ce880180548a8fd2417ac4c9b937d880f"
+    },
+    {
+      "path": "tests/rr/fixtures/contest-client-before-attempt-state.txt",
+      "baseSha256": null,
+      "sha256": "0e644af64283e887d4c9aeafc1606333e5314bca172990e476cb15102e5bab87"
+    },
+    {
+      "path": "tests/rr/package1-browser-server.mjs",
+      "baseSha256": "1edd32b0fe5aaf367bb273d48614d1720c1281a561a7012cdac773e810081376",
+      "sha256": "1ef6a4837102121e236d77bb3a2bbdcb7da4b22219a92e5a173c59b252c33fab"
+    },
+    {
+      "path": "tgcloud/lib/rr/domain.js",
+      "baseSha256": "b2773c700936bb42ccb7402e5847a674913795b4040360d1ec24f44c7ed43a6d",
+      "sha256": "7785d78dd0815e84addb9b9861b9fc03176f1b1e22025940adefde98aed286fe"
+    },
+    {
+      "path": "tgcloud/lib/rr/generated.js",
+      "baseSha256": "d88e9b2dc22139eb916a68837c46865478cb0799127aca9313a2617f806b4750",
+      "sha256": "561ceabd0e2abbfdf16a30f30a3a562217d7d9e708e260b46f3535fe91f82ba1"
+    },
+    {
+      "path": "tgcloud/lib/rr/runtime.js",
+      "baseSha256": "c32ea3c4df02bcfdf8604ff742635e2f6f5703b82cb7a94bc3f734338e6641f7",
+      "sha256": "814b65daf131cb988d21084bb48fc471d9518c5d1815820cd09008355250ffc0"
+    },
+    {
+      "path": "tgcloud/lib/rr/service.js",
+      "baseSha256": "03ade28243fefab8268cfd41bcea236e7e2ba38ac4298d386d7419bfc43c7ac7",
+      "sha256": "1da8629d6ee90eebc1539a5dddc9b7e7f89258af26a0d01615fcef686e022e62"
+    },
+    {
+      "path": "MAIN4-REPAIR-INSTALL.md",
+      "baseSha256": null,
+      "sha256": "cd5e118ac4c408666c009a794c88d0352dc73d4c18791964dd6c60551a00a0db"
+    },
+    {
+      "path": "docs/FIX-MAIN4-ASSEMBLY.md",
+      "baseSha256": null,
+      "sha256": "0e1e5cfc6c62b8c6c2db5090cedc0b4ab03acef13a9e4d594199dcd6590df1a5"
+    },
+    {
+      "path": "docs/MAIN4-REPAIR-TESTS.txt",
+      "baseSha256": null,
+      "sha256": "ed7bf1a8b18c540531c1e1697b19cf926bbaea276193b538ded794c4989651f7"
+    }
+  ],
+  "protectedFiles": [
+    {
+      "path": ".github/workflows/backup.yml",
+      "sha256": "545b4e2c69194be1e503007a03aa3abad8221706b275d2a0b6ef1a82fe563414"
+    },
+    {
+      "path": ".github/workflows/check.yml",
+      "sha256": "d427db5666d761365f6302d9513a4ddbae05d7d82fb24b4f5bed2113edaa33ad"
+    },
+    {
+      "path": ".github/workflows/publish-production.yml",
+      "sha256": "eab813a7b949e4ab2144d55ef8fd5de47033d0cf272e6c6f3b96b0b0f1b9124e"
+    },
+    {
+      "path": ".github/workflows/publish.yml",
+      "sha256": "3e8d8fa65623b0db6ab647ef4a01b89c6e2c424bf5aadffbe31b7e99d7356ec3"
+    },
+    {
+      "path": "README.md",
+      "sha256": "fcfd4e6e484e5e7a5389d35842357841d7997c2c6c8caf5703d6000c519cb755"
+    },
+    {
+      "path": "public/access-gate.js",
+      "sha256": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+    },
+    {
+      "path": "public/games/v06/05ac2cca6a93c5b2/index.html",
+      "sha256": "05ac2cca6a93c5b2701898f807c2c2d3e4a840216aec975e28d003ff09427749"
+    },
+    {
+      "path": "public/games/v07-tables/4c7b0fb7cf2d4da8/index.html",
+      "sha256": "4c7b0fb7cf2d4da84737bd3673b8c2caa5edc293883d46b46fa6abca42281530"
+    },
+    {
+      "path": "public/games/v08-player-ui/e646963e07411913/index.html",
+      "sha256": "e646963e07411913b92698b7ca200ea86ec2832cd0aafa4fb127be59a4f24d84"
+    },
+    {
+      "path": "public/games/v09-contests/69026d9e0f0512e3/index.html",
+      "sha256": "69026d9e0f0512e3d86565e5026e967db36814734485a002ef129be802c6f4d1"
+    },
+    {
+      "path": "public/games/v10-clean-start/9fe3373af2f0d407/index.html",
+      "sha256": "9fe3373af2f0d407b86760748604ca373f82195e262dfebc0a1d3dfd92cc8337"
+    },
+    {
+      "path": "public/games/v11-access-entry/6e136d185b8ef78f/index.html",
+      "sha256": "6e136d185b8ef78f7db42d9f3c7c3adc155b97f71f4aece21c8d363274e22942"
+    },
+    {
+      "path": "public/rr/admin-contest.mjs",
+      "sha256": "241effed5545992419d3c1e4869d7992f9542a764eec4f30663d6ae07d1aaa5c"
+    },
+    {
+      "path": "public/rr/frozen/5a1a959d5955f6ea/access-gate.js",
+      "sha256": "5a1a959d5955f6eafc031848f03234460e3e6f76c34a512b1c81e363108bebff"
+    },
+    {
+      "path": "public/rr/runtime/187ac543cc87c08d/client.mjs",
+      "sha256": "ba376f2a3391139406c85618da6480cb29609a136b61780897994bfd8df5c4bd"
+    },
+    {
+      "path": "public/rr/runtime/187ac543cc87c08d/engine-boot.mjs",
+      "sha256": "4be4be204bc7c953c5c92b404defe22b5bb37e9476058266480fdfe51f0bfb1b"
+    },
+    {
+      "path": "public/rr/runtime/187ac543cc87c08d/routes.mjs",
+      "sha256": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/client.mjs",
+      "sha256": "0b6b58c9348bbec58c5f0b9c0f6b81f08f721b8da54eeb627242d4fddca1bff3"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/contest-client.mjs",
+      "sha256": "0714e13457e04f77258510932a46cc945b1a0f70e1e575d842999e7d36d4f05f"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/engine-boot.mjs",
+      "sha256": "f115327c8c627c5a419ce70909094c4d003b9ff546064d514d34bbdd8735d5fa"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/rich-text.mjs",
+      "sha256": "2a2a349dd798f90a64bc7908813817fbc6e31ed7fd5816da48c6bd2ecc95d004"
+    },
+    {
+      "path": "public/rr/runtime/2c0cc4cd97f531dd/routes.mjs",
+      "sha256": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+    },
+    {
+      "path": "public/rr/runtime/32bb4b76e60a8e7f/client.mjs",
+      "sha256": "a748424fc8e6d690a9a94a3f702e5df51a976dea5cd722fca2dcff7f1aaa1e9c"
+    },
+    {
+      "path": "public/rr/runtime/32bb4b76e60a8e7f/engine-boot.mjs",
+      "sha256": "070e2aa61c8ad5ee11e5ed98158fd76426f44984f3ebdf2d07aeb740a5a5f90a"
+    },
+    {
+      "path": "public/rr/runtime/366a3b00d9454be6/client.mjs",
+      "sha256": "35f647c73955e903d11349a4ad21951a5e734dddb5cd0912095bfd842af35a64"
+    },
+    {
+      "path": "public/rr/runtime/366a3b00d9454be6/contest-client.mjs",
+      "sha256": "0e644af64283e887d4c9aeafc1606333e5314bca172990e476cb15102e5bab87"
+    },
+    {
+      "path": "public/rr/runtime/366a3b00d9454be6/engine-boot.mjs",
+      "sha256": "94d31f43a499c0d4abe513f1b6184d9498b592085b37153bf38fdd6f45efac6f"
+    },
+    {
+      "path": "public/rr/runtime/366a3b00d9454be6/rich-text.mjs",
+      "sha256": "2a2a349dd798f90a64bc7908813817fbc6e31ed7fd5816da48c6bd2ecc95d004"
+    },
+    {
+      "path": "public/rr/runtime/366a3b00d9454be6/routes.mjs",
+      "sha256": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+    },
+    {
+      "path": "public/rr/runtime/9d9e0e08350536b4/client.mjs",
+      "sha256": "0b6b58c9348bbec58c5f0b9c0f6b81f08f721b8da54eeb627242d4fddca1bff3"
+    },
+    {
+      "path": "public/rr/runtime/9d9e0e08350536b4/contest-client.mjs",
+      "sha256": "455aee04f96503e2123d4ff83af825fde72a770da4f410c0f4e8b231f086ecd8"
+    },
+    {
+      "path": "public/rr/runtime/9d9e0e08350536b4/engine-boot.mjs",
+      "sha256": "3d96a7f664d907bc5a155e7495749d1d94f808286423c994591b63a95c434582"
+    },
+    {
+      "path": "public/rr/runtime/9d9e0e08350536b4/rich-text.mjs",
+      "sha256": "2a2a349dd798f90a64bc7908813817fbc6e31ed7fd5816da48c6bd2ecc95d004"
+    },
+    {
+      "path": "public/rr/runtime/9d9e0e08350536b4/routes.mjs",
+      "sha256": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+    },
+    {
+      "path": "public/rr/runtime/e0251ae250ce3446/client.mjs",
+      "sha256": "66121d612ec73b7bb9ca89a5fdbae7ebdea9489bc7726133645ccb770e29482c"
+    },
+    {
+      "path": "public/rr/runtime/e0251ae250ce3446/engine-boot.mjs",
+      "sha256": "3c8361364af8be783c0f759cf00783252a979e199981ba36a731691dc3211462"
+    },
+    {
+      "path": "public/rr/runtime/e0251ae250ce3446/routes.mjs",
+      "sha256": "b55fbe0cccca299253e1a3d6df430984ea3192f4e6a258a60655dc9735e1b37f"
+    },
+    {
+      "path": "scripts/rr-deploy.cjs",
+      "sha256": "88f7e1bfd2016a1044677a78a00a711a0511ae6cfe2436359c3f714a020e7dea"
+    },
+    {
+      "path": "scripts/rr-prepare.cjs",
+      "sha256": "d0d56c51bc631bfddbadbf24662cfb051ed312ccfc2e212cc5dc91b6214a7ea3"
+    },
+    {
+      "path": "src/rr-game-v07.html",
+      "sha256": "470bbb24c1ce8e95dc114a190ebe743865b8a29ca74fce1debd89d3d2ad51627"
+    },
+    {
+      "path": "src/rr-game-v08.html",
+      "sha256": "e84bccf61a70fed132d8920546365668f6d83a6417676bd514cb73f2a057fa77"
+    },
+    {
+      "path": "src/rr-game-v09.html",
+      "sha256": "64422fa8bbc9cf1b2fce952c3662a229f0870403a7b42ced374aca074353aa5d"
+    },
+    {
+      "path": "src/rr-game-v10.html",
+      "sha256": "51819c64791b336df8c31fdc03869ed0827ba4470b7260b89af2dc2ba7635ddf"
+    },
+    {
+      "path": "src/rr-game-v11.html",
+      "sha256": "7dbcfcc4a8621be6c5344134933e9d37ff9657a01a64557fe2a5a0df10a27cf9"
+    },
+    {
+      "path": "src/rr-legacy-v06.html",
+      "sha256": "cb046f137ea4e25180a10a313c12cd4e9d6dfa57dca7d16915f55a3d779df93a"
+    },
+    {
+      "path": "src/rr/admin-access.mjs",
+      "sha256": "33ee51622545de8207efa8fe496f8e84f31e3c6c5f8f74bb4c7c80efc7041ebc"
+    },
+    {
+      "path": "src/rr/admin-contest.mjs",
+      "sha256": "241effed5545992419d3c1e4869d7992f9542a764eec4f30663d6ae07d1aaa5c"
+    },
+    {
+      "path": "src/rr/admin.css",
+      "sha256": "ea51a349fbb415173e24334537350a376579a46822be464b71dcec3180519e45"
+    },
+    {
+      "path": "src/rr/admin.mjs",
+      "sha256": "3e64c4ed530cba0403dff15b8789d6c1e29eb9407624cff9f14954d137b614b5"
+    },
+    {
+      "path": "src/rr/backup-service.mjs",
+      "sha256": "5324c8d1719e7dbbddd82c5793d77be1f7923cd08fe763069d21f5f31ad7af1a"
+    },
+    {
+      "path": "src/rr/backup.mjs",
+      "sha256": "3c1731c1acec887372eff106d83ec7d96a119fec9916e093cb71e0877c39e796"
+    },
+    {
+      "path": "src/rr/contest-service.mjs",
+      "sha256": "50430c09275b7750280c6f072dc57e2cf813fca325530b8d793b4c6cfaed04f7"
+    },
+    {
+      "path": "src/rr/record-store.mjs",
+      "sha256": "fc133933bcff9a9b03e81e0be5ea3789c9deecbd5a368abbe186bae9409a85d6"
+    },
+    {
+      "path": "tests/rr/access-entry.test.mjs",
+      "sha256": "6af8a601adfa1e8e78ca8de409ea9431075fe98f9680f8679d939d68b105c378"
+    },
+    {
+      "path": "tests/rr/admin-test-isolation.test.mjs",
+      "sha256": "22487e0408985a7335d6f91081d9aa3804a5f1a25bd1be4b2011a0357029f850"
+    },
+    {
+      "path": "tests/rr/attempt-state.test.mjs",
+      "sha256": "064298025b04be24bcecb408cbedcc93f3a1c97fceb92613fb9108ea5018a488"
+    },
+    {
+      "path": "tests/rr/build.test.mjs",
+      "sha256": "9faad439beb7787e4cbc23f17c086f90c78d6d8ac8eba6f8724af6243d3bf184"
+    },
+    {
+      "path": "tests/rr/clean-start.test.mjs",
+      "sha256": "d83574ad4c7275464cd95154b68aa3523e22067b37a394b5acf37fa8d2546930"
+    },
+    {
+      "path": "tests/rr/cli-response.test.mjs",
+      "sha256": "8189f0acd6c51657aa96d355dbe53ed66715b8c5c26f636f0f662bd1a2ce9c13"
+    },
+    {
+      "path": "tests/rr/domain.test.mjs",
+      "sha256": "8f3dbf8c7dccdef9b871413c87a9c00ac8353b5afff62b7a2d0d3807b746e474"
+    },
+    {
+      "path": "tests/rr/import.test.mjs",
+      "sha256": "8dea1fbc1775d273d88d097c84b292906253ed6d5e216573887953d59e5ee3ca"
+    },
+    {
+      "path": "tests/rr/package1-safety.test.mjs",
+      "sha256": "e1cf966c2d3626ece91f80af5fa23613cd04cf490a8c1a18a28d802428933926"
+    },
+    {
+      "path": "tests/rr/package1.test.mjs",
+      "sha256": "6559ea8fdaad5e618472b465094c4ca33f8c4d6befb23a8737e29663bfeede77"
+    },
+    {
+      "path": "tests/rr/player-ui.test.mjs",
+      "sha256": "fc7e30994afc57b6713683449bac8c664da830c232904a0c82382b5011941134"
+    },
+    {
+      "path": "tests/rr/schema-migration.test.mjs",
+      "sha256": "89cf99bf7c4ea97e34e8d0c52893f7f1e34b34391d9813636a16331e31c08819"
+    },
+    {
+      "path": "tests/rr/send-link.test.mjs",
+      "sha256": "ac837d5546935da93c4e106aa95dc9292e7a58bc97ed683ae004597577012665"
+    },
+    {
+      "path": "tests/rr/service.test.mjs",
+      "sha256": "bf4f7f29e89cdda9341d4cc37c301a33f7f68af5402aa751fbb530461977080e"
+    },
+    {
+      "path": "tests/rr/simple.test.mjs",
+      "sha256": "1f3108a8c50f040a40ac43ec568ad2bf67a399f8e8c10088683fe70c43e134f5"
+    },
+    {
+      "path": "tests/rr/sqlite.test.mjs",
+      "sha256": "42ca0300b71f6c27002df8785a0198e9c0fa9e147e42d45a4d01c037835df74e"
+    },
+    {
+      "path": "tests/rr/static-headers.test.mjs",
+      "sha256": "76600d44e7495da88b307d9824260a63d92dd7de92f4cdf32ffc3e94cf7e9a72"
+    },
+    {
+      "path": "tests/rr/transport.test.mjs",
+      "sha256": "1d9d8cb48e2248347a978bc2de817db5da619067ecc6a9c1a63825b13e242c8b"
+    },
+    {
+      "path": "tgcloud/endpoints/checkAccess.js",
+      "sha256": "261bc72d2e3774b1ef873de656e4bacd3087d7f30d5e4a589f27ade1b0dc08e0"
+    },
+    {
+      "path": "tgcloud/lib/rr/admin-access.js",
+      "sha256": "107e0e1c0b4e6ea617a8bef2524d033abb7c27fb541af5ad102f0c5ac68c1efc"
+    },
+    {
+      "path": "tgcloud/lib/rr/contest-service.js",
+      "sha256": "12f0caf5e0d53ba52f00a412c889431d1447add276ac9315215d3c88d3de63da"
+    },
+    {
+      "path": "tgcloud/lib/rr/record-store.js",
+      "sha256": "ab59122a2309a0e6892ee3dea654c5b8db638e0b06f314eab428d701b5a7d179"
+    },
+    {
+      "path": "tgcloud/lib/subscription.js",
+      "sha256": "eaa1b4b14e536dc070a7c042f6dd278206fe71b7bc38cfce335531a4a6acc2ee"
+    },
+    {
+      "path": "tgcloud/schema.js",
+      "sha256": "ea7f85886bb76988628c1a5f1654e4ad52e7bc3640320532994fbb079e62ce80"
+    }
+  ]
+}
