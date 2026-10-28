@@ -1,0 +1,60 @@
+{
+  "focused": {
+    "passed": 28,
+    "checks": [
+      "admin 101: real game completion and restart 1/4",
+      "admin 101: real game completion and restart 2/4",
+      "admin 101: real game completion and restart 3/4",
+      "admin 101: real game completion and restart 4/4",
+      "admin 101: zero player attempts, four retained test records",
+      "admin 202: real game completion and restart 1/4",
+      "admin 202: real game completion and restart 2/4",
+      "admin 202: real game completion and restart 3/4",
+      "admin 202: real game completion and restart 4/4",
+      "admin 202: zero player attempts, four retained test records",
+      "zero participants/attempts/rankings after eight admin tests",
+      "ordinary game 1: no administrator button",
+      "ordinary completion 1: saved in server statistics",
+      "ordinary game 2: no administrator button",
+      "ordinary completion 2: saved in server statistics",
+      "ordinary client offers no third contest attempt",
+      "ordinary third request also denied by server",
+      "desktop players: both admins hidden initially",
+      "desktop opt-in history displays admin test records",
+      "desktop raw test history still accessible",
+      "desktop whole page has no horizontal overflow",
+      "mobile players: both admins hidden initially",
+      "mobile opt-in history displays admin test records",
+      "mobile raw test history still accessible",
+      "mobile whole page has no horizontal overflow",
+      "two real attempts / one participant, eight tests excluded",
+      "test-history filter cannot grant administrative access",
+      "no uncaught browser errors"
+    ],
+    "errors": [],
+    "scope": "Actual frozen v12 game, built admin UI, server services and local SQLite. Test Telegram identities/transport, browser storage and navigation; no live server."
+  },
+  "attemptRegression": {
+    "passed": 15,
+    "checks": [
+      "closed preview is recognized from server on entry",
+      "admin button remains on clean first screen",
+      "stale closed preview enters actual room",
+      "real cassette placement works",
+      "server keeps both admin records separate from player counts",
+      "ordinary player has no admin entry",
+      "ordinary mobile practice finishes and saves server score",
+      "closed practice cannot restore cassette positions into the next attempt",
+      "closed practice starts fresh while old attempt remains recorded",
+      "lost receipt restored as a result rather than an entry error",
+      "administrator can play again without changing prior result",
+      "players table shows test history only with the explicit filter",
+      "two-used-slot player cannot start third competitive game",
+      "same user can enter archive after contest closes",
+      "no uncaught browser errors"
+    ],
+    "errors": [],
+    "scope": "Built HTML/frozen modules + real WebGL/SQLite/services; synthetic Telegram SDK, browser storage and navigation. Browser localhost is blocked; no live Telegram or production writes."
+  },
+  "broadSuite": "Incomplete: 26 checks logged before 90-second timeout; not counted as a pass."
+}

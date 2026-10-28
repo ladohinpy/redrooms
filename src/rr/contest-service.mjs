@@ -10,12 +10,17 @@ const stamp=()=>new Date().toISOString();
 const uuid=()=>Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2);
 export function createContestService({store,adminIds,checkSubscription,getBotUsername=async()=>'',now=stamp,newId=uuid}){
  const policy=createAdminPolicy(adminIds),admin=policy.requireAdmin;
+ // Test activity is a reporting policy, not a ban or a destructive migration.
+ // Persisted preview mode keeps former admins' checks out of player metrics;
+ // the current server allowlist also excludes legacy non-preview admin records.
+ const isTestAttempt=a=>a.mode==='preview'||policy.isAdmin(a.userId);
+ const playerOnly=attempts=>attempts.filter(a=>!isTestAttempt(a));
  const auth=async ctx=>{const uid=verifiedUser(ctx);const access=await checkSubscription(ctx);if(access?.allowed!==true)fail('Для игры нужна подписка на канал.','SUBSCRIPTION_REQUIRED');return uid;};
  async function release(v,rid,privileged){const s=await val(v,'admin');const r=s?.game_releases.find(r=>r.id===rid);if(!r||r.status==='archived'||(!privileged&&r.status!=='published'))fail('Набор недоступен.','NOT_FOUND');const c=s.catalog_versions.find(c=>c.id===r.catalogVersionId);if(!c?.playable)fail('Каталог не опубликован.','NOT_READY');return {r,c,s};}
- async function bundle(v,rid){const attempts=data(await v.list('attempt')).filter(a=>a.releaseId===rid),players=data(await v.list('player')),contest=await val(v,'contest:'+rid),final=await val(v,'final:'+rid);return {attempts,players,contest,final,rankings:final?.rankings||leaderboard(attempts,players)};}
- async function userState(v,rid,uid,at,privileged){const {r,c}=await release(v,rid,privileged);const b=await bundle(v,rid);const mine=b.attempts.filter(a=>a.userId===uid);const ranked=mine.filter(a=>a.mode==='contest'&&!a.voided),active=mine.find(a=>a.status==='started'&&!a.voided);const contents=await val(v,'content:'+c.id)||normalizeContent({});
+ async function bundle(v,rid){const attempts=data(await v.list('attempt')).filter(a=>a.releaseId===rid),players=data(await v.list('player')),contest=await val(v,'contest:'+rid),final=await val(v,'final:'+rid);const participantAttempts=playerOnly(attempts);return {attempts,participantAttempts,players,contest,final,rankings:final?.rankings||leaderboard(participantAttempts,players)};}
+ async function userState(v,rid,uid,at,privileged){const {r,c}=await release(v,rid,privileged);const b=await bundle(v,rid);const mine=b.attempts.filter(a=>a.userId===uid);const ranked=mine.filter(a=>!isTestAttempt(a)&&a.mode==='contest'&&!a.voided),active=mine.find(a=>a.status==='started'&&!a.voided);const contents=await val(v,'content:'+c.id)||normalizeContent({});
   const currentPhase=phase(b.contest,at);const exhausted=ranked.length>=2&&!ranked.some(a=>a.status==='started');
-  return {releaseId:rid,name:r.name,catalogVersionId:c.id,phase:currentPhase,startsAt:b.contest?.startedAt||null,endsAt:b.contest?.endsAt||null,closedAt:b.contest?.closedAt||null,attempts:mine.map(publicAttempt),active:publicAttempt(active),remaining:Math.max(0,2-ranked.length),rankings:publicRanking(b.rankings,uid),content:publicContent(contents,{closed:['review','archive'].includes(currentPhase),exhausted,preview:false}),isAdmin:privileged,finalized:!!b.final};
+  return {releaseId:rid,name:r.name,catalogVersionId:c.id,phase:currentPhase,startsAt:b.contest?.startedAt||null,endsAt:b.contest?.endsAt||null,closedAt:b.contest?.closedAt||null,attempts:mine.map(publicAttempt),active:publicAttempt(active),remaining:privileged?null:Math.max(0,RULES.maxAttempts-ranked.length),attemptLimit:privileged?null:RULES.maxAttempts,unlimitedAttempts:privileged,rankings:publicRanking(b.rankings,uid),content:publicContent(contents,{closed:['review','archive'].includes(currentPhase),exhausted,preview:false}),isAdmin:privileged,finalized:!!b.final};
  }
  const audit=(at,actor,action,target,before,after,reason='')=>rec('audit:'+newId(),'moderation',{id:newId(),at,actor,action,target,before:before??null,after:after??null,reason});
  async function playerChanges(v,ctx,at){const uid=verifiedUser(ctx),previous=await val(v,'player:'+uid);return rec('player:'+uid,'player',profile(ctx.initData.user,previous,at));}
@@ -27,7 +32,7 @@ export function createContestService({store,adminIds,checkSubscription,getBotUse
    const c=s.catalog_versions.find(x=>x.id===id(input.catalogId));if(!c)fail('Набор не найден.','NOT_FOUND');
    const raw=clone(c.catalog);for(const d of raw.directors)for(const f of d.films)if(f.status==='pending')f.status='approved';
    const catalog=c.playable||playableCatalog(raw),content=publicContent(await val(v,'content:'+c.id)||normalizeContent({}),{preview:true,closed:true,exhausted:true});
-   const rid='preview-'+digest(c.id).slice(0,20),state={releaseId:rid,name:c.name||raw.name,catalogVersionId:c.id,phase:'preview',attempts:[],active:null,remaining:2,rankings:[],content,isAdmin:true,finalized:false,botUsername:await getBotUsername()};
+   const rid='preview-'+digest(c.id).slice(0,20),state={releaseId:rid,name:c.name||raw.name,catalogVersionId:c.id,phase:'preview',attempts:[],active:null,remaining:null,attemptLimit:null,unlimitedAttempts:true,rankings:[],content,isAdmin:true,finalized:false,botUsername:await getBotUsername()};
    if(input.operation==='finish'){
     const at=now(),a={id:'preview-'+requestId(input.requestId),userId:uid,releaseId:rid,catalogVersionId:c.id,mode:'preview',slot:null,status:'completed',startedAt:typeof input.startedAt==='string'&&!Number.isNaN(Date.parse(input.startedAt))?input.startedAt:at,finishedAt:at,eligible:false};
     const result=calculateAttempt(catalog,input,a,at);return {...state,saved:true,attempt:publicAttempt({...a,...result}),previewOnly:true};
@@ -41,15 +46,29 @@ export function createContestService({store,adminIds,checkSubscription,getBotUse
    return transactUser(ctx,async(v,uid,at)=>{
     const allowed=policy.isAdmin(uid),{r,c}=await release(v,rid,allowed);
     const reqKey=`start:${uid}:${req}`,previous=await val(v,reqKey);
-    if(previous){if(previous.releaseId!==rid)fail('Этот запрос уже использован для другого набора.','CONFLICT');const a=await val(v,'attempt:'+previous.attemptId);return {value:{attempt:publicAttempt(a),resumed:true}};}
+    if(previous){
+     if(previous.releaseId!==rid)fail('Этот запрос уже использован для другого набора.','CONFLICT');
+     const a=await val(v,'attempt:'+previous.attemptId);
+     if(!a||a.userId!==uid||a.releaseId!==rid)fail('Не удалось согласовать запись попытки.','ATTEMPT_STATE_INVALID');
+     // A repeated request ALWAYS returns its original attempt, including closed ones.
+     // Only the client can explicitly request a new start, subject to the same quota.
+     return {value:{attempt:publicAttempt(a),resumed:true,createdByRequest:previous.created===true}};
+    }
     const contest=await val(v,'contest:'+rid),mode=allowed?'preview':phase(contest,at)==='active'?'contest':phase(contest,at)==='archive'||phase(contest,at)==='review'?'archive':'practice';
     const rk=`reservation:${rid}:${uid}`,reservation=await val(v,rk)||{userId:uid,releaseId:rid,slots:[],activeId:null};
-    if(reservation.activeId){const a=await val(v,'attempt:'+reservation.activeId);if(a?.status==='started'&&!a.voided)return {changes:[rec(reqKey,'request',{attemptId:a.id,releaseId:rid})],value:{attempt:publicAttempt(a),resumed:true}};}
+    if(reservation.activeId){const a=await val(v,'attempt:'+reservation.activeId);
+     if(a?.status==='started'&&!a.voided){
+      if(a.userId!==uid||a.releaseId!==rid)fail('Не удалось согласовать запись попытки.','ATTEMPT_STATE_INVALID');
+      // This alias did NOT create the attempt. Do not treat it as proof that a new
+      // device owns the missing local progress, even on repeated requests.
+      return {changes:[rec(reqKey,'request',{attemptId:a.id,releaseId:rid,created:false})],value:{attempt:publicAttempt(a),resumed:true,createdByRequest:false}};
+     }
+    }
     let slot=null;
     if(mode==='contest'){const used=reservation.slots.filter(s=>!s.voided).map(s=>s.slot);slot=[1,2].find(x=>!used.includes(x));if(!slot)fail('Обе конкурсные попытки уже использованы.','ATTEMPTS_EXHAUSTED');reservation.slots.push({slot,attemptId:aid,voided:false});}
     const a={id:aid,userId:uid,releaseId:rid,catalogVersionId:c.id,catalogDigest:digest(c.playable),mode,slot,status:'started',startedAt:at,finishedAt:null,eligible:false,voided:false};
     reservation.activeId=aid;
-    return {changes:[rec('attempt:'+aid,'attempt',a),rec(rk,'reservation',reservation),rec(reqKey,'request',{attemptId:aid,releaseId:rid}),await playerChanges(v,ctx,at)],value:{attempt:publicAttempt(a),resumed:false}};
+    return {changes:[rec('attempt:'+aid,'attempt',a),rec(rk,'reservation',reservation),rec(reqKey,'request',{attemptId:aid,releaseId:rid,created:true}),await playerChanges(v,ctx,at)],value:{attempt:publicAttempt(a),resumed:false,createdByRequest:true}};
    });
   },
   async finish(input,ctx,serverReceivedAt){
@@ -64,7 +83,7 @@ export function createContestService({store,adminIds,checkSubscription,getBotUse
     const {c}=await release(v,a.releaseId,policy.isAdmin(uid));if(digest(c.playable)!==a.catalogDigest)fail('Версия набора не совпадает.','CATALOG_CHANGED');
     const contest=await val(v,'contest:'+a.releaseId),final=await val(v,'final:'+a.releaseId);
     const calculated=calculateAttempt(c.playable,input,a,receivedAt);
-    const eligible=a.mode==='contest'&&!!contest&&!final&&Date.parse(receivedAt)<endTime(contest)&&Date.parse(receivedAt)>=Date.parse(contest.startedAt);
+    const eligible=!isTestAttempt(a)&&a.mode==='contest'&&!!contest&&!final&&Date.parse(receivedAt)<endTime(contest)&&Date.parse(receivedAt)>=Date.parse(contest.startedAt);
     const next={...a,...calculated,status:'completed',finishedAt:receivedAt,eligible,late:a.mode==='contest'&&!eligible};
     const rk=`reservation:${a.releaseId}:${uid}`,reservation=await val(v,rk);if(reservation?.activeId===aid)reservation.activeId=null;
     return {changes:[rec('attempt:'+aid,'attempt',next),...(reservation?[rec(rk,'reservation',reservation)]:[]),await playerChanges(v,ctx,receivedAt)],value:true};
@@ -72,10 +91,25 @@ export function createContestService({store,adminIds,checkSubscription,getBotUse
    const v=store.view(await store.head()),a=await val(v,'attempt:'+aid),state=await userState(v,a.releaseId,uid,now(),policy.isAdmin(uid));return {saved:true,attempt:publicAttempt(a),...state};
   },
   async abandon(input,ctx){return transactUser(ctx,async(v,uid,at)=>{const a=await val(v,'attempt:'+id(input.attemptId));if(!a||a.userId!==uid)fail('Попытка не найдена.','NOT_FOUND');if(a.status!=='started')return {value:{closed:true}};const reservation=await val(v,`reservation:${a.releaseId}:${uid}`);if(reservation?.activeId===a.id)reservation.activeId=null;return {changes:[rec('attempt:'+a.id,'attempt',{...a,status:'unfinished',abandonedAt:at}),...(reservation?[rec(`reservation:${a.releaseId}:${uid}`,'reservation',reservation)]:[])],value:{closed:true}};});},
-  async adminRead(input,ctx){admin(ctx);const v=store.view(await store.head());const players=data(await v.list('player')),contests=data(await v.list('contest')),contents=data(await v.list('content')),auditRows=data(await v.list('moderation')),visits=data(await v.list('visit'));const out={revision:v.head.revision,players,contests,contents,audit:auditRows.sort((a,b)=>b.at.localeCompare(a.at)).slice(0,300),visits:{sessions:visits.length,fromSetLink:visits.filter(x=>x.source==='set_link').length,observedSubscriptionTransitions:visits.filter(x=>x.firstDeniedAt&&x.firstAllowedAt).length},environment:store.environment};
-   if(input.releaseId){const {r,c}=await release(v,id(input.releaseId),true),b=await bundle(v,r.id);out.release=r;out.catalogId=c.id;out.content=await val(v,'content:'+c.id)||normalizeContent({});out.contest=b.contest||null;out.final=b.final||null;out.rankings=b.rankings;out.stats=summarize(b.attempts,players);out.attempts=b.attempts.map(a=>({...a,raw:undefined}));out.finalNotes=data(await v.list('finalNote')).filter(n=>n.releaseId===r.id||n.releaseIds?.includes(r.id));}
+  async adminRead(input,ctx){admin(ctx);const v=store.view(await store.head());const players=data(await v.list('player')),contests=data(await v.list('contest')),contents=data(await v.list('content')),auditRows=data(await v.list('moderation')),visits=data(await v.list('visit')).filter(x=>!policy.isAdmin(x.userId));const out={revision:v.head.revision,players,contests,contents,audit:auditRows.sort((a,b)=>b.at.localeCompare(a.at)).slice(0,300),visits:{sessions:visits.length,fromSetLink:visits.filter(x=>x.source==='set_link').length,observedSubscriptionTransitions:visits.filter(x=>x.firstDeniedAt&&x.firstAllowedAt).length},environment:store.environment};
+   if(input.releaseId){const {r,c}=await release(v,id(input.releaseId),true),b=await bundle(v,r.id);out.release=r;out.catalogId=c.id;out.content=await val(v,'content:'+c.id)||normalizeContent({});out.contest=b.contest||null;out.final=b.final||null;out.rankings=b.rankings;out.stats=summarize(b.participantAttempts,players);out.attempts=b.participantAttempts.map(a=>({...a,raw:undefined}));out.finalNotes=data(await v.list('finalNote')).filter(n=>n.releaseId===r.id||n.releaseIds?.includes(r.id));}
    if(input.catalogId&&!input.releaseId){const s=await val(v,'admin');if(!s.catalog_versions.some(c=>c.id===input.catalogId))fail('Набор не найден.');out.catalogId=input.catalogId;out.content=await val(v,'content:'+input.catalogId)||normalizeContent({});}
-   const allAttempts=data(await v.list('attempt'));out.players=players.map(p=>{const as=allAttempts.filter(a=>a.userId===p.userId&&a.mode!=='preview');return {...p,attemptCount:as.length,setCount:new Set(as.map(a=>a.releaseId)).size};});
+   const allAttempts=data(await v.list('attempt'));
+   // A private, explicit history filter. It never changes competition totals,
+   // permissions, exclusion flags, stored attempts, or published final snapshots.
+   out.includeAdminTests=input.includeAdminTests===true;
+   out.players=players.filter(p=>out.includeAdminTests||!policy.isAdmin(p.userId)).map(p=>{
+    const own=allAttempts.filter(a=>a.userId===p.userId),as=playerOnly(own);
+    return {...p,isAdmin:policy.isAdmin(p.userId),
+     attemptCount:as.length,setCount:new Set(as.map(a=>a.releaseId)).size,
+     totalAttemptCount:as.length,totalSetCount:new Set(as.map(a=>a.releaseId)).size,
+     previewCount:own.filter(a=>a.mode==='preview').length,
+     testAttemptCount:own.filter(isTestAttempt).length,
+     contestCount:as.filter(a=>a.mode==='contest').length,
+     activeAttemptCount:as.filter(a=>a.status==='started'&&!a.voided).length,
+     completedAttemptCount:as.filter(a=>a.status==='completed').length,
+     unfinishedAttemptCount:as.filter(a=>a.status==='unfinished').length};
+   });
    if(input.userId){if(!Number.isSafeInteger(input.userId))fail('Некорректный ID.');out.playerAttempts=allAttempts.filter(a=>a.userId===input.userId);const keys=new Set(out.playerAttempts.map(a=>a.id));out.playerAudit=auditRows.filter(a=>String(a.target)===String(input.userId)||keys.has(a.target)||a.before?.userId===input.userId||a.after?.userId===input.userId).sort((a,b)=>b.at.localeCompare(a.at));}
    return out;
   },
@@ -111,8 +145,8 @@ export function createContestService({store,adminIds,checkSubscription,getBotUse
      if(action==='finalize'){
       if(!contest.startedAt||phase(contest,at)==='active')fail('Сначала завершите конкурсное окно.');
       const b=await bundle(v,r.id);if(b.final)fail('Итоги уже опубликованы.','IMMUTABLE');
-      if(b.attempts.some(a=>a.mode==='contest'&&!a.voided&&a.check?.status==='pending')&&input.acknowledgePending!==true)fail('Остались попытки для проверки. Проверьте их или явно подтвердите публикацию.','PENDING_REVIEW');
-      const rows=leaderboard(b.attempts,b.players),final=immutableFinal(contest,rows,summarize(b.attempts,b.players),actor,at);
+      if(b.participantAttempts.some(a=>a.mode==='contest'&&!a.voided&&a.check?.status==='pending')&&input.acknowledgePending!==true)fail('Остались попытки для проверки. Проверьте их или явно подтвердите публикацию.','PENDING_REVIEW');
+      const rows=leaderboard(b.participantAttempts,b.players),final=immutableFinal(contest,rows,summarize(b.participantAttempts,b.players),actor,at);
       changes.push(rec('final:'+r.id,'final',final));contest.finalizedAt=at;contest.status='archive';
      }
      contest.updatedAt=at;contest.updatedBy=actor;after=contest;changes.push(rec('contest:'+r.id,'contest',contest));
@@ -134,7 +168,8 @@ export function createContestService({store,adminIds,checkSubscription,getBotUse
   },
   async observe(ctx,{allowed,releaseId}){
    // A verified Mini App launch/observed membership transition, NOT a message, share or /start event.
-   const uid=verifiedUser(ctx),at=now(),param=String(ctx.initData.start_param||''),authDate=Number(ctx.initData.auth_date)||0;
+   const uid=verifiedUser(ctx);if(policy.isAdmin(uid))return true;
+   const at=now(),param=String(ctx.initData.start_param||''),authDate=Number(ctx.initData.auth_date)||0;
    const key='visit:'+digest({uid,authDate,param}).slice(0,32);
    return store.transact(async v=>{const old=await val(v,key);if(old&&(allowed!==true||old.firstAllowedAt))return {value:true};const visit={...(old||{}),userId:uid,releaseId:releaseId||old?.releaseId||null,source:/^(set_|release_)/.test(param)?'set_link':'ordinary',firstSeenAt:old?.firstSeenAt||at,lastSeenAt:at,firstAllowedAt:old?.firstAllowedAt||(allowed===true?at:null),firstDeniedAt:old?.firstDeniedAt||(allowed===false?at:null)};return {changes:[rec(key,'visit',visit),await playerChanges(v,ctx,at)],value:true};});
   }
