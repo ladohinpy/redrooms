@@ -1,0 +1,69 @@
+{
+  "patch": "admin-test-isolation-1",
+  "base": "redrooms-main (3).zip + redrooms-admin-entry-access-fix.zip + redrooms-attempt-state-fix.zip",
+  "databaseSchemaChanged": false,
+  "gameBuildChanged": false,
+  "protectedFileCount": 56,
+  "files": [
+    {
+      "path": "src/rr/contest-service.mjs",
+      "before": "7b23c5ac45b04a72158106b65ed41b6a697ecb998483133bb04795dd8ce68537",
+      "after": "50430c09275b7750280c6f072dc57e2cf813fca325530b8d793b4c6cfaed04f7"
+    },
+    {
+      "path": "src/rr/admin-contest.mjs",
+      "before": "d27147f84a85e56602c53361bc64d9b09cbb12349ffedd4ed133f6062349e628",
+      "after": "241effed5545992419d3c1e4869d7992f9542a764eec4f30663d6ae07d1aaa5c"
+    },
+    {
+      "path": "tgcloud/lib/rr/contest-service.js",
+      "before": "6e9e782884ac9ebbcbecbe23e53e95902a25ce2aee628a8494e9c2df1796ef5d",
+      "after": "12f0caf5e0d53ba52f00a412c889431d1447add276ac9315215d3c88d3de63da"
+    },
+    {
+      "path": "public/rr/admin-contest.mjs",
+      "before": "d27147f84a85e56602c53361bc64d9b09cbb12349ffedd4ed133f6062349e628",
+      "after": "241effed5545992419d3c1e4869d7992f9542a764eec4f30663d6ae07d1aaa5c"
+    },
+    {
+      "path": "tests/rr/admin-test-isolation.test.mjs",
+      "before": null,
+      "after": "22487e0408985a7335d6f91081d9aa3804a5f1a25bd1be4b2011a0357029f850"
+    },
+    {
+      "path": "tests/rr/attempt-state.test.mjs",
+      "before": "2f557e91b421eb1c1af36174055ada5fc82abb7d1459885e678ec9de3e798da1",
+      "after": "064298025b04be24bcecb408cbedcc93f3a1c97fceb92613fb9108ea5018a488"
+    },
+    {
+      "path": "tests/rr/browser-admin-test-isolation.py",
+      "before": null,
+      "after": "a544efe2c0bceac04718610e13251977f4276f6ca542c1f7aec0d549f9d23e3a"
+    },
+    {
+      "path": "tests/rr/browser-attempt-state.py",
+      "before": "d0d5f69b4d70f54c07b9de6f188ce1a694357cef592046d0f31f552b451d658e",
+      "after": "0a91480fd7240b98ff316addca9f09de369e8ef4eacc6a9940843a0626067576"
+    },
+    {
+      "path": "README.md",
+      "before": "fcfd4e6e484e5e7a5389d35842357841d7997c2c6c8caf5703d6000c519cb755",
+      "after": "b178c18ed0d215709e3da48ca0e99e61d6605dc5773bb856f7a71e04e645ae88"
+    },
+    {
+      "path": "docs/ADMIN-TEST-ISOLATION.md",
+      "before": null,
+      "after": "aaa2fc5be734faca0d277bc375bf66a8d73b0534b0a6d1eb68feb4c9b67a434f"
+    },
+    {
+      "path": "docs/ADMIN-TEST-ISOLATION-TESTS.txt",
+      "before": null,
+      "after": "c55c9a99b147855b9a482362ae9971f41502d4584fa23064fb82f6bb5195831c"
+    },
+    {
+      "path": "docs/ADMIN-TEST-ISOLATION-BROWSER.json",
+      "before": null,
+      "after": "300f4559b6df1c5fd564a9056e10b1568c6b064173f1fb3e5f5dcd5dd244350e"
+    }
+  ]
+}

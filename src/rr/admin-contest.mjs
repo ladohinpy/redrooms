@@ -2,7 +2,7 @@
 import {el,call,notify,copy,saveFile,navigate} from './client.mjs';
 import {contentBlock} from './rich-text.mjs';
 import {setLink} from './simple.mjs';
-let activeTab='editor',renderToken=0,extraDirty=false;
+let activeTab='editor',renderToken=0,extraDirty=false,showAdminTests=false;
 export const extraHasChanges=()=>extraDirty;
 const attemptLabel={started:'Начата',unfinished:'Не завершена',completed:'Завершена'};
 const names={practice:'Без конкурса',planned:'Запланирован',active:'Конкурс идёт',review:'Подведение итогов',archive:'Итоги опубликованы'};
@@ -32,7 +32,7 @@ export function mountAdminTools(app,{model,current,identity,choose,onReload}){
   body.replaceChildren(el('p',{text:'Загружаем данные…'}));
   try{
    const c=current(),r=c&&model.state.game_releases.find(x=>x.catalogVersionId===c.id&&x.status==='published');
-   const query={action:'adminRead',...(r?{releaseId:r.id}:c?{catalogId:c.id}:{})};const state=await call('rrContest',query);if(token!==renderToken||!host.isConnected)return;
+   const query={action:'adminRead',...(activeTab==='players'&&showAdminTests?{includeAdminTests:true}:{}),...(r?{releaseId:r.id}:c?{catalogId:c.id}:{})};const state=await call('rrContest',query);if(token!==renderToken||!host.isConnected)return;
    body.replaceChildren();
    const command=async(command,more={})=>{await call('rrContest',{action:'adminCommand',command,expectedRevision:state.revision,...(r?{releaseId:r.id}:{}),...more});extraDirty=false;await draw();};
    if(['materials','contest','stats','posts'].includes(activeTab)){
@@ -88,7 +88,27 @@ export function mountAdminTools(app,{model,current,identity,choose,onReload}){
   box.append(el('h3',{text:'Журнал решений'}),...((detail.playerAudit||[]).length?(detail.playerAudit||[]).map(a=>el('details',{},el('summary',{text:`${date(a.at)} · ${a.action} · администратор ${a.actor}`}),el('p',{text:a.reason||'—'}),el('pre',{text:JSON.stringify({до:a.before,после:a.after},null,2)}))):[el('p',{text:'Решений ещё нет.'})]));
   modal((p.username?'@'+p.username:p.name)+' — история',box);
  }
- function playersPanel(box,state,command){let q='';const list=el('div');const show=()=>{const p=state.players.filter(p=>`${p.userId} ${p.username||''} ${p.name}`.toLowerCase().includes(q.toLowerCase()));list.replaceChildren(table(['Игрок','ID','Наборов','Попыток','Впервые','Статус',''],p.map(p=>[p.username?'@'+p.username:p.name,p.userId,p.setCount??0,p.attemptCount??0,date(p.firstSeenAt),p.excluded?'Исключён':'Участвует',btn('История и модерация',()=>playerDetail(p,command))])));};box.append(el('h2',{text:'Игроки'}),field('Поиск по ID, username или имени',inp('',v=>{q=v;show();})),list,el('p',{class:'help',text:`Открытий Mini App по подписанным данным: ${state.visits.sessions}; с параметром набора: ${state.visits.fromSetLink}; переходов «не подписан → подписан», наблюдавшихся в игре: ${state.visits.observedSubscriptionTransitions}. Это не число отправленных сообщений, репостов или запусков чата бота.`}));show();}
+ function playersPanel(box,state,command){
+  let q='';const list=el('div');
+  const show=()=>{
+   const p=state.players.filter(p=>`${p.userId} ${p.username||''} ${p.name}`.toLowerCase().includes(q.toLowerCase()));
+   const headers=['Игрок','ID','Наборов','Игровых попыток',...(showAdminTests?['Проверки']:[]),'Впервые','Статус',''];
+   list.replaceChildren(table(headers,p.map(p=>[
+    p.username?'@'+p.username:p.name,p.userId,p.totalSetCount??p.setCount??0,p.totalAttemptCount??p.attemptCount??0,
+    ...(showAdminTests?[p.testAttemptCount??p.previewCount??0]:[]),date(p.firstSeenAt),
+    p.isAdmin?'Администратор — вне статистики':p.excluded?'Исключён':'Участвует',
+    btn('История и модерация',()=>playerDetail(p,command))
+   ])));
+  };
+  const toggle=el('input',{type:'checkbox',checked:showAdminTests,'aria-label':'Показать проверки администраторов',
+   style:'width:auto;min-height:0;margin:0',onchange:async e=>{showAdminTests=e.target.checked;await draw();}});
+  box.append(el('h2',{text:'Игроки'}),
+   el('p',{class:'help',text:'Игровые попытки и общая статистика не включают проверки и аккаунты администраторов. Администраторы могут тестировать без лимита; история проверок сохранена отдельно. Простое открытие приложения попыткой не считается.'}),
+   el('label',{style:'display:flex;align-items:center;gap:10px;margin:12px 0'},toggle,'Показать проверки администраторов'),
+   field('Поиск по ID, username или имени',inp('',v=>{q=v;show();})),list,
+   el('p',{class:'help',text:`Открытий Mini App игроками по подписанным данным: ${state.visits.sessions}; с параметром набора: ${state.visits.fromSetLink}; переходов «не подписан → подписан», наблюдавшихся в игре: ${state.visits.observedSubscriptionTransitions}. Аккаунты администраторов исключены. Это не число отправленных сообщений, репостов или запусков чата бота.`}));
+  show();
+ }
  function postsPanel(box,state,r,c,command,identity){if(!r){box.append(el('p',{text:'Опубликуйте набор, чтобы получить постоянную ссылку.'}));return;}let type='announce',top=3,bodyText='',username=identity.botUsername||'';const area=text(state.content?.postDraft||'',v=>{bodyText=v;mark();});bodyText=area.value;
   const url=()=>setLink(username,r.id);const generate=()=>{const end=state.contest?.endsAt,rows=state.final?.rankings||state.rankings||[];const variants={announce:`${r.name}\n\nНовая игра «Красной комнаты»: разложите кассеты по четырём столам. Две попытки, в зачёт — лучший результат.\n\n${url()}`,reminder:`${r.name}\n\n${end?'До окончания: '+date(end)+'.':'Конкурс продолжается.'} Сыграйте или используйте вторую попытку.\n\n${url()}`,results:`${state.final?'Итоги':'Предварительные результаты'}: ${r.name}\n\n${rows.filter(x=>x.place<=top).map(x=>`${x.place}. ${x.username?'@'+x.username:x.name} — ${x.score} очков (${x.accuracy}%)`).join('\n')}\n\nУчастников: ${state.final?.stats.participants??state.stats?.participants??0}. Спасибо за игру!\nАрхивный набор: ${url()}`,archive:`Вспоминаем выпуск «${r.name}». Сыграйте вне конкурса — официальный рейтинг останется прежним.\n\n${url()}`};bodyText=variants[type];area.value=bodyText;mark();};
   box.append(el('h2',{text:'Подготовить пост'}),field('Шаблон',el('select',{onchange:e=>type=e.target.value},...Object.entries({announce:'Анонс',reminder:'Напоминание',results:'Итоги',archive:'Архивный выпуск'}).map(([v,t])=>el('option',{value:v,text:t})))),field('Число мест в топе (включая все равные места)',inp(3,v=>top=Math.max(1,Math.min(50,Number(v)||3)),{type:'number',min:1,max:50})),btn('Подставить данные',generate),area,el('div',{class:'actions'},btn('Предпросмотр',()=>modal('Пост',el('pre',{text:bodyText}))),btn('Копировать пост',async()=>{await copy(bodyText);notify('Пост скопирован. Публикация в канал — вручную.');}),btn('Копировать ссылку набора',()=>copy(url())),btn('Сохранить черновик поста',()=>command('saveContent',{catalogId:c.id,content:{...(state.content||emptyContent()),postDraft:bodyText}}))));
